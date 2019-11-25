@@ -1,0 +1,9 @@
+#
+# Copyright (c) Siemens AG 2019-2022 ALL RIGHTS RESERVED
+#
+
+bin/
+.vscode/
+/_support/
+venv/
+/website/site/
