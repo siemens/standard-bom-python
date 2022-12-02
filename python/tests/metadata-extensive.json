@@ -1,0 +1,136 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:3f10c7ca-7f2d-44c7-b719-e907ea8ee47f",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2022-12-21T12:58:37Z",
+    "tools": [
+      {
+        "vendor": "Siemens AG",
+        "name": "standard-bom",
+        "version": "2.0.0",
+        "externalReferences": [
+          {
+            "url": "https://github.com/siemens/standard-bom-python",
+            "type": "website"
+          }
+        ]
+      }
+    ],
+    "licenses": [
+      {
+        "expression": "CC0-1.0"
+      }
+    ],
+    "properties": [
+      {
+        "name": "siemens:profile",
+        "value": "clearing"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Tethys.Logging@1.4.2",
+      "name": "Tethys.Logging",
+      "version": "1.4.2",
+      "purl": "pkg:nuget/Tethys.Logging@1.4.2",
+      "externalReferences": [
+        {
+          "url": "https://github.com/tngraf/Tethys.Logging/",
+          "type": "website"
+        },
+        {
+          "url": "file:Tethys.Logging-1.4.2.zip",
+          "type": "distribution",
+          "comment": "source archive (local copy)",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "2ffe9bea4c3edf8f10b6493d424b2e9d662226b5"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "C#"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/dummy@5.0.12",
+      "name": ".NET Runtime",
+      "version": "5.0.12",
+      "purl": "pkg:nuget/dummy@5.0.12",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/runtime/archive/refs/tags/v5.0.12.zip",
+          "type": "website"
+        },
+        {
+          "url": "file:runtime-5.0.12.zip",
+          "type": "distribution",
+          "comment": "source archive (local copy)",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "e94fcefbec95220b01ab71c9280d36ec984a72b2"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "C#"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/AbrarJahin.DiffMatchPatch@0.1.0",
+      "name": "AbrarJahin.DiffMatchPatch",
+      "version": "0.1.0",
+      "purl": "pkg:nuget/AbrarJahin.DiffMatchPatch@0.1.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/google/diff-match-patch",
+          "type": "website"
+        },
+        {
+          "url": "file:diff-match-patch-master.zip",
+          "type": "distribution",
+          "comment": "source archive (local copy)",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "e247e801886acd5ede574dc2e111ecaf8d4740be"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "C#"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:nuget/Tethys.Logging@1.4.2"
+    },
+    {
+      "ref": "pkg:nuget/dummy@5.0.12"
+    },
+    {
+      "ref": "pkg:nuget/AbrarJahin.DiffMatchPatch@0.1.0"
+    }
+  ]
+}

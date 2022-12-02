@@ -1,0 +1,42 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2022-12-21T13:01:46Z",
+    "licenses": [
+      {
+        "expression": "CC0-1.0"
+      }
+    ],
+    "properties": [
+      {
+        "name": "siemens:profile",
+        "value": "external"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Tethys.Logging@1.4.2",
+      "name": "Tethys.Logging",
+      "version": "1.4.2",
+      "purl": "pkg:nuget/Tethys.Logging@1.4.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/dummy@5.0.12",
+      "name": ".NET Runtime",
+      "version": "5.0.12",
+      "purl": "pkg:nuget/dummy@5.0.12"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/AbrarJahin.DiffMatchPatch@0.1.0",
+      "name": "AbrarJahin.DiffMatchPatch",
+      "version": "0.1.0",
+      "purl": "pkg:nuget/AbrarJahin.DiffMatchPatch@0.1.0"
+    }
+  ]
+}

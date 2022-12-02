@@ -1,0 +1,18 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "version": 1,
+  "serialNumber": "urn:uuid:7c6b442a-66a8-45fd-ae9d-807c02375dff",
+  "metadata": {
+    "timestamp": "2022-12-21T13:01:46Z"
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/dummy@5.0.12",
+      "name": ".NET Runtime",
+      "version": "5.0.12",
+      "purl": "pkg:nuget/dummy@5.0.12"
+    }
+  ]
+}

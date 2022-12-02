@@ -1,0 +1,7 @@
+/.idea/
+/.coverage
+/coverage.xml
+/output/
+/dist/
+*.pyc
+toms_demo.py
