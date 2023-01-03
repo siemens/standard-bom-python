@@ -108,3 +108,10 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
         input_filename = "tests/multiple-dependencies.json"
         output_filename = "output/multiple-dependencies.json"
         self.write_read_compare(input_filename, output_filename)
+
+    def test_minimal_required(self):
+        input_filename = "tests/minimal-required.json"
+        output_filename = "output/minimal-required.json"
+
+        actual_bom, expected_bom = self.write_read_compare(input_filename, output_filename)
+        self.assertEqual(actual_bom.serial_number, expected_bom.serial_number)
