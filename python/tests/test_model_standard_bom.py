@@ -56,6 +56,18 @@ class StandardBomTestCase(unittest.TestCase):
         self.assertIsNotNone(actual_tool.external_references)
         self.assertIsNotNone(1, len(actual_tool.external_references))
 
+    def test_serial_number_provided(self):
+        sbom = StandardBom()
+        self.assertIsNotNone(sbom.serial_number)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_serial_number_unique(self):
+        sbom = StandardBom()
+        sbom2 = StandardBom()
+        self.assertNotEqual(sbom.serial_number, sbom2.serial_number)
+
+    def test_serial_number_unique_for_same_content(self):
+        sbom = StandardBom()
+        sbom.add_component(SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY)))
+        sbom2 = StandardBom()
+        sbom2.add_component(SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY)))
+        self.assertNotEqual(sbom.serial_number, sbom2.serial_number)
