@@ -1,3 +1,7 @@
+#
+# Copyright (c) Siemens AG 2019-2023 ALL RIGHTS RESERVED
+#
+
 /.idea/
 /.coverage
 /coverage.xml
