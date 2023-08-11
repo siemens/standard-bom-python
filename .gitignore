@@ -7,3 +7,4 @@ bin/
 /_support/
 venv/
 /website/site/
+/.idea/

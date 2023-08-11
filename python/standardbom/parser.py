@@ -1,4 +1,5 @@
 # Copyright (c) Siemens AG 2019-2023 ALL RIGHTS RESERVED
+import base64
 import errno
 import json
 import os
@@ -78,7 +79,15 @@ def read_license(param: dict) -> Optional[License]:
     if param is None:
         return None
     text = param.get("text", None)
-    license_text = AttachedText(content=text) if text else None
+    if isinstance(text, str):
+        license_text = AttachedText(content=text)
+    elif isinstance(text, dict) and 'content' in text:
+        if 'encoding' in text and text['encoding'] == 'base64':
+            license_text = AttachedText(content=base64.b64decode(text['content']).decode('utf-8'))
+        else:
+            license_text = AttachedText(content=text['content'])
+    else:
+        license_text = None
     return License(
         spdx_license_id=param.get("id", None),
         license_name=param.get("name", None),
