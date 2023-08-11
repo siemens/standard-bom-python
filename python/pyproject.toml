@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "standard-bom"
-version = "1.0.0"
+version = "1.0.1"
 description = "Standard BOM Format Library"
 authors = ["Hakan Dilek <hakan.dilek@siemens.com>"]
 license = "MIT"
