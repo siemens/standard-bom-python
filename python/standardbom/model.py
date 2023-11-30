@@ -1,15 +1,17 @@
+#
 # Copyright (c) Siemens AG 2019-2023 ALL RIGHTS RESERVED
-from typing import List, Optional, Iterable
+#
+
+from typing import Iterable, List, Optional
 from uuid import UUID
 
-from cyclonedx.model import ExternalReference, LicenseChoice, License, XsUri, ExternalReferenceType, HashAlgorithm, \
-    Property, HashType
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, License, LicenseChoice, \
+    Property, XsUri
 from cyclonedx.model.bom import Bom, BomMetaData
 from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component, ComponentType
 from packageurl import PackageURL
 from sortedcontainers import SortedSet
-from typing import Optional
 
 
 DIRECT_DEPENDENCY = "siemens:direct"
@@ -49,7 +51,7 @@ def is_source_artifact(ex_ref: ExternalReference) -> bool:
 class SbomComponent:
     component: Component
 
-    def __init__(self, component: Optional[Component] = None):
+    def __init__(self, component: Optional[Component] = None) -> None:
         if component is None:
             self.component = Component(name='INVALID')
         else:
@@ -60,7 +62,7 @@ class SbomComponent:
         return self.component.name
 
     @name.setter
-    def name(self, value: str):
+    def name(self, value: str) -> None:
         self.component.name = value
 
     @property
@@ -68,7 +70,7 @@ class SbomComponent:
         return self.component.type
 
     @type.setter
-    def type(self, value: ComponentType):
+    def type(self, value: ComponentType) -> None:
         self.component.type = value
 
     @property
@@ -76,7 +78,7 @@ class SbomComponent:
         return self.component.bom_ref
 
     @bom_ref.setter
-    def bom_ref(self, value: BomRef):
+    def bom_ref(self, value: BomRef) -> None:
         self.component._bom_ref = value
 
     @property
@@ -84,7 +86,7 @@ class SbomComponent:
         return self.component.group
 
     @group.setter
-    def group(self, value: str):
+    def group(self, value: str) -> None:
         self.component.group = value
 
     @property
@@ -92,7 +94,7 @@ class SbomComponent:
         return self.component.version
 
     @version.setter
-    def version(self, value: str):
+    def version(self, value: str) -> None:
         self.component.version = value
 
     @property
@@ -100,7 +102,7 @@ class SbomComponent:
         return self.component.purl
 
     @purl.setter
-    def purl(self, value: PackageURL):
+    def purl(self, value: PackageURL) -> None:
         self.component.purl = value
 
     @property
@@ -108,7 +110,7 @@ class SbomComponent:
         return self.component.author
 
     @author.setter
-    def author(self, value: str):
+    def author(self, value: str) -> None:
         self.component.author = value
 
     @property
@@ -116,7 +118,7 @@ class SbomComponent:
         return self.component.description
 
     @description.setter
-    def description(self, value: str):
+    def description(self, value: str) -> None:
         self.component.description = value
 
     @property
@@ -124,7 +126,7 @@ class SbomComponent:
         return self.component.copyright
 
     @copyright.setter
-    def copyright(self, value: str):
+    def copyright(self, value: str) -> None:
         self.component.copyright = value
 
     @property
@@ -132,7 +134,7 @@ class SbomComponent:
         return self.component.cpe
 
     @cpe.setter
-    def cpe(self, value: str):
+    def cpe(self, value: str) -> None:
         self.component.cpe = value
 
     @property
@@ -142,7 +144,7 @@ class SbomComponent:
             self.component.licenses.add(LicenseChoice())
         return list(self.component.licenses)
 
-    def add_license(self, lic: License):
+    def add_license(self, lic: License) -> None:
         self.component.licenses.add(lic)
 
     @property
@@ -150,7 +152,7 @@ class SbomComponent:
         return self._get_custom_property(THIRD_PARTY_NOTICES)
 
     @third_party_notices.setter
-    def third_party_notices(self, value: str):
+    def third_party_notices(self, value: str) -> None:
         self._set_custom_property(THIRD_PARTY_NOTICES, value)
 
     @property
@@ -158,7 +160,7 @@ class SbomComponent:
         return self._get_custom_property(DIRECT_DEPENDENCY) in ["True", "true"]
 
     @direct_dependency.setter
-    def direct_dependency(self, value: str):
+    def direct_dependency(self, value: str) -> None:
         self._set_custom_property(DIRECT_DEPENDENCY, value)
 
     @property
@@ -166,7 +168,7 @@ class SbomComponent:
         return self._get_custom_property(PRIMARY_LANGUAGE)
 
     @primary_language.setter
-    def primary_language(self, value: str):
+    def primary_language(self, value: str) -> None:
         self._set_custom_property(PRIMARY_LANGUAGE, value)
 
     @property
@@ -174,7 +176,7 @@ class SbomComponent:
         return self._get_custom_property(LEGAL_REMARK)
 
     @legal_remark.setter
-    def legal_remark(self, value: str):
+    def legal_remark(self, value: str) -> None:
         self._set_custom_property(LEGAL_REMARK, value)
 
     @property
@@ -182,7 +184,7 @@ class SbomComponent:
         return self._get_custom_property(FILENAME)
 
     @filename.setter
-    def filename(self, value: str):
+    def filename(self, value: str) -> None:
         self._set_custom_property(FILENAME, value)
 
     def _get_custom_property(self, custom_property_key: str) -> Optional[str]:
@@ -191,7 +193,7 @@ class SbomComponent:
             return found.value
         return None
 
-    def _set_custom_property(self, custom_property_key: str, value: str):
+    def _set_custom_property(self, custom_property_key: str, value: str) -> None:
         found = next(filter(lambda prop: prop.name == custom_property_key, self.component.properties), None)
         if found:
             found.value = value
@@ -204,7 +206,7 @@ class SbomComponent:
         return str(reference.url) if reference else None
 
     @website.setter
-    def website(self, value: str):
+    def website(self, value: str) -> None:
         self._set_external_reference(ExternalReferenceType.WEBSITE, value)
 
     @property
@@ -213,7 +215,7 @@ class SbomComponent:
         return str(reference.url) if reference else None
 
     @repo_url.setter
-    def repo_url(self, value: str):
+    def repo_url(self, value: str) -> None:
         self._set_external_reference(ExternalReferenceType.VCS, value)
 
     @property
@@ -228,7 +230,7 @@ class SbomComponent:
         return None
 
     @relative_path.setter
-    def relative_path(self, value: str):
+    def relative_path(self, value: str) -> None:
         reference = next(
             filter(lambda ex_ref: ex_ref.type == ExternalReferenceType.DISTRIBUTION and ex_ref.comment == RELATIVE_PATH,
                    self.component.external_references), None)
@@ -283,7 +285,7 @@ class SbomComponent:
     def external_components(self) -> List['ExternalComponent']:
         return list(map(lambda er: ExternalComponent(er), self.component.external_references))
 
-    def add_external_component(self, external_component: 'ExternalComponent'):
+    def add_external_component(self, external_component: 'ExternalComponent') -> None:
         self.component.external_references.add(external_component.external_ref)
 
     @property
@@ -291,7 +293,7 @@ class SbomComponent:
         return self._get_hash(HashAlgorithm.MD5)
 
     @md5.setter
-    def md5(self, value: str):
+    def md5(self, value: str) -> None:
         self._set_hash(HashAlgorithm.MD5, value)
 
     @property
@@ -299,7 +301,7 @@ class SbomComponent:
         return self._get_hash(HashAlgorithm.SHA_1)
 
     @sha1.setter
-    def sha1(self, value: str):
+    def sha1(self, value: str) -> None:
         self._set_hash(HashAlgorithm.SHA_1, value)
 
     @property
@@ -307,7 +309,7 @@ class SbomComponent:
         return self._get_hash(HashAlgorithm.SHA_256)
 
     @sha256.setter
-    def sha256(self, value: str):
+    def sha256(self, value: str) -> None:
         self._set_hash(HashAlgorithm.SHA_256, value)
 
     @property
@@ -315,14 +317,14 @@ class SbomComponent:
         return self._get_hash(HashAlgorithm.SHA_512)
 
     @sha512.setter
-    def sha512(self, value: str):
+    def sha512(self, value: str) -> None:
         self._set_hash(HashAlgorithm.SHA_512, value)
 
     def _get_hash(self, algorithm: HashAlgorithm) -> Optional[str]:
         h = next(filter(lambda hash_type: hash_type.alg == algorithm, self.component.hashes), None)
         return h.content if h else None
 
-    def _set_hash(self, algorithm: HashAlgorithm, value: str):
+    def _set_hash(self, algorithm: HashAlgorithm, value: str) -> None:
         h = next(filter(lambda hash_type: hash_type.alg == algorithm, self.component.hashes), None)
         if h:
             h.content = value
@@ -333,7 +335,7 @@ class SbomComponent:
 class SourceArtifact:
     external_ref: ExternalReference
 
-    def __init__(self, external_ref: Optional[ExternalReference] = None):
+    def __init__(self, external_ref: Optional[ExternalReference] = None) -> None:
         if external_ref is None:
             self.external_ref = ExternalReference(
                 reference_type=ExternalReferenceType.OTHER,
@@ -355,7 +357,7 @@ class SourceArtifact:
         return str(self.external_ref.url) if self.external_ref.url else None
 
     @url.setter
-    def url(self, value: str):
+    def url(self, value: str) -> None:
         self.external_ref.url = XsUri(value)
 
     @property
@@ -363,7 +365,7 @@ class SourceArtifact:
         return self._get_hash(HashAlgorithm.MD5)
 
     @md5.setter
-    def md5(self, value: str):
+    def md5(self, value: str) -> None:
         self._set_hash(HashAlgorithm.MD5, value)
 
     @property
@@ -371,7 +373,7 @@ class SourceArtifact:
         return self._get_hash(HashAlgorithm.SHA_1)
 
     @sha1.setter
-    def sha1(self, value: str):
+    def sha1(self, value: str) -> None:
         self._set_hash(HashAlgorithm.SHA_1, value)
 
     @property
@@ -379,7 +381,7 @@ class SourceArtifact:
         return self._get_hash(HashAlgorithm.SHA_256)
 
     @sha256.setter
-    def sha256(self, value: str):
+    def sha256(self, value: str) -> None:
         self._set_hash(HashAlgorithm.SHA_256, value)
 
     @property
@@ -387,14 +389,14 @@ class SourceArtifact:
         return self._get_hash(HashAlgorithm.SHA_512)
 
     @sha512.setter
-    def sha512(self, value: str):
+    def sha512(self, value: str) -> None:
         self._set_hash(HashAlgorithm.SHA_512, value)
 
     def _get_hash(self, algorithm: HashAlgorithm) -> Optional[str]:
         h = next(filter(lambda hash_type: hash_type.alg == algorithm, self.external_ref.hashes), None)
         return h.content if h else None
 
-    def _set_hash(self, algorithm: HashAlgorithm, value: str):
+    def _set_hash(self, algorithm: HashAlgorithm, value: str) -> None:
         h = next(filter(lambda hash_type: hash_type.alg == algorithm, self.external_ref.hashes), None)
         if h:
             h.content = value
@@ -434,7 +436,7 @@ class ExternalComponent:
 class StandardBom:
     cyclone_dx_sbom: Bom
 
-    def __init__(self, cyclone_dx_sbom: Optional[Bom] = None):
+    def __init__(self, cyclone_dx_sbom: Optional[Bom] = None) -> None:
         if cyclone_dx_sbom is None:
             self.cyclone_dx_sbom = Bom()
         else:
@@ -452,14 +454,14 @@ class StandardBom:
     def components(self) -> List[SbomComponent]:
         return list(map(lambda c: SbomComponent(c), self.cyclone_dx_sbom.components))
 
-    def add_component(self, sbom_component: SbomComponent):
+    def add_component(self, sbom_component: SbomComponent) -> None:
         self.cyclone_dx_sbom.components.add(sbom_component.component)
 
     @property
     def external_components(self) -> List[ExternalComponent]:
         return list(map(lambda er: ExternalComponent(er), self.cyclone_dx_sbom.external_references))
 
-    def add_external_component(self, external_component: ExternalComponent):
+    def add_external_component(self, external_component: ExternalComponent) -> None:
         self.cyclone_dx_sbom.external_references.add(external_component.external_ref)
 
     @property
@@ -469,7 +471,7 @@ class StandardBom:
         return prop.value if prop else None
 
     @profile.setter
-    def profile(self, value: str):
+    def profile(self, value: str) -> None:
         existing = next(filter(lambda p: p.name == PROFILE_KEY,
                                self.cyclone_dx_sbom.metadata.properties), None)
         if existing:

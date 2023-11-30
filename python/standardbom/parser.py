@@ -1,4 +1,7 @@
+#
 # Copyright (c) Siemens AG 2019-2023 ALL RIGHTS RESERVED
+#
+
 import base64
 import errno
 import json
@@ -6,11 +9,11 @@ import os
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, Iterable
+from typing import Iterable, Optional
 from uuid import UUID
 
-from cyclonedx.model import HashType, HashAlgorithm, Property, ExternalReference, ExternalReferenceType, Tool, \
-    LicenseChoice, License, AttachedText, XsUri
+from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, License, \
+    LicenseChoice, Property, Tool, XsUri
 from cyclonedx.model.bom import Bom, BomMetaData
 from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.output.json import JsonV1Dot4
@@ -29,7 +32,7 @@ class SbomJsonParser(BaseParser):
     metadata: Optional[BomMetaData]
     external_references: Optional[Iterable[ExternalReference]]
 
-    def __init__(self, json_content: dict):
+    def __init__(self, json_content: dict) -> None:
         super().__init__()
         self.metadata = read_metadata(json_content.get("metadata"))
         serial_number = json_content.get("serialNumber", None)
