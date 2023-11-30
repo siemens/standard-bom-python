@@ -35,6 +35,16 @@ class StandardBomTestCase(unittest.TestCase):
         self.assertEqual(sbom.external_components[0].url, XsUri("sbom.siemens.io"))
         self.assertEqual(sbom.external_components[0].type, ExternalReferenceType.WEBSITE)
 
+    def test_add_external_component2(self):
+        excomp = ExternalComponent()
+        excomp.type = ExternalReferenceType.WEBSITE
+        excomp.url = 'https://sbom.siemens.io'
+        sbom = StandardBom()
+        sbom.add_external_component(excomp)
+        self.assertEqual(1, len(sbom.external_components))
+        self.assertEqual(sbom.external_components[0].url, XsUri('https://sbom.siemens.io'))
+        self.assertEqual(sbom.external_components[0].type, ExternalReferenceType.WEBSITE)
+
 
 if __name__ == '__main__':
     unittest.main()

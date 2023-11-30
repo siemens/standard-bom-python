@@ -89,6 +89,16 @@ class StandardBomSourcesTestCase(unittest.TestCase):
         source_artifact.sha512 = "test-sha512"
         self.assertEqual("test-sha512", source_artifact.sha512)
 
+    def test_construct(self):
+        source_artifact = SourceArtifact()
+        self.assertEqual(ExternalReferenceType.OTHER, source_artifact.type)
+        self.assertEqual('https://example.com', source_artifact.url)
+
+        source_artifact.type = ExternalReferenceType.WEBSITE
+        source_artifact.url = 'https://example.com/second'
+        self.assertEqual(ExternalReferenceType.WEBSITE, source_artifact.type)
+        self.assertEqual('https://example.com/second', source_artifact.url)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -10,6 +10,20 @@ from standardbom.model import SbomComponent, ExternalComponent
 
 
 class SBomComponentTestCase(unittest.TestCase):
+
+    def test_construct(self):
+        component = SbomComponent()
+        self.assertEqual(ComponentType.LIBRARY, component.type)
+        self.assertEqual("INVALID", component.name)
+        self.assertIsNotNone(component.bom_ref)
+        self.assertIsNone(component.group)
+        self.assertIsNone(component.version)
+        self.assertIsNone(component.purl)
+        self.assertIsNone(component.author)
+        self.assertIsNone(component.description)
+        self.assertIsNone(component.copyright)
+        self.assertIsNone(component.cpe)
+
     def test_direct_fields(self):
         component = SbomComponent(Component(name="test"))
         self.assertEqual("test", component.name)
@@ -23,7 +37,7 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertIsNone(component.copyright)
         self.assertIsNone(component.cpe)
 
-    def test_property_seters(self):
+    def test_property_setters(self):
         component = SbomComponent(Component(name="test"))
 
         component.name = "42"

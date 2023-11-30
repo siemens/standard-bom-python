@@ -9,6 +9,8 @@ from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component, ComponentType
 from packageurl import PackageURL
 from sortedcontainers import SortedSet
+from typing import Optional
+
 
 DIRECT_DEPENDENCY = "siemens:direct"
 PRIMARY_LANGUAGE = "siemens:primaryLanguage"
@@ -47,8 +49,11 @@ def is_source_artifact(ex_ref: ExternalReference) -> bool:
 class SbomComponent:
     component: Component
 
-    def __init__(self, component: Component):
-        self.component = component
+    def __init__(self, component: Optional[Component] = None):
+        if component is None:
+            self.component = Component(name='INVALID')
+        else:
+            self.component = component
 
     @property
     def name(self) -> str:
@@ -328,8 +333,22 @@ class SbomComponent:
 class SourceArtifact:
     external_ref: ExternalReference
 
-    def __init__(self, external_ref: ExternalReference):
-        self.external_ref = external_ref
+    def __init__(self, external_ref: Optional[ExternalReference] = None):
+        if external_ref is None:
+            self.external_ref = ExternalReference(
+                reference_type=ExternalReferenceType.OTHER,
+                url=XsUri('https://example.com'),
+                hashes=[])
+        else:
+            self.external_ref = external_ref
+
+    @property
+    def type(self) -> ExternalReferenceType:
+        return self.external_ref.type
+
+    @type.setter
+    def type(self, value: ExternalReferenceType) -> None:
+        self.external_ref.type = value
 
     @property
     def url(self) -> Optional[str]:
@@ -386,16 +405,30 @@ class SourceArtifact:
 class ExternalComponent:
     external_ref: ExternalReference
 
-    def __init__(self, external_ref: ExternalReference):
-        self.external_ref = external_ref
+    def __init__(self, external_ref: Optional[ExternalReference] = None) -> None:
+        if external_ref is None:
+            self.external_ref = ExternalReference(
+                reference_type=ExternalReferenceType.OTHER,
+                url=XsUri('https://example.com'))
+        else:
+            self.external_ref = external_ref
 
     @property
     def url(self) -> XsUri:
         return self.external_ref.url
 
+    @url.setter
+    def url(self, value: str) -> None:
+        self.external_ref.url = XsUri(value)
+
     @property
     def type(self) -> ExternalReferenceType:
         return self.external_ref.type
+
+    @type.setter
+    def type(self, value: ExternalReferenceType) -> None:
+        self.external_ref.type = value
+
 
 
 class StandardBom:
@@ -403,8 +436,9 @@ class StandardBom:
 
     def __init__(self, cyclone_dx_sbom: Optional[Bom] = None):
         if cyclone_dx_sbom is None:
-            cyclone_dx_sbom = Bom()
-        self.cyclone_dx_sbom = cyclone_dx_sbom
+            self.cyclone_dx_sbom = Bom()
+        else:
+            self.cyclone_dx_sbom = cyclone_dx_sbom
 
     @property
     def metadata(self) -> BomMetaData:
