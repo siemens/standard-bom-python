@@ -16,7 +16,7 @@ class StandardBomTestCase(unittest.TestCase):
 
     def test_add_component(self):
         sbom = StandardBom()
-        sbom.add_component(SbomComponent(Component(name="test.jar", component_type=ComponentType.LIBRARY)))
+        sbom.add_component(SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY)))
         self.assertEqual(1, len(sbom.components))
         self.assertEqual(sbom.components[0].name, "test.jar")
         self.assertEqual(sbom.components[0].type, ComponentType.LIBRARY)
@@ -29,7 +29,7 @@ class StandardBomTestCase(unittest.TestCase):
 
     def test_add_external_component(self):
         sbom = StandardBom()
-        sbom.add_external_component(ExternalComponent(ExternalReference(reference_type=ExternalReferenceType.WEBSITE,
+        sbom.add_external_component(ExternalComponent(ExternalReference(type=ExternalReferenceType.WEBSITE,
                                                                         url=XsUri("sbom.siemens.io"))))
         self.assertEqual(1, len(sbom.external_components))
         self.assertEqual(sbom.external_components[0].url, XsUri("sbom.siemens.io"))

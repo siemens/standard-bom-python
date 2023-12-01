@@ -6,13 +6,12 @@ from importlib.metadata import version
 from typing import Iterable, List, Optional
 from uuid import UUID
 
-from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, License, LicenseChoice, \
-    Property, XsUri
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom, BomMetaData, Tool
 from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component, ComponentType
+from cyclonedx.model.license import License, LicenseRepository
 from packageurl import PackageURL
-from sortedcontainers import SortedSet
 
 STANDARD_BOM_MODULE: str = 'standard-bom'
 
@@ -150,10 +149,9 @@ class SbomComponent:
         self.component.cpe = value
 
     @property
-    def licenses(self) -> List[LicenseChoice]:
+    def licenses(self) -> List[License]:
         if self.component.licenses is None:
-            self.component.licenses = SortedSet()
-            self.component.licenses.add(LicenseChoice())
+            self.component.licenses = LicenseRepository()
         return list(self.component.licenses)
 
     def add_license(self, lic: License) -> None:
@@ -247,7 +245,7 @@ class SbomComponent:
             filter(lambda ex_ref: ex_ref.type == ExternalReferenceType.DISTRIBUTION and ex_ref.comment == RELATIVE_PATH,
                    self.component.external_references), None)
         if not reference:
-            reference = ExternalReference(reference_type=ExternalReferenceType.DISTRIBUTION,
+            reference = ExternalReference(type=ExternalReferenceType.DISTRIBUTION,
                                           url=XsUri(value),
                                           comment=RELATIVE_PATH)
             self.component.external_references.add(reference)
@@ -267,7 +265,7 @@ class SbomComponent:
                                self.component.external_references)))
 
     def add_local_source(self, url: str, hashes: Optional[Iterable[HashType]] = None) -> None:
-        ex_ref = ExternalReference(reference_type=ExternalReferenceType.DISTRIBUTION, comment=SOURCE_ARCHIVE_LOCAL,
+        ex_ref = ExternalReference(type=ExternalReferenceType.DISTRIBUTION, comment=SOURCE_ARCHIVE_LOCAL,
                                    url=XsUri(url), hashes=hashes)
         self.component.external_references.add(ex_ref)
 
@@ -278,7 +276,7 @@ class SbomComponent:
                                self.component.external_references)))
 
     def add_remote_source(self, url: str, hashes: Optional[Iterable[HashType]] = None) -> None:
-        ex_ref = ExternalReference(reference_type=ExternalReferenceType.DISTRIBUTION, comment=SOURCE_ARCHIVE_URL,
+        ex_ref = ExternalReference(type=ExternalReferenceType.DISTRIBUTION, comment=SOURCE_ARCHIVE_URL,
                                    url=XsUri(url), hashes=hashes)
         self.component.external_references.add(ex_ref)
 
@@ -289,7 +287,7 @@ class SbomComponent:
     def _set_external_reference(self, ex_ref_type: ExternalReferenceType, url: str) -> ExternalReference:
         reference = next(filter(lambda ex_ref: ex_ref.type == ex_ref_type, self.component.external_references), None)
         if not reference:
-            reference = ExternalReference(reference_type=ex_ref_type, url=XsUri(url))
+            reference = ExternalReference(type=ex_ref_type, url=XsUri(url))
             self.component.external_references.add(reference)
         return reference
 
@@ -341,7 +339,7 @@ class SbomComponent:
         if h:
             h.content = value
         else:
-            self.component.hashes.add(HashType(algorithm=algorithm, hash_value=value))
+            self.component.hashes.add(HashType(alg=algorithm, content=value))
 
 
 class SourceArtifact:
@@ -350,7 +348,7 @@ class SourceArtifact:
     def __init__(self, external_ref: Optional[ExternalReference] = None) -> None:
         if external_ref is None:
             self.external_ref = ExternalReference(
-                reference_type=ExternalReferenceType.OTHER,
+                type=ExternalReferenceType.OTHER,
                 url=XsUri('https://example.com'),
                 hashes=[])
         else:
@@ -413,7 +411,7 @@ class SourceArtifact:
         if h:
             h.content = value
         else:
-            self.external_ref.hashes.add(HashType(algorithm=algorithm, hash_value=value))
+            self.external_ref.hashes.add(HashType(alg=algorithm, content=value))
 
 
 class ExternalComponent:
@@ -422,7 +420,7 @@ class ExternalComponent:
     def __init__(self, external_ref: Optional[ExternalReference] = None) -> None:
         if external_ref is None:
             self.external_ref = ExternalReference(
-                reference_type=ExternalReferenceType.OTHER,
+                type=ExternalReferenceType.OTHER,
                 url=XsUri('https://example.com'))
         else:
             self.external_ref = external_ref
@@ -466,7 +464,7 @@ class StandardBom:
         result.vendor = 'Siemens AG'
         result.name = 'standard-bom'
         result.version = '2.4.0'
-        website = ExternalReference(reference_type=ExternalReferenceType.WEBSITE, url=XsUri('https://sbom.siemens.io/'))
+        website = ExternalReference(type=ExternalReferenceType.WEBSITE, url=XsUri('https://sbom.siemens.io/'))
         website.comment = f"Generated by the {STANDARD_BOM_MODULE} Python library v{version(STANDARD_BOM_MODULE)}"
         result.external_references = [website]
         return result
@@ -477,7 +475,7 @@ class StandardBom:
 
     @property
     def serial_number(self) -> UUID:
-        return self.cyclone_dx_sbom.uuid
+        return self.cyclone_dx_sbom.serial_number
 
     @property
     def components(self) -> List[SbomComponent]:

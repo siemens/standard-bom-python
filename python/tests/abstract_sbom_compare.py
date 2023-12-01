@@ -20,5 +20,11 @@ class AbstractSbomComparingTestCase(ABC, unittest.TestCase):
         self.assertEqual({}, DeepDiff(expected_bom.metadata, actual_bom.metadata))
         self.assertEqual({}, DeepDiff(expected_bom.components, actual_bom.components))
         self.assertEqual({}, DeepDiff(expected_bom.external_components, actual_bom.external_components))
-        self.assertEqual({}, DeepDiff(expected_bom, actual_bom))
+        erg = DeepDiff(expected_bom, actual_bom, ignore_order=True, report_repetition=True, exclude_paths=[
+            'root.cyclone_dx_sbom._serial_number',
+            'root.cyclone_dx_sbom.serial_number',
+            'root.serial_number',
+            'root.cyclone_dx_sbom.uuid'],
+                       exclude_regex_paths='\\._')
+        self.assertEqual({}, erg)
         return actual_bom, expected_bom

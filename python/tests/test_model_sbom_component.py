@@ -1,12 +1,13 @@
 # Copyright (c) Siemens AG 2019-2023 ALL RIGHTS RESERVED
 import unittest
 
-from cyclonedx.model import License, AttachedText, XsUri, ExternalReference, ExternalReferenceType
+from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component, ComponentType
+from cyclonedx.model.license import DisjunctiveLicense
 from packageurl import PackageURL
 
-from standardbom.model import SbomComponent, ExternalComponent
+from standardbom.model import ExternalComponent, SbomComponent
 
 
 class SBomComponentTestCase(unittest.TestCase):
@@ -71,12 +72,12 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertEqual("cpe:2.3:a:evil_corp:mars_explorer:1.2.3:beta:*:*:*:*:*:*", component.cpe)
 
     def test_licenses(self):
-        component = SbomComponent(Component(name="test"))
-        self.assertListEqual([], component.licenses)
+        component = SbomComponent()
+        self.assertListEqual(list(), component.licenses)
 
-        lic = License(license_name="test",
-                      license_text=AttachedText(content="test license"),
-                      license_url=XsUri("test-uri"))
+        lic = DisjunctiveLicense(name="test",
+                                 text=AttachedText(content="test license"),
+                                 url=XsUri("test-uri"))
         component.add_license(lic)
         self.assertListEqual([lic], component.licenses)
 
@@ -187,7 +188,7 @@ class SBomComponentTestCase(unittest.TestCase):
     def test_add_get_external_components(self):
         component = SbomComponent(Component(name="test"))
         component.add_external_component(ExternalComponent(ExternalReference(
-            reference_type=ExternalReferenceType.BOM,
+            type=ExternalReferenceType.BOM,
             url=XsUri("test")
         )))
         self.assertEqual(1, len(component.external_components))

@@ -9,12 +9,12 @@ from standardbom.model import SbomComponent, SourceArtifact, SOURCE_ARCHIVE_URL
 
 class StandardBomSourcesTestCase(unittest.TestCase):
     def test_empty_sources(self):
-        component = SbomComponent(Component(name="test.jar", component_type=ComponentType.LIBRARY))
+        component = SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY))
         self.assertIsNotNone(component.sources)
         self.assertEqual(0, len(component.sources))
 
     def test_local_sources(self):
-        component = SbomComponent(Component(name="test.jar", component_type=ComponentType.LIBRARY))
+        component = SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY))
 
         self.assertIsNotNone(component.local_sources)
         self.assertEqual(0, len(component.local_sources))
@@ -36,7 +36,7 @@ class StandardBomSourcesTestCase(unittest.TestCase):
         self.assertIsNone(component.local_sources[0].sha512)
 
     def test_remote_sources(self):
-        component = SbomComponent(Component(name="test.jar", component_type=ComponentType.LIBRARY))
+        component = SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY))
 
         self.assertIsNotNone(component.remote_sources)
         self.assertEqual(0, len(component.remote_sources))
@@ -54,7 +54,7 @@ class StandardBomSourcesTestCase(unittest.TestCase):
         self.assertIsNone(component.remote_sources[0].sha512)
 
     def test_source_artifact_md5(self):
-        source_artifact = SourceArtifact(ExternalReference(reference_type=ExternalReferenceType.DISTRIBUTION,
+        source_artifact = SourceArtifact(ExternalReference(type=ExternalReferenceType.DISTRIBUTION,
                                                            comment=SOURCE_ARCHIVE_URL,
                                                            url=XsUri("https://foo.bar/sources.jar"),
                                                            hashes=[]))
@@ -63,7 +63,7 @@ class StandardBomSourcesTestCase(unittest.TestCase):
         self.assertEqual("test-md5", source_artifact.md5)
 
     def test_source_artifact_sha1(self):
-        source_artifact = SourceArtifact(ExternalReference(reference_type=ExternalReferenceType.DISTRIBUTION,
+        source_artifact = SourceArtifact(ExternalReference(type=ExternalReferenceType.DISTRIBUTION,
                                                            comment=SOURCE_ARCHIVE_URL,
                                                            url=XsUri("https://foo.bar/sources.jar"),
                                                            hashes=[]))
@@ -72,7 +72,7 @@ class StandardBomSourcesTestCase(unittest.TestCase):
         self.assertEqual("test-sha1", source_artifact.sha1)
 
     def test_source_artifact_sha256(self):
-        source_artifact = SourceArtifact(ExternalReference(reference_type=ExternalReferenceType.DISTRIBUTION,
+        source_artifact = SourceArtifact(ExternalReference(type=ExternalReferenceType.DISTRIBUTION,
                                                            comment=SOURCE_ARCHIVE_URL,
                                                            url=XsUri("https://foo.bar/sources.jar"),
                                                            hashes=[]))
@@ -81,7 +81,7 @@ class StandardBomSourcesTestCase(unittest.TestCase):
         self.assertEqual("test-sha256", source_artifact.sha256)
 
     def test_source_artifact_sha512(self):
-        source_artifact = SourceArtifact(ExternalReference(reference_type=ExternalReferenceType.DISTRIBUTION,
+        source_artifact = SourceArtifact(ExternalReference(type=ExternalReferenceType.DISTRIBUTION,
                                                            comment=SOURCE_ARCHIVE_URL,
                                                            url=XsUri("https://foo.bar/sources.jar"),
                                                            hashes=[]))

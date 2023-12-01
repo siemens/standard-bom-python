@@ -1,9 +1,14 @@
+#
 # Copyright (c) Siemens AG 2019-2023 ALL RIGHTS RESERVED
+#
+
 import unittest
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
+
+from packageurl import PackageURL
 
 from standardbom.model import SbomComponent
-from standardbom.parser import StandardBomParser, read_timestamp
+from standardbom.parser import read_timestamp, StandardBomParser
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
 
@@ -30,7 +35,8 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
         self.assertEqual(commons_codec.group, "commons-codec")
         self.assertEqual(commons_codec.version, "1.13")
         self.assertEqual(commons_codec.type, "library")
-        self.assertEqual(commons_codec.purl, "pkg:maven/commons-codec/commons-codec@1.13?type=jar")
+        self.assertEqual(commons_codec.purl,
+                         PackageURL.from_string("pkg:maven/commons-codec/commons-codec@1.13?type=jar"))
         self.assertEqual(commons_codec.bom_ref.value, "pkg:maven/commons-codec/commons-codec@1.13?type=jar")
         self.assertEqual(commons_codec.description,
                          "The Apache Commons Codec package contains simple encoder and decoders for various formats"

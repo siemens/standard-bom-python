@@ -12,13 +12,15 @@ from pathlib import Path
 from typing import Iterable, Optional
 from uuid import UUID
 
-from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, License, \
-    LicenseChoice, Property, Tool, XsUri
+from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, \
+    Tool, XsUri
 from cyclonedx.model.bom import Bom, BomMetaData
 from cyclonedx.model.component import Component, ComponentType
+from cyclonedx.model.license import DisjunctiveLicense, License, LicenseExpression
 from cyclonedx.output.json import JsonV1Dot4
 from cyclonedx.parser import BaseParser
 from dateutil import parser as dateparser
+from packageurl import PackageURL
 
 from standardbom.model import StandardBom
 
@@ -78,7 +80,7 @@ def read_url(param: str) -> Optional[XsUri]:
     return XsUri(uri=param)
 
 
-def read_license(param: dict) -> Optional[License]:
+def read_license(param: dict) -> Optional[DisjunctiveLicense]:
     if param is None:
         return None
     text = param.get("text", None)
@@ -91,26 +93,26 @@ def read_license(param: dict) -> Optional[License]:
             license_text = AttachedText(content=text['content'])
     else:
         license_text = None
-    return License(
-        spdx_license_id=param.get("id", None),
-        license_name=param.get("name", None),
-        license_text=license_text,
-        license_url=read_url(param.get("url", None)),
+    return DisjunctiveLicense(
+        id=param.get("id", None),
+        name=param.get("name", None),
+        text=license_text,
+        url=read_url(param.get("url", None)),
     )
 
 
-def read_licenses(param: Iterable[dict]) -> Optional[Iterable[LicenseChoice]]:
+def read_licenses(param: Iterable[dict]) -> Optional[Iterable[License]]:
     if param is None:
         return None
     licenses = []
     for entry in param:
         lic = read_license(entry.get("license", None))
         if lic:
-            licenses.append(LicenseChoice(license_=lic))
+            licenses.append(lic)
             continue
         exp = entry.get("expression", None)
         if exp:
-            licenses.append(LicenseChoice(license_expression=exp))
+            licenses.append(LicenseExpression(exp))
     return licenses
 
 
@@ -141,8 +143,8 @@ def read_hashes(hashes: Iterable[dict]) -> Optional[Iterable[HashType]]:
     hash_types = []
     for entry in hashes:
         hash_types.append(HashType(
-            algorithm=read_hash_algorithm(entry["alg"]),
-            hash_value=entry["content"]))
+            alg=read_hash_algorithm(entry["alg"]),
+            content=entry["content"]))
     return hash_types
 
 
@@ -165,7 +167,7 @@ def read_external_references(values: Iterable[dict]) -> Optional[Iterable[Extern
     ex_refs = []
     for entry in values:
         ex_refs.append(ExternalReference(
-            reference_type=read_external_reference_type(entry.get("type")),
+            type=read_external_reference_type(entry.get("type")),
             url=entry.get("url", None),
             comment=entry.get("comment"),
             hashes=read_hashes(entry.get("hashes", []))
@@ -182,10 +184,10 @@ def read_component(entry: dict) -> Optional[Component]:
         group=entry.get("group"),
         author=entry.get("author"),
         description=entry.get("description"),
-        copyright_=entry.get("copyright"),
+        copyright=entry.get("copyright"),
         purl=entry.get("purl"),
         bom_ref=entry.get("bom-ref"),
-        component_type=read_component_type(entry.get("type", None)),
+        type=read_component_type(entry.get("type", None)),
         hashes=read_hashes(entry.get("hashes", None)),
         properties=read_properties(entry.get("properties", None)),
         external_references=read_external_references(entry.get("externalReferences", None)),
@@ -215,7 +217,16 @@ class StandardBomParser:
             bom.external_references = parser.external_references
             if parser.serial_number:
                 bom.uuid = parser.serial_number
+            StandardBomParser.fix_purls(bom.metadata.component)
+            if bom.components is not None:
+                for comp in bom.components:
+                    StandardBomParser.fix_purls(comp)
             return StandardBom(bom)
+
+    @staticmethod
+    def fix_purls(comp: Optional[Component]) -> None:
+        if comp is not None and isinstance(comp.purl, str):
+            comp.purl = PackageURL.from_string(comp.purl)
 
     @staticmethod
     def save(sbom: StandardBom, output_filename: str) -> None:
