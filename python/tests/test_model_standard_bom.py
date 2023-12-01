@@ -4,7 +4,7 @@ import unittest
 from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.component import Component, ComponentType
 
-from standardbom.model import StandardBom, SbomComponent, ExternalComponent
+from standardbom.model import StandardBom, SbomComponent, ExternalComponent, is_tool_standardbom
 
 
 class StandardBomTestCase(unittest.TestCase):
@@ -44,6 +44,17 @@ class StandardBomTestCase(unittest.TestCase):
         self.assertEqual(1, len(sbom.external_components))
         self.assertEqual(sbom.external_components[0].url, XsUri('https://sbom.siemens.io'))
         self.assertEqual(sbom.external_components[0].type, ExternalReferenceType.WEBSITE)
+
+    def test_tools_entry(self):
+        sbom = StandardBom()
+        self.assertEqual(2, len(sbom.metadata.tools))  # cyclonedx-python-lib and standard-bom
+        [tool1, tool2] = sbom.metadata.tools
+        actual_tool = tool1 if is_tool_standardbom(tool1) else tool2
+        self.assertEqual('Siemens AG', actual_tool.vendor)
+        self.assertEqual('standard-bom', actual_tool.name)
+        self.assertEqual('2.4.0', actual_tool.version)
+        self.assertIsNotNone(actual_tool.external_references)
+        self.assertIsNotNone(1, len(actual_tool.external_references))
 
 
 if __name__ == '__main__':
