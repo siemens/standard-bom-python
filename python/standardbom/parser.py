@@ -207,7 +207,7 @@ class StandardBomParser:
             raise FileNotFoundError(
                 errno.ENOENT, os.strerror(errno.ENOENT), filename)
 
-        with open(filename) as json_file:
+        with open(filename, 'r', encoding='utf-8') as json_file:
             content = json.load(json_file)
 
             parser = SbomJsonParser(content)
