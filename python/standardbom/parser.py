@@ -228,9 +228,28 @@ class StandardBomParser:
         if comp is not None and isinstance(comp.purl, str):
             comp.purl = PackageURL.from_string(comp.purl)
 
+
+    @staticmethod
+    def remove_dependencies_section(bom_file: str) -> None:
+        content: any
+        with open(bom_file, 'r', encoding='utf-8') as f:
+            content = json.load(f)
+        if 'dependencies' in content:
+            del content['dependencies']
+        with open(bom_file, 'w', encoding='utf-8') as f:
+            json.dump(content, f, ensure_ascii=False, indent=4)
+
+
     @staticmethod
     def save(sbom: StandardBom, output_filename: str) -> None:
         output_file = Path(output_filename)
         output_file.parent.mkdir(exist_ok=True, parents=True)
+        has_dependencies_section = len(sbom.cyclone_dx_sbom.dependencies) > 0
         writer = JsonV1Dot4(sbom.cyclone_dx_sbom)
         writer.output_to_file(filename=output_filename, allow_overwrite=True)
+
+        # The 'save' action adds a dependencies section to the document. Remove it if we didn't have it before.
+        if not has_dependencies_section:
+            StandardBomParser.remove_dependencies_section(output_filename)
+            if hasattr(sbom.cyclone_dx_sbom, 'dependencies'):
+                sbom.cyclone_dx_sbom.dependencies.clear()
