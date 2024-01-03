@@ -2,7 +2,6 @@
 # Copyright (c) Siemens AG 2019-2023 ALL RIGHTS RESERVED
 #
 
-import unittest
 from datetime import datetime, timedelta, timezone
 
 from packageurl import PackageURL
@@ -105,6 +104,7 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
         self.assertEqual(datetime(2009, 8, 7, 6, 5, 0, 0, timezone(timedelta(hours=4))),
                          read_timestamp("2009-08-07T06:05+04:00"))
 
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_multiple_dependencies(self):
+        input_filename = "tests/multiple-dependencies.json"
+        output_filename = "output/multiple-dependencies.json"
+        self.write_read_compare(input_filename, output_filename)

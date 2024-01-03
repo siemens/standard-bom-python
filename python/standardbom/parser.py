@@ -15,7 +15,9 @@ from uuid import UUID
 from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, \
     Tool, XsUri
 from cyclonedx.model.bom import Bom, BomMetaData
+from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component, ComponentType
+from cyclonedx.model.dependency import Dependency
 from cyclonedx.model.license import DisjunctiveLicense, License, LicenseExpression
 from cyclonedx.output.json import JsonV1Dot4
 from cyclonedx.parser import BaseParser
@@ -48,6 +50,20 @@ class SbomJsonParser(BaseParser):
                 if component:
                     self._components.append(component)
         self.external_references = read_external_references(json_content.get("externalReferences", None))
+        self.dependencies = read_dependencies(json_content.get("dependencies"))
+
+
+def read_dependencies(param: Iterable[dict]) -> Optional[Iterable[Dependency]]:
+    if param is None:
+        return None
+    deps: [Dependency] = []
+    for depJson in param:
+        d = Dependency(ref=BomRef(depJson.get('ref')))
+        children: Optional[Iterable[str]] = depJson.get('dependsOn')
+        if children is not None:
+            d.dependencies = [Dependency(ref=BomRef(c)) for c in children]
+        deps.append(d)
+    return deps
 
 
 def read_tools(param: Iterable[dict]) -> Optional[Iterable[Tool]]:
@@ -216,18 +232,19 @@ class StandardBomParser:
                 bom.metadata = parser.metadata
             bom.external_references = parser.external_references
             if parser.serial_number:
-                bom.uuid = parser.serial_number
+                bom.serial_number = parser.serial_number
             StandardBomParser.fix_purls(bom.metadata.component)
             if bom.components is not None:
                 for comp in bom.components:
                     StandardBomParser.fix_purls(comp)
+            if parser.dependencies is not None:
+                bom.dependencies = parser.dependencies
             return StandardBom(bom)
 
     @staticmethod
     def fix_purls(comp: Optional[Component]) -> None:
         if comp is not None and isinstance(comp.purl, str):
             comp.purl = PackageURL.from_string(comp.purl)
-
 
     @staticmethod
     def remove_dependencies_section(bom_file: str) -> None:
@@ -238,7 +255,6 @@ class StandardBomParser:
             del content['dependencies']
         with open(bom_file, 'w', encoding='utf-8') as f:
             json.dump(content, f, ensure_ascii=False, indent=4)
-
 
     @staticmethod
     def save(sbom: StandardBom, output_filename: str) -> None:
