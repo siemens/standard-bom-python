@@ -9,7 +9,7 @@ import os
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Any, Dict, Iterable, Optional
 from uuid import UUID
 
 from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, \
@@ -43,21 +43,21 @@ class SbomJsonParser(BaseParser):
         self.serial_number = uuid.UUID(serial_number) \
             if is_valid_serial_number(serial_number) \
             else None
-        components = json_content.get("components", None)
-        if components:
-            for component_entry in components:
-                component = read_component(component_entry)
-                if component:
-                    self._components.append(component)
+        components = json_content.get("components", [])
+        for component_entry in components:
+            component = read_component(component_entry)
+            if component:
+                self._components.append(component)
         self.external_references = read_external_references(json_content.get("externalReferences", None))
         self.dependencies = read_dependencies(json_content.get("dependencies"))
 
 
-def read_dependencies(param: Iterable[dict]) -> Optional[Iterable[Dependency]]:
-    if param is None:
+def read_dependencies(param: Optional[Any]) -> Optional[Iterable[Dependency]]:
+    if param is None or not isinstance(param, Iterable):
         return None
-    deps: [Dependency] = []
-    for depJson in param:
+    json_param: Iterable[Dict[Any, Any]] = param
+    deps: list[Dependency] = []
+    for depJson in json_param:
         d = Dependency(ref=BomRef(depJson.get('ref')))
         children: Optional[Iterable[str]] = depJson.get('dependsOn')
         if children is not None:
@@ -90,16 +90,17 @@ def read_timestamp(param) -> Optional[datetime]:
         return None
 
 
-def read_url(param: str) -> Optional[XsUri]:
+def read_url(param: Optional[str]) -> Optional[XsUri]:
     if param is None:
         return None
     return XsUri(uri=param)
 
 
-def read_license(param: dict) -> Optional[DisjunctiveLicense]:
-    if param is None:
+def read_license(param: Optional[Any]) -> Optional[DisjunctiveLicense]:
+    if param is None or not isinstance(param, Dict):
         return None
-    text = param.get("text", None)
+    param_json: Dict[str, Any] = param
+    text = param_json.get("text", None)
     if isinstance(text, str):
         license_text = AttachedText(content=text)
     elif isinstance(text, dict) and 'content' in text:
@@ -110,24 +111,25 @@ def read_license(param: dict) -> Optional[DisjunctiveLicense]:
     else:
         license_text = None
     return DisjunctiveLicense(
-        id=param.get("id", None),
-        name=param.get("name", None),
+        id=param_json.get("id", None),
+        name=param_json.get("name", None),
         text=license_text,
-        url=read_url(param.get("url", None)),
+        url=read_url(param_json.get("url", None)),
     )
 
 
-def read_licenses(param: Iterable[dict]) -> Optional[Iterable[License]]:
-    if param is None:
+def read_licenses(param: Optional[Any]) -> Optional[Iterable[License]]:
+    if param is None or not isinstance(param, Iterable):
         return None
-    licenses = []
-    for entry in param:
+    param_json: Iterable[Dict[Any, Any]] = param
+    licenses: list[License] = []
+    for entry in param_json:
         lic = read_license(entry.get("license", None))
         if lic:
             licenses.append(lic)
             continue
         exp = entry.get("expression", None)
-        if exp:
+        if isinstance(exp, str):
             licenses.append(LicenseExpression(exp))
     return licenses
 
@@ -153,9 +155,10 @@ def read_hash_algorithm(param) -> HashAlgorithm:
     return HashAlgorithm(param)
 
 
-def read_hashes(hashes: Iterable[dict]) -> Optional[Iterable[HashType]]:
-    if hashes is None:
+def read_hashes(hashes_param: Optional[Any]) -> Optional[Iterable[HashType]]:
+    if hashes_param is None or not isinstance(hashes_param, Iterable):
         return None
+    hashes: Iterable[Dict[str, Any]] = hashes_param
     hash_types = []
     for entry in hashes:
         hash_types.append(HashType(
@@ -164,9 +167,10 @@ def read_hashes(hashes: Iterable[dict]) -> Optional[Iterable[HashType]]:
     return hash_types
 
 
-def read_properties(values: Iterable[dict]) -> Optional[Iterable[Property]]:
-    if values is None:
+def read_properties(values_param: Optional[Any]) -> Optional[Iterable[Property]]:
+    if values_param is None or not isinstance(values_param, Iterable):
         return None
+    values: Iterable[Dict[str, Any]] = values_param
     properties = []
     for entry in values:
         properties.append(Property(name=entry["name"], value=entry["value"]))
@@ -177,41 +181,53 @@ def read_external_reference_type(value) -> ExternalReferenceType:
     return ExternalReferenceType(value)
 
 
-def read_external_references(values: Iterable[dict]) -> Optional[Iterable[ExternalReference]]:
-    if values is None:
+def read_external_references(values: Optional[Any]) -> Optional[Iterable[ExternalReference]]:
+    if values is None or not isinstance(values, Iterable):
         return None
+    extrefs_json: Iterable[Dict[str, Any]] = values
     ex_refs = []
-    for entry in values:
+    for entry in extrefs_json:
+        json_url = entry.get("url", None)
+        if not isinstance(json_url, str):
+            raise AttributeError('Mandatory field "url" not present in external reference')
         ex_refs.append(ExternalReference(
             type=read_external_reference_type(entry.get("type")),
-            url=entry.get("url", None),
+            url=XsUri(json_url),
             comment=entry.get("comment"),
             hashes=read_hashes(entry.get("hashes", []))
         ))
     return ex_refs
 
 
-def read_component(entry: dict) -> Optional[Component]:
-    if entry is None:
+def read_component(entry: Optional[Any]) -> Optional[Component]:
+    if entry is None or not isinstance(entry, Dict):
         return None
+    entry_dict: Dict[str, Any] = entry
+
+    name: Optional[str] = entry_dict.get("name")
+    if name is None:
+        raise AttributeError('Mandatory field "name" not present in component')
+
     return Component(
-        name=entry.get("name", None),
-        version=entry.get("version"),
-        group=entry.get("group"),
-        author=entry.get("author"),
-        description=entry.get("description"),
-        copyright=entry.get("copyright"),
-        purl=entry.get("purl"),
-        bom_ref=entry.get("bom-ref"),
-        type=read_component_type(entry.get("type", None)),
-        hashes=read_hashes(entry.get("hashes", None)),
-        properties=read_properties(entry.get("properties", None)),
-        external_references=read_external_references(entry.get("externalReferences", None)),
-        licenses=read_licenses(entry.get("licenses", None))
+        name=name,
+        version=entry_dict.get("version"),
+        group=entry_dict.get("group"),
+        author=entry_dict.get("author"),
+        description=entry_dict.get("description"),
+        copyright=entry_dict.get("copyright"),
+        purl=entry_dict.get("purl"),
+        bom_ref=entry_dict.get("bom-ref"),
+        type=read_component_type(entry_dict.get("type", None)),
+        hashes=read_hashes(entry_dict.get("hashes", None)),
+        properties=read_properties(entry_dict.get("properties", None)),
+        external_references=read_external_references(entry_dict.get("externalReferences", None)),
+        licenses=read_licenses(entry_dict.get("licenses", None))
     )
 
 
-def read_component_type(type_str: str) -> ComponentType:
+def read_component_type(type_str: Optional[Any]) -> ComponentType:
+    if not isinstance(type_str, str):
+        raise AttributeError('Mandatory field "type" not present in component')
     return ComponentType(type_str)
 
 
@@ -248,7 +264,7 @@ class StandardBomParser:
 
     @staticmethod
     def remove_dependencies_section(bom_file: str) -> None:
-        content: any
+        content: Any
         with open(bom_file, 'r', encoding='utf-8') as f:
             content = json.load(f)
         if 'dependencies' in content:

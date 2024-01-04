@@ -109,7 +109,7 @@ class SbomComponent:
         self.component.version = value
 
     @property
-    def purl(self) -> PackageURL:
+    def purl(self) -> Optional[PackageURL]:
         return self.component.purl
 
     @purl.setter
