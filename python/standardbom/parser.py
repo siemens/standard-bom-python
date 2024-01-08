@@ -57,9 +57,9 @@ def read_dependencies(param: Optional[Any]) -> Optional[Iterable[Dependency]]:
         return None
     json_param: Iterable[Dict[Any, Any]] = param
     deps: list[Dependency] = []
-    for depJson in json_param:
-        d = Dependency(ref=BomRef(depJson.get('ref')))
-        children: Optional[Iterable[str]] = depJson.get('dependsOn')
+    for dep_json in json_param:
+        d = Dependency(ref=BomRef(dep_json.get('ref')))
+        children: Optional[Iterable[str]] = dep_json.get('dependsOn')
         if children is not None:
             d.dependencies = [Dependency(ref=BomRef(c)) for c in children]
         deps.append(d)
