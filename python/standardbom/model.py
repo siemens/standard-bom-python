@@ -426,8 +426,8 @@ class ExternalComponent:
             self.external_ref = external_ref
 
     @property
-    def url(self) -> XsUri:
-        return self.external_ref.url
+    def url(self) -> str:
+        return str(self.external_ref.url)
 
     @url.setter
     def url(self, value: str) -> None:
