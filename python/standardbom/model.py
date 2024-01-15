@@ -345,14 +345,33 @@ class SbomComponent:
 class SourceArtifact:
     external_ref: ExternalReference
 
-    def __init__(self, external_ref: Optional[ExternalReference] = None) -> None:
-        if external_ref is None:
-            self.external_ref = ExternalReference(
-                type=ExternalReferenceType.OTHER,
-                url=XsUri('https://example.com'),
-                hashes=[])
-        else:
+    def __init__(self, external_ref: Optional[ExternalReference] = None,
+                 download_url: Optional[str] = None, local_file: Optional[str] = None,
+                 hashes: Optional[Iterable[HashType]] = None) -> None:
+        if external_ref:
+            if download_url or local_file or hashes:
+                raise ValueError('external_ref must be the only argument')
             self.external_ref = external_ref
+        elif download_url:
+            if local_file:
+                raise ValueError('Cannot specify both local_file and download_url')
+            self.external_ref = ExternalReference(
+                type=ExternalReferenceType.DISTRIBUTION,
+                url=XsUri(download_url),
+                comment=SOURCE_ARCHIVE_URL,
+                hashes=hashes)
+        elif local_file:
+            self.external_ref = ExternalReference(
+                type=ExternalReferenceType.DISTRIBUTION,
+                url=XsUri(local_file),
+                comment=SOURCE_ARCHIVE_LOCAL,
+                hashes=hashes)
+        else:
+            self.external_ref = ExternalReference(
+                type=ExternalReferenceType.DISTRIBUTION,
+                url=XsUri('https://example.com'),
+                comment=SOURCE_ARCHIVE,
+                hashes=hashes)
 
     @property
     def type(self) -> ExternalReferenceType:

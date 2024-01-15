@@ -1,10 +1,10 @@
 # Copyright (c) Siemens AG 2023 ALL RIGHTS RESERVED
 import unittest
 
-from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, XsUri
 from cyclonedx.model.component import Component, ComponentType
 
-from standardbom.model import SbomComponent, SourceArtifact, SOURCE_ARCHIVE_URL
+from standardbom.model import SbomComponent, SOURCE_ARCHIVE_LOCAL, SourceArtifact, SOURCE_ARCHIVE_URL
 
 
 class StandardBomSourcesTestCase(unittest.TestCase):
@@ -53,6 +53,41 @@ class StandardBomSourcesTestCase(unittest.TestCase):
         self.assertIsNone(component.remote_sources[0].sha256)
         self.assertIsNone(component.remote_sources[0].sha512)
 
+    def test_remote_sources_constr(self):
+        source_artifact = SourceArtifact(download_url='https://foo.bar/sources.jar')
+        self.assertEqual("https://foo.bar/sources.jar", source_artifact.url)
+        self.assertEqual(SOURCE_ARCHIVE_URL, source_artifact.external_ref.comment)
+        self.assertEqual(ExternalReferenceType.DISTRIBUTION, source_artifact.type)
+        self.assertEqual(0, len(source_artifact.external_ref.hashes))
+
+    def test_local_sources_constr(self):
+        source_artifact = SourceArtifact(local_file='file:///sources/abc123/sources.zip',
+                                         hashes=[HashType(alg=HashAlgorithm.SHA_1, content='abc123')])
+        self.assertEqual('file:///sources/abc123/sources.zip', source_artifact.url)
+        self.assertEqual(SOURCE_ARCHIVE_LOCAL, source_artifact.external_ref.comment)
+        self.assertEqual(ExternalReferenceType.DISTRIBUTION, source_artifact.type)
+        self.assertEqual(1, len(source_artifact.external_ref.hashes))
+        self.assertEqual('abc123', source_artifact.sha1)
+
+    def test_sources_conflict(self):
+        try:
+            SourceArtifact(download_url='https://example.com/sources.jar', local_file='sources.jar')
+        except ValueError as e:
+            assert 'Cannot specify both local_file and download_url' in str(e)
+        else:
+            self.fail('ValueError was not raised')
+
+    def test_sources_conflict2(self):
+        try:
+            SourceArtifact(external_ref=ExternalReference(type=ExternalReferenceType.DISTRIBUTION,
+                                                          comment='This will not work!',
+                                                          url=XsUri("https://example.com/sources.jar")),
+                           hashes=[HashType(alg=HashAlgorithm.MD5, content='abc')])
+        except ValueError as e:
+            self.assertEqual('external_ref must be the only argument', str(e))
+        else:
+            self.fail('ValueError was not raised')
+
     def test_source_artifact_md5(self):
         source_artifact = SourceArtifact(ExternalReference(type=ExternalReferenceType.DISTRIBUTION,
                                                            comment=SOURCE_ARCHIVE_URL,
@@ -91,7 +126,7 @@ class StandardBomSourcesTestCase(unittest.TestCase):
 
     def test_construct(self):
         source_artifact = SourceArtifact()
-        self.assertEqual(ExternalReferenceType.OTHER, source_artifact.type)
+        self.assertEqual(ExternalReferenceType.DISTRIBUTION, source_artifact.type)
         self.assertEqual('https://example.com', source_artifact.url)
 
         source_artifact.type = ExternalReferenceType.WEBSITE
