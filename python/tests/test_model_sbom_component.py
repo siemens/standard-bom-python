@@ -1,4 +1,4 @@
-# Copyright (c) Siemens AG 2019-2023 ALL RIGHTS RESERVED
+# Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED
 import unittest
 
 from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, XsUri
