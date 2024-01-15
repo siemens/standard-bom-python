@@ -263,12 +263,22 @@ class StandardBomParser:
             comp.purl = PackageURL.from_string(comp.purl)
 
     @staticmethod
+    def reverse_keys(obj):
+        if isinstance(obj, dict):
+            return {k: StandardBomParser.reverse_keys(obj[k]) for k in reversed(obj)}
+        elif isinstance(obj, list):
+            return [StandardBomParser.reverse_keys(item) for item in obj]
+        else:
+            return obj
+
+    @staticmethod
     def remove_dependencies_section(bom_file: str) -> None:
         content: Any
         with open(bom_file, 'r', encoding='utf-8') as f:
             content = json.load(f)
         if 'dependencies' in content:
             del content['dependencies']
+        content = StandardBomParser.reverse_keys(content)
         with open(bom_file, 'w', encoding='utf-8') as f:
             json.dump(content, f, ensure_ascii=False, indent=4)
 
