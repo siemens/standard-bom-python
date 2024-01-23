@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "standard-bom"
-version = "1.0.1"
+version = "2.0.0"
 description = "Standard BOM Format Library"
 keywords = ["sbom", "software-bill-of-materials", "cyclonedx", "cdx"]
 authors = ["Hakan Dilek <hakan.dilek@siemens.com>", "Thomas Jensen <jensenthomas@siemens.com>"]
