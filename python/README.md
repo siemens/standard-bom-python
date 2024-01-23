@@ -62,3 +62,9 @@ Once you have those prerequisites you can perform following development tasks lo
     ```bash
     poetry run coverage run --branch -m unittest discover -v
     ```
+
+## License
+
+This project is Inner Source under the [MIT license](../LICENSE).
+
+Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED
