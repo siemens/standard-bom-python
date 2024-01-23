@@ -8,6 +8,10 @@ This library is mainly a wrapper for the official
 
 ## Usage
 
+TODO: Add installation instructions after publish
+
+This gives you our DTOs and the Standard BOM parser:
+
 - Read a Standard BOM from a JSON file:
 
     ```python
