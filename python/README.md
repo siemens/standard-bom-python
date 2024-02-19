@@ -53,13 +53,11 @@ Once you have those prerequisites you can perform following development tasks lo
 
     This will generate the build artifacts under `dist/` folder.
 
-
 - Check PEP-8 linting compliance with
 
     ```bash
     poetry run flake8
     ```
-
 
 - Run all unit tests with
 
