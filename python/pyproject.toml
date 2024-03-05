@@ -20,7 +20,10 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12"
 ]
-packages = [{include = "standardbom"}]
+packages = [
+    {include = "standardbom"},
+    {include = "standardbom/py.typed"},
+]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
