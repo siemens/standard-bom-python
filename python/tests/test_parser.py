@@ -115,3 +115,13 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
 
         actual_bom, expected_bom = self.write_read_compare(input_filename, output_filename)
         self.assertEqual(actual_bom.serial_number, expected_bom.serial_number)
+
+    def test_read_write_profile(self):
+        input_filename = "tests/full-valid.json"
+        output_filename = "output/test-profile.json"
+
+        bom = StandardBomParser.parse(input_filename)
+        bom.profile = "clearing"
+        StandardBomParser.save(bom, output_filename)
+        new_bom = StandardBomParser.parse(output_filename)
+        self.assertEqual("clearing", new_bom.profile)
