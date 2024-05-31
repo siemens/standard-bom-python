@@ -9,3 +9,4 @@
 /dist/
 *.pyc
 toms_demo.py
+/.poetry-cache

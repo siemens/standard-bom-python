@@ -52,7 +52,7 @@ class StandardBomTestCase(unittest.TestCase):
         actual_tool = tool1 if is_tool_standardbom(tool1) else tool2
         self.assertEqual('Siemens AG', actual_tool.vendor)
         self.assertEqual('standard-bom', actual_tool.name)
-        self.assertEqual('2.4.0', actual_tool.version)
+        self.assertEqual('2.5.0', actual_tool.version)
         self.assertIsNotNone(actual_tool.external_references)
         self.assertIsNotNone(1, len(actual_tool.external_references))
 
