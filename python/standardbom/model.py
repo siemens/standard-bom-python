@@ -1,7 +1,7 @@
 #
 # Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED
 #
-
+from enum import Enum
 from importlib.metadata import version
 from typing import Iterable, List, Optional
 from uuid import UUID
@@ -16,11 +16,15 @@ from packageurl import PackageURL
 STANDARD_BOM_MODULE: str = 'standard-bom'
 
 PROPERTY_DIRECT_DEPENDENCY = "siemens:direct"
-PROPERTY_PRIMARY_LANGUAGE = "siemens:primaryLanguage"
-PROPERTY_THIRD_PARTY_NOTICES = "siemens:thirdPartyNotices"
-PROPERTY_LEGAL_REMARK = "siemens:legalRemark"
 PROPERTY_FILENAME = "siemens:filename"
+PROPERTY_INTERNAL = "siemens:internal"
+PROPERTY_LEGAL_REMARK = "siemens:legalRemark"
+PROPERTY_PRIMARY_LANGUAGE = "siemens:primaryLanguage"
 PROPERTY_PROFILE = "siemens:profile"
+PROPERTY_THIRD_PARTY_NOTICES = "siemens:thirdPartyNotices"
+PROPERTY_VCS_CLEAN = "siemens:vcsClean"
+PROPERTY_VCS_REVISION = "siemens:vcsRevision"
+PROPERTY_SBOM_NATURE = "siemens:sbomNature"
 
 RELATIVE_PATH = "relativePath"
 SOURCE_ARCHIVE = "source archive"
@@ -461,6 +465,11 @@ class ExternalComponent:
         self.external_ref.type = value
 
 
+class SbomNature(Enum):
+    SOURCE = "source"
+    BINARY = "binary"
+
+
 class StandardBom:
     """
     Main DTO for the complete "Standard BOM" JSON structure.
@@ -476,6 +485,30 @@ class StandardBom:
             self.cyclone_dx_sbom.metadata.tools = \
                 [tool for tool in self.cyclone_dx_sbom.metadata.tools if not is_tool_standardbom(tool)]
         self.cyclone_dx_sbom.metadata.tools.add(self.get_standard_bom_descriptor())
+
+    def __set_property(self, property_name: str, value: str) -> None:
+        existing = next(filter(lambda p: p.name == property_name,
+                               self.cyclone_dx_sbom.metadata.properties), None)
+        if existing:
+            if value:
+                # update existing
+                existing.value = value
+            else:
+                # remove existing
+                self.cyclone_dx_sbom.metadata.properties.remove(existing)
+        else:
+            if value:
+                # add new
+                prop = Property(name=property_name, value=value) if value else None
+                self.cyclone_dx_sbom.metadata.properties.add(prop)
+            else:
+                # nothing to do
+                pass
+
+    def __get_property(self, property_name: str) -> Optional[str]:
+        prop = next(filter(lambda p: p.name == property_name,
+                           self.cyclone_dx_sbom.metadata.properties), None)
+        return prop.value if prop else None
 
     @staticmethod
     def get_standard_bom_descriptor() -> Tool:
@@ -512,25 +545,33 @@ class StandardBom:
 
     @property
     def profile(self) -> Optional[str]:
-        prop = next(filter(lambda p: p.name == PROPERTY_PROFILE,
-                           self.cyclone_dx_sbom.metadata.properties), None)
-        return prop.value if prop else None
+        return self.__get_property(PROPERTY_PROFILE)
 
     @profile.setter
     def profile(self, value: str) -> None:
-        existing = next(filter(lambda p: p.name == PROPERTY_PROFILE,
-                               self.cyclone_dx_sbom.metadata.properties), None)
-        if existing:
-            if value:
-                # update existing
-                existing.value = value
-            else:
-                # remove existing
-                self.cyclone_dx_sbom.metadata.properties.remove(existing)
-        else:
-            if value:
-                prop = Property(name=PROPERTY_PROFILE, value=value) if value else None
-                self.cyclone_dx_sbom.metadata.properties.add(prop)
-            else:
-                # nothing to do
-                pass
+        self.__set_property(PROPERTY_PROFILE, value)
+
+    @property
+    def vcs_clean(self) -> bool:
+        return self.__get_property(PROPERTY_VCS_CLEAN) in ["True", "true"]
+
+    @vcs_clean.setter
+    def vcs_clean(self, value: bool) -> None:
+        self.__set_property(PROPERTY_VCS_CLEAN, str(value))
+
+    @property
+    def vcs_revision(self) -> Optional[str]:
+        return self.__get_property(PROPERTY_VCS_REVISION)
+
+    @vcs_revision.setter
+    def vcs_revision(self, value: str) -> None:
+        self.__set_property(PROPERTY_VCS_REVISION, value)
+
+    @property
+    def sbom_nature(self) -> Optional[SbomNature]:
+        value = self.__get_property(PROPERTY_SBOM_NATURE)
+        return SbomNature(value) if value else None
+
+    @sbom_nature.setter
+    def sbom_nature(self, value: SbomNature) -> None:
+        self.__set_property(PROPERTY_SBOM_NATURE, str(value))

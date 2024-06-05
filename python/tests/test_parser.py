@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 
 from packageurl import PackageURL
 
-from standardbom.model import SbomComponent
+from standardbom.model import SbomComponent, SbomNature
 from standardbom.parser import read_timestamp, StandardBomParser
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
@@ -125,3 +125,33 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
         StandardBomParser.save(bom, output_filename)
         new_bom = StandardBomParser.parse(output_filename)
         self.assertEqual("clearing", new_bom.profile)
+
+    def test_read_write_vcs_clean(self):
+        input_filename = "tests/full-valid.json"
+        output_filename = "output/vcs-clean.json"
+
+        bom = StandardBomParser.parse(input_filename)
+        bom.vcs_clean = True
+        StandardBomParser.save(bom, output_filename)
+        new_bom = StandardBomParser.parse(output_filename)
+        self.assertTrue(new_bom.vcs_clean)
+
+    def test_read_write_vcs_revision(self):
+        input_filename = "tests/full-valid.json"
+        output_filename = "output/vcs-revision.json"
+
+        bom = StandardBomParser.parse(input_filename)
+        bom.vcs_revision = "123456"
+        StandardBomParser.save(bom, output_filename)
+        new_bom = StandardBomParser.parse(output_filename)
+        self.assertEqual("123456", new_bom.vcs_revision)
+
+    def test_read_write_sbom_nature(self):
+        input_filename = "tests/full-valid.json"
+        output_filename = "output/sbom-nature.json"
+
+        bom = StandardBomParser.parse(input_filename)
+        bom.sbom_nature = "source"
+        StandardBomParser.save(bom, output_filename)
+        new_bom = StandardBomParser.parse(output_filename)
+        self.assertEqual(SbomNature.SOURCE, new_bom.sbom_nature)
