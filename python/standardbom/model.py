@@ -15,12 +15,12 @@ from packageurl import PackageURL
 
 STANDARD_BOM_MODULE: str = 'standard-bom'
 
-DIRECT_DEPENDENCY = "siemens:direct"
-PRIMARY_LANGUAGE = "siemens:primaryLanguage"
-THIRD_PARTY_NOTICES = "siemens:thirdPartyNotices"
-LEGAL_REMARK = "siemens:legalRemark"
-FILENAME = "siemens:filename"
-PROFILE_KEY = "siemens:profile"
+PROPERTY_DIRECT_DEPENDENCY = "siemens:direct"
+PROPERTY_PRIMARY_LANGUAGE = "siemens:primaryLanguage"
+PROPERTY_THIRD_PARTY_NOTICES = "siemens:thirdPartyNotices"
+PROPERTY_LEGAL_REMARK = "siemens:legalRemark"
+PROPERTY_FILENAME = "siemens:filename"
+PROPERTY_PROFILE = "siemens:profile"
 
 RELATIVE_PATH = "relativePath"
 SOURCE_ARCHIVE = "source archive"
@@ -159,43 +159,43 @@ class SbomComponent:
 
     @property
     def third_party_notices(self) -> Optional[str]:
-        return self._get_custom_property(THIRD_PARTY_NOTICES)
+        return self._get_custom_property(PROPERTY_THIRD_PARTY_NOTICES)
 
     @third_party_notices.setter
     def third_party_notices(self, value: str) -> None:
-        self._set_custom_property(THIRD_PARTY_NOTICES, value)
+        self._set_custom_property(PROPERTY_THIRD_PARTY_NOTICES, value)
 
     @property
     def direct_dependency(self) -> bool:
-        return self._get_custom_property(DIRECT_DEPENDENCY) in ["True", "true"]
+        return self._get_custom_property(PROPERTY_DIRECT_DEPENDENCY) in ["True", "true"]
 
     @direct_dependency.setter
     def direct_dependency(self, value: str) -> None:
-        self._set_custom_property(DIRECT_DEPENDENCY, value)
+        self._set_custom_property(PROPERTY_DIRECT_DEPENDENCY, value)
 
     @property
     def primary_language(self) -> Optional[str]:
-        return self._get_custom_property(PRIMARY_LANGUAGE)
+        return self._get_custom_property(PROPERTY_PRIMARY_LANGUAGE)
 
     @primary_language.setter
     def primary_language(self, value: str) -> None:
-        self._set_custom_property(PRIMARY_LANGUAGE, value)
+        self._set_custom_property(PROPERTY_PRIMARY_LANGUAGE, value)
 
     @property
     def legal_remark(self) -> Optional[str]:
-        return self._get_custom_property(LEGAL_REMARK)
+        return self._get_custom_property(PROPERTY_LEGAL_REMARK)
 
     @legal_remark.setter
     def legal_remark(self, value: str) -> None:
-        self._set_custom_property(LEGAL_REMARK, value)
+        self._set_custom_property(PROPERTY_LEGAL_REMARK, value)
 
     @property
     def filename(self) -> Optional[str]:
-        return self._get_custom_property(FILENAME)
+        return self._get_custom_property(PROPERTY_FILENAME)
 
     @filename.setter
     def filename(self, value: str) -> None:
-        self._set_custom_property(FILENAME, value)
+        self._set_custom_property(PROPERTY_FILENAME, value)
 
     def _get_custom_property(self, custom_property_key: str) -> Optional[str]:
         found = next(filter(lambda prop: prop.name == custom_property_key, self.component.properties), None)
@@ -512,13 +512,13 @@ class StandardBom:
 
     @property
     def profile(self) -> Optional[str]:
-        prop = next(filter(lambda p: p.name == PROFILE_KEY,
+        prop = next(filter(lambda p: p.name == PROPERTY_PROFILE,
                            self.cyclone_dx_sbom.metadata.properties), None)
         return prop.value if prop else None
 
     @profile.setter
     def profile(self, value: str) -> None:
-        existing = next(filter(lambda p: p.name == PROFILE_KEY,
+        existing = next(filter(lambda p: p.name == PROPERTY_PROFILE,
                                self.cyclone_dx_sbom.metadata.properties), None)
         if existing:
             if value:
@@ -529,7 +529,7 @@ class StandardBom:
                 self.cyclone_dx_sbom.metadata.properties.remove(existing)
         else:
             if value:
-                prop = Property(name=PROFILE_KEY, value=value) if value else None
+                prop = Property(name=PROPERTY_PROFILE, value=value) if value else None
                 self.cyclone_dx_sbom.metadata.properties.add(prop)
             else:
                 # nothing to do
