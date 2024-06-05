@@ -163,51 +163,59 @@ class SbomComponent:
 
     @property
     def third_party_notices(self) -> Optional[str]:
-        return self._get_custom_property(PROPERTY_THIRD_PARTY_NOTICES)
+        return self.__get_custom_property(PROPERTY_THIRD_PARTY_NOTICES)
 
     @third_party_notices.setter
     def third_party_notices(self, value: str) -> None:
-        self._set_custom_property(PROPERTY_THIRD_PARTY_NOTICES, value)
+        self.__set_custom_property(PROPERTY_THIRD_PARTY_NOTICES, value)
 
     @property
     def direct_dependency(self) -> bool:
-        return self._get_custom_property(PROPERTY_DIRECT_DEPENDENCY) in ["True", "true"]
+        return self.__get_custom_property(PROPERTY_DIRECT_DEPENDENCY) in ["True", "true"]
 
     @direct_dependency.setter
     def direct_dependency(self, value: str) -> None:
-        self._set_custom_property(PROPERTY_DIRECT_DEPENDENCY, value)
+        self.__set_custom_property(PROPERTY_DIRECT_DEPENDENCY, value)
+
+    @property
+    def internal(self) -> bool:
+        return self.__get_custom_property(PROPERTY_INTERNAL) in ["True", "true"]
+
+    @internal.setter
+    def internal(self, value: str) -> None:
+        self.__set_custom_property(PROPERTY_INTERNAL, value)
 
     @property
     def primary_language(self) -> Optional[str]:
-        return self._get_custom_property(PROPERTY_PRIMARY_LANGUAGE)
+        return self.__get_custom_property(PROPERTY_PRIMARY_LANGUAGE)
 
     @primary_language.setter
     def primary_language(self, value: str) -> None:
-        self._set_custom_property(PROPERTY_PRIMARY_LANGUAGE, value)
+        self.__set_custom_property(PROPERTY_PRIMARY_LANGUAGE, value)
 
     @property
     def legal_remark(self) -> Optional[str]:
-        return self._get_custom_property(PROPERTY_LEGAL_REMARK)
+        return self.__get_custom_property(PROPERTY_LEGAL_REMARK)
 
     @legal_remark.setter
     def legal_remark(self, value: str) -> None:
-        self._set_custom_property(PROPERTY_LEGAL_REMARK, value)
+        self.__set_custom_property(PROPERTY_LEGAL_REMARK, value)
 
     @property
     def filename(self) -> Optional[str]:
-        return self._get_custom_property(PROPERTY_FILENAME)
+        return self.__get_custom_property(PROPERTY_FILENAME)
 
     @filename.setter
     def filename(self, value: str) -> None:
-        self._set_custom_property(PROPERTY_FILENAME, value)
+        self.__set_custom_property(PROPERTY_FILENAME, value)
 
-    def _get_custom_property(self, custom_property_key: str) -> Optional[str]:
+    def __get_custom_property(self, custom_property_key: str) -> Optional[str]:
         found = next(filter(lambda prop: prop.name == custom_property_key, self.component.properties), None)
         if found:
             return found.value
         return None
 
-    def _set_custom_property(self, custom_property_key: str, value: str) -> None:
+    def __set_custom_property(self, custom_property_key: str, value: str) -> None:
         found = next(filter(lambda prop: prop.name == custom_property_key, self.component.properties), None)
         if found:
             found.value = value

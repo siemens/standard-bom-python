@@ -104,6 +104,22 @@ class SBomComponentTestCase(unittest.TestCase):
         component.direct_dependency = "something"
         self.assertFalse(component.direct_dependency)
 
+    def test_internal(self):
+        component = SbomComponent(Component(name="test"))
+        self.assertFalse(component.internal)
+
+        component.internal = "true"
+        self.assertTrue(component.internal)
+
+        component.internal = "True"
+        self.assertTrue(component.internal)
+
+        component.internal = "False"
+        self.assertFalse(component.internal)
+
+        component.internal = "something"
+        self.assertFalse(component.internal)
+
     def test_primary_language(self):
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.primary_language)
