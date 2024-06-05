@@ -139,13 +139,13 @@ files = [
 
 [[package]]
 name = "exceptiongroup"
-version = "1.2.0"
+version = "1.2.1"
 description = "Backport of PEP 654 (exception groups)"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "exceptiongroup-1.2.0-py3-none-any.whl", hash = "sha256:4bfd3996ac73b41e9b9628b04e079f193850720ea5945fc96a08633c66912f14"},
-    {file = "exceptiongroup-1.2.0.tar.gz", hash = "sha256:91f5c769735f051a4290d52edd0858999b57e5876e9f85937691bd4c9fa3ed68"},
+    {file = "exceptiongroup-1.2.1-py3-none-any.whl", hash = "sha256:5258b9ed329c5bbdd31a309f53cbfb0b155341807f6ff7606a1e801a891b29ad"},
+    {file = "exceptiongroup-1.2.1.tar.gz", hash = "sha256:a4785e48b045528f5bfe627b6ad554ff32def154f42372786903b7abcfe1aa16"},
 ]
 
 [package.extras]
@@ -180,13 +180,13 @@ files = [
 
 [[package]]
 name = "license-expression"
-version = "30.2.0"
+version = "30.3.0"
 description = "license-expression is a comprehensive utility library to parse, compare, simplify and normalize license expressions (such as SPDX license expressions) using boolean logic."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "license-expression-30.2.0.tar.gz", hash = "sha256:599928edd995c43fc335e0af342076144dc71cb858afa1ed9c1c30c4e81794f5"},
-    {file = "license_expression-30.2.0-py3-none-any.whl", hash = "sha256:1a7dc2bb2d09cdc983d072e4f9adc787e107e09def84cbb3919baaaf4f8e6fa1"},
+    {file = "license-expression-30.3.0.tar.gz", hash = "sha256:1295406f736b4f395ff069aec1cebfad53c0fcb3cf57df0f5ec58fc7b905aea5"},
+    {file = "license_expression-30.3.0-py3-none-any.whl", hash = "sha256:ae0ba9a829d6909c785dc2f0131f13d10d68318e4a5f28af5ef152d6b52f9b41"},
 ]
 
 [package.dependencies]
@@ -281,13 +281,13 @@ dev = ["black", "mypy", "pytest"]
 
 [[package]]
 name = "packageurl-python"
-version = "0.14.0"
+version = "0.15.0"
 description = "A purl aka. Package URL parser and builder"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "packageurl-python-0.14.0.tar.gz", hash = "sha256:ff09147cddaae9e5c59ffcb12df8ec0e1b774b45099399f28c36b1a3dfdf52e2"},
-    {file = "packageurl_python-0.14.0-py3-none-any.whl", hash = "sha256:cf5e55cdcd61e6de858f47c4986aa87ba493bfa56ba58de11103dfdc2c00e4e1"},
+    {file = "packageurl-python-0.15.0.tar.gz", hash = "sha256:f219b2ce6348185a27bd6a72e6fdc9f984e6c9fa157effa7cb93e341c49cdcc2"},
+    {file = "packageurl_python-0.15.0-py3-none-any.whl", hash = "sha256:cdc6bd42dc30c4fc7f8f0ccb721fc31f8c33985dbffccb6e6be4c72874de48ca"},
 ]
 
 [package.extras]
@@ -298,13 +298,13 @@ test = ["pytest"]
 
 [[package]]
 name = "packaging"
-version = "23.2"
+version = "24.0"
 description = "Core utilities for Python packages"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "packaging-23.2-py3-none-any.whl", hash = "sha256:8c491190033a9af7e1d931d0b5dacc2ef47509b34dd0de67ed209b5203fc88c7"},
-    {file = "packaging-23.2.tar.gz", hash = "sha256:048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"},
+    {file = "packaging-24.0-py3-none-any.whl", hash = "sha256:2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5"},
+    {file = "packaging-24.0.tar.gz", hash = "sha256:eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9"},
 ]
 
 [[package]]
@@ -429,24 +429,24 @@ files = [
 
 [[package]]
 name = "types-python-dateutil"
-version = "2.8.19.20240106"
+version = "2.9.0.20240316"
 description = "Typing stubs for python-dateutil"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-python-dateutil-2.8.19.20240106.tar.gz", hash = "sha256:1f8db221c3b98e6ca02ea83a58371b22c374f42ae5bbdf186db9c9a76581459f"},
-    {file = "types_python_dateutil-2.8.19.20240106-py3-none-any.whl", hash = "sha256:efbbdc54590d0f16152fa103c9879c7d4a00e82078f6e2cf01769042165acaa2"},
+    {file = "types-python-dateutil-2.9.0.20240316.tar.gz", hash = "sha256:5d2f2e240b86905e40944dd787db6da9263f0deabef1076ddaed797351ec0202"},
+    {file = "types_python_dateutil-2.9.0.20240316-py3-none-any.whl", hash = "sha256:6b8cb66d960771ce5ff974e9dd45e38facb81718cc1e208b10b1baccbfdbee3b"},
 ]
 
 [[package]]
 name = "typing-extensions"
-version = "4.10.0"
+version = "4.12.1"
 description = "Backported and Experimental Type Hints for Python 3.8+"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "typing_extensions-4.10.0-py3-none-any.whl", hash = "sha256:69b1a937c3a517342112fb4c6df7e72fc39a38e7891a5730ed4985b5214b5475"},
-    {file = "typing_extensions-4.10.0.tar.gz", hash = "sha256:b0abd7c89e8fb96f98db18d86106ff1d90ab692004eb746cf6eda2682f91b3cb"},
+    {file = "typing_extensions-4.12.1-py3-none-any.whl", hash = "sha256:6024b58b69089e5a89c347397254e35f1bf02a907728ec7fee9bf0fe837d203a"},
+    {file = "typing_extensions-4.12.1.tar.gz", hash = "sha256:915f5e35ff76f56588223f15fdd5938f9a1cf9195c0de25130c627e4d597f6d1"},
 ]
 
 [metadata]
