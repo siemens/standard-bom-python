@@ -17,7 +17,7 @@ This gives you our DTOs and the Standard BOM parser:
     ```python
     from standardbom.parser import StandardBomParser
 
-    bom = StandardBomParser.parse("sbom.json")
+    bom = StandardBomParser.parse("sbom.cdx.json")
     ```
 
 - Write a Standard BOM to a JSON file:
@@ -26,7 +26,7 @@ This gives you our DTOs and the Standard BOM parser:
     from standardbom.parser import StandardBomParser
 
     bom = ...
-    StandardBomParser.save(bom, "sbom.json")
+    StandardBomParser.save(bom, "sbom.cdx.json")
     ```
 
 ## Development
