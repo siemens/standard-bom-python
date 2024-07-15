@@ -155,3 +155,13 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
         StandardBomParser.save(bom, output_filename)
         new_bom = StandardBomParser.parse(output_filename)
         self.assertEqual(SbomNature.SOURCE, new_bom.sbom_nature)
+
+    def test_read_write_internal(self):
+        input_filename = "tests/full-valid.cdx.json"
+        output_filename = "output/sbom-internal.cdx.json"
+
+        bom = StandardBomParser.parse(input_filename)
+        bom.internal = True
+        StandardBomParser.save(bom, output_filename)
+        new_bom = StandardBomParser.parse(output_filename)
+        self.assertEqual(True, new_bom.internal)
