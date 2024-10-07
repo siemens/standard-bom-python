@@ -11,13 +11,13 @@ from standardbom.parser import read_timestamp, StandardBomParser
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
 
-class SbomParserTestCase(AbstractSbomComparingTestCase):
+class SbomV2ParserTestCase(AbstractSbomComparingTestCase):
     def test_missing_file(self):
         with self.assertRaises(FileNotFoundError):
             StandardBomParser.parse("missing-file")
 
     def test_read_sunny_day(self):
-        bom = StandardBomParser.parse("tests/full-valid.cdx.json")
+        bom = StandardBomParser.parse("tests/v2/full-valid.cdx.json")
         self.assertIsNotNone(bom)
 
         self.assertIsNotNone(bom.metadata)
@@ -41,7 +41,7 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
                          "The Apache Commons Codec package contains simple encoder and decoders for various formats"
                          " such as Base64 and Hexadecimal. In addition to these widely used encoders and decoders,"
                          " the codec package also maintains a collection of phonetic encoding utilities.")
-        self.assertEqual(commons_codec.author,
+        self.assertEqual(commons_codec.authors,
                          "Henri Yandell <bayard@apache.org>, Tim OBrien <tobrien@apache.org>,"
                          " Scott Sanders <sanders@totalsync.com>, Rodney Waldhoff <rwaldhoff@apache.org>,"
                          " Daniel Rall <dlr@finemaltcoding.com>, Jon S. Stevens <jon@collab.net>,"
@@ -64,26 +64,26 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
                          commons_codec.relative_path)
 
     def test_write_sunny_day(self):
-        input_filename = "tests/full-valid.cdx.json"
-        output_filename = "output/test-output.cdx.json"
+        input_filename = "tests/v2/full-valid.cdx.json"
+        output_filename = "output/v2/test-output.cdx.json"
 
         self.write_read_compare(input_filename, output_filename)
 
     def test_write_metadata_external(self):
-        input_filename = "tests/metadata-external.cdx.json"
-        output_filename = "output/metadata-external.cdx.json"
+        input_filename = "tests/v2/metadata-external.cdx.json"
+        output_filename = "output/v2/metadata-external.cdx.json"
 
         self.write_read_compare(input_filename, output_filename)
 
     def test_write_metadata_extensive(self):
-        input_filename = "tests/metadata-extensive.cdx.json"
-        output_filename = "output/metadata-extensive.cdx.json"
+        input_filename = "tests/v2/metadata-extensive.cdx.json"
+        output_filename = "output/v2/metadata-extensive.cdx.json"
 
         self.write_read_compare(input_filename, output_filename)
 
     def test_serial_number(self):
-        input_filename = "tests/serial-number.cdx.json"
-        output_filename = "output/serial-number.cdx.json"
+        input_filename = "tests/v2/serial-number.cdx.json"
+        output_filename = "output/v2/serial-number.cdx.json"
 
         actual_bom, expected_bom = self.write_read_compare(input_filename, output_filename)
         self.assertEqual(actual_bom.serial_number, expected_bom.serial_number)
@@ -105,20 +105,20 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
                          read_timestamp("2009-08-07T06:05+04:00"))
 
     def test_multiple_dependencies(self):
-        input_filename = "tests/multiple-dependencies.cdx.json"
-        output_filename = "output/multiple-dependencies.cdx.json"
+        input_filename = "tests/v2/multiple-dependencies.cdx.json"
+        output_filename = "output/v2/multiple-dependencies.cdx.json"
         self.write_read_compare(input_filename, output_filename)
 
     def test_minimal_required(self):
-        input_filename = "tests/minimal-required.cdx.json"
-        output_filename = "output/minimal-required.cdx.json"
+        input_filename = "tests/v2/minimal-required.cdx.json"
+        output_filename = "output/v2/minimal-required.cdx.json"
 
         actual_bom, expected_bom = self.write_read_compare(input_filename, output_filename)
         self.assertEqual(actual_bom.serial_number, expected_bom.serial_number)
 
     def test_read_write_profile(self):
-        input_filename = "tests/full-valid.cdx.json"
-        output_filename = "output/test-profile.cdx.json"
+        input_filename = "tests/v2/full-valid.cdx.json"
+        output_filename = "output/v2/test-profile.cdx.json"
 
         bom = StandardBomParser.parse(input_filename)
         bom.profile = "clearing"
@@ -127,8 +127,8 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
         self.assertEqual("clearing", new_bom.profile)
 
     def test_read_write_vcs_clean(self):
-        input_filename = "tests/full-valid.cdx.json"
-        output_filename = "output/vcs-clean.cdx.json"
+        input_filename = "tests/v2/full-valid.cdx.json"
+        output_filename = "output/v2/vcs-clean.cdx.json"
 
         bom = StandardBomParser.parse(input_filename)
         bom.vcs_clean = True
@@ -137,8 +137,8 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
         self.assertTrue(new_bom.vcs_clean)
 
     def test_read_write_vcs_revision(self):
-        input_filename = "tests/full-valid.cdx.json"
-        output_filename = "output/vcs-revision.cdx.json"
+        input_filename = "tests/v2/full-valid.cdx.json"
+        output_filename = "output/v2/vcs-revision.cdx.json"
 
         bom = StandardBomParser.parse(input_filename)
         bom.vcs_revision = "123456"
@@ -147,8 +147,8 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
         self.assertEqual("123456", new_bom.vcs_revision)
 
     def test_read_write_sbom_nature(self):
-        input_filename = "tests/full-valid.cdx.json"
-        output_filename = "output/sbom-nature.cdx.json"
+        input_filename = "tests/v2/full-valid.cdx.json"
+        output_filename = "output/v2/sbom-nature.cdx.json"
 
         bom = StandardBomParser.parse(input_filename)
         bom.sbom_nature = "source"
@@ -157,8 +157,8 @@ class SbomParserTestCase(AbstractSbomComparingTestCase):
         self.assertEqual(SbomNature.SOURCE, new_bom.sbom_nature)
 
     def test_read_write_internal(self):
-        input_filename = "tests/full-valid.cdx.json"
-        output_filename = "output/sbom-internal.cdx.json"
+        input_filename = "tests/v2/full-valid.cdx.json"
+        output_filename = "output/v2/sbom-internal.cdx.json"
 
         bom = StandardBomParser.parse(input_filename)
         bom.internal = True
