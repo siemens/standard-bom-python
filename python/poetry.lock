@@ -120,25 +120,25 @@ toml = ["tomli"]
 
 [[package]]
 name = "cyclonedx-python-lib"
-version = "5.2.0"
+version = "8.0.0rc2"
 description = "Python library for CycloneDX"
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "cyclonedx_python_lib-5.2.0-py3-none-any.whl", hash = "sha256:1b43065205cdc53490c825fcfbda73142b758aa40ca169c968e342e88d06734f"},
-    {file = "cyclonedx_python_lib-5.2.0.tar.gz", hash = "sha256:b9ebf2c0520721d2f8ee16aadc2bbb9d4e015862c84ab1691a49b177f3014d99"},
+    {file = "cyclonedx_python_lib-8.0.0rc2-py3-none-any.whl", hash = "sha256:d336942d8a1f5a8795d77e1de75aca6907a7e050733297f675e80c4fbd715a26"},
+    {file = "cyclonedx_python_lib-8.0.0rc2.tar.gz", hash = "sha256:0e19d71575553c97c8d0ab5e4ee079d5665561ed9eb6a2abd92da4bec04cc847"},
 ]
 
 [package.dependencies]
 license-expression = ">=30,<31"
-packageurl-python = ">=0.11"
-py-serializable = ">=0.15,<0.16"
+packageurl-python = ">=0.11,<2"
+py-serializable = ">=1.1.1,<2.0.0"
 sortedcontainers = ">=2.4.0,<3.0.0"
 
 [package.extras]
 json-validation = ["jsonschema[format] (>=4.18,<5.0)"]
-validation = ["jsonschema[format] (>=4.18,<5.0)", "lxml (>=4,<5)"]
-xml-validation = ["lxml (>=4,<5)"]
+validation = ["jsonschema[format] (>=4.18,<5.0)", "lxml (>=4,<6)"]
+xml-validation = ["lxml (>=4,<6)"]
 
 [[package]]
 name = "deepdiff"
@@ -402,13 +402,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "py-serializable"
-version = "0.15.0"
+version = "1.1.2"
 description = "Library for serializing and deserializing Python Objects to and from JSON and XML."
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "py-serializable-0.15.0.tar.gz", hash = "sha256:8fc41457d8ee5f5c5a12f41fd87bf1a4f2ecf9da39fee92059b728e78f320771"},
-    {file = "py_serializable-0.15.0-py3-none-any.whl", hash = "sha256:d3f1201b33420c481aa83f7860c7bf2c2f036ba3ea82b6e15a96696457c36cd2"},
+    {file = "py_serializable-1.1.2-py3-none-any.whl", hash = "sha256:801be61b0a1ba64c3861f7c624f1de5cfbbabf8b458acc9cdda91e8f7e5effa1"},
+    {file = "py_serializable-1.1.2.tar.gz", hash = "sha256:89af30bc319047d4aa0d8708af412f6ce73835e18bacf1a080028bb9e2f42bdb"},
 ]
 
 [package.dependencies]
@@ -596,4 +596,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "5009b25b42148f04956fd5015afc12b8c39da17b985e6d270240f2a8c12d20df"
+content-hash = "073fd12f21b9e9f17cc922257de2fc2062ba6db361a86e9a663c9e1f80dbd641"
