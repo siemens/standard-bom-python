@@ -1,0 +1,78 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "version": 1,
+    "serialNumber": "urn:uuid:be128065-bdf5-464d-83c3-c6881cf8b1d3",
+    "metadata": {
+        "timestamp": "2022-12-21T13:01:46Z",
+        "tools": {}
+    },
+    "components": [
+        {
+            "type": "library",
+            "bom-ref": "pkg:nuget/dummy@5.0.12",
+            "name": ".NET Runtime",
+            "version": "5.0.12",
+            "purl": "pkg:nuget/dummy@5.0.12"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:nuget/dummy1@5.0.12",
+            "name": "dummy1",
+            "version": "5.0.12",
+            "purl": "pkg:nuget/dummy1@5.0.12"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:nuget/dummy2@5.0.12",
+            "name": "dummy2",
+            "version": "5.0.12",
+            "purl": "pkg:nuget/dummy2@5.0.12"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:nuget/dummy3@5.0.12",
+            "name": "dummy3",
+            "version": "5.0.12",
+            "purl": "pkg:nuget/dummy3@5.0.12"
+        }
+    ],
+    "dependencies": [
+        {
+            "ref": "pkg:nuget/dummy@5.0.12",
+            "dependsOn": [
+                "pkg:nuget/dummy1@5.0.12",
+                "pkg:nuget/dummy2@5.0.12"
+            ]
+        },
+        {
+            "ref": "pkg:nuget/dummy1@5.0.12"
+        },
+        {
+            "ref": "pkg:nuget/dummy2@5.0.12",
+            "dependsOn": [
+                "pkg:nuget/dummy3@5.0.12"
+            ]
+        },
+        {
+            "ref": "pkg:nuget/dummy3@5.0.12"
+        }
+    ],
+    "definitions": {
+        "standards": [
+            {
+                "name": "Standard BOM",
+                "version": "3.0.0",
+                "description": "Siemens SBOM Standard",
+                "owner": "Siemens AG",
+                "externalReferences": [
+                    {
+                        "type": "website",
+                        "url": "https://sbom.siemens.io/"
+                    }
+                ],
+                "bom-ref": "standard-bom"
+            }
+        ]
+    }
+}

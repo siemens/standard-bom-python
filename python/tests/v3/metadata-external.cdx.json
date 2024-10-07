@@ -1,0 +1,78 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "version": 1,
+    "metadata": {
+        "timestamp": "2022-12-21T13:01:46Z",
+        "tools": {
+            "components": [
+                {
+                    "supplier": {
+                        "name": "Siemens AG"
+                    },
+                    "name": "standard-bom",
+                    "version": "3.0.0",
+                    "description": "Standard BOM helper library for Python",
+                    "externalReferences": [
+                        {
+                            "type": "website",
+                            "url": "https://https://github.com/siemens/standard-bom-python"
+                        }
+                    ],
+                    "type": "library"
+                }
+            ]
+        },
+        "licenses": [
+            {
+                "expression": "CC0-1.0"
+            }
+        ],
+        "properties": [
+            {
+                "name": "siemens:profile",
+                "value": "external"
+            }
+        ]
+    },
+    "components": [
+        {
+            "type": "library",
+            "bom-ref": "pkg:nuget/Tethys.Logging@1.4.2",
+            "name": "Tethys.Logging",
+            "version": "1.4.2",
+            "purl": "pkg:nuget/Tethys.Logging@1.4.2"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:nuget/dummy@5.0.12",
+            "name": ".NET Runtime",
+            "version": "5.0.12",
+            "purl": "pkg:nuget/dummy@5.0.12"
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:nuget/AbrarJahin.DiffMatchPatch@0.1.0",
+            "name": "AbrarJahin.DiffMatchPatch",
+            "version": "0.1.0",
+            "purl": "pkg:nuget/AbrarJahin.DiffMatchPatch@0.1.0"
+        }
+    ],
+    "definitions": {
+        "standards": [
+            {
+                "name": "Standard BOM",
+                "version": "3.0.0",
+                "description": "Siemens SBOM Standard",
+                "owner": "Siemens AG",
+                "externalReferences": [
+                    {
+                        "type": "website",
+                        "url": "https://sbom.siemens.io/"
+                    }
+                ],
+                "bom-ref": "standard-bom"
+            }
+        ]
+    }
+}

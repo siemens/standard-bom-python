@@ -1,0 +1,1373 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "version": 1,
+    "metadata": {
+        "timestamp": "2022-07-08T15:00:00Z",
+        "tools": {
+            "components": [
+                {
+                    "supplier": {
+                        "name": "Siemens AG"
+                    },
+                    "name": "standard-bom",
+                    "version": "3.0.0",
+                    "description": "Standard BOM helper library for Python",
+                    "externalReferences": [
+                        {
+                            "type": "website",
+                            "url": "https://https://github.com/siemens/standard-bom-python"
+                        }
+                    ],
+                    "type": "library"
+                },
+                {
+                    "type": "application",
+                    "supplier": {
+                        "name": "Siemens AG"
+                    },
+                    "group": "com.siemens.sbom.gradlescanner",
+                    "name": "gradle-scanner",
+                    "version": "3.0.0",
+                    "description": "Gradle plugin for automatically generating a standard-bom-compatible SBOM",
+                    "purl": "pkg:maven/com.siemens.sbom.gradlescanner/gradle-scanner@3.0.0",
+                    "externalReferences": [
+                        {
+                            "type": "website",
+                            "url": "https://github.com/siemens/gradle-scanner"
+                        }
+                    ]
+                },
+                {
+                    "type": "application",
+                    "supplier": {
+                        "name": "Gradle Inc."
+                    },
+                    "name": "Gradle",
+                    "version": "7.4.2",
+                    "externalReferences": [
+                        {
+                            "type": "website",
+                            "url": "https://gradle.org"
+                        }
+                    ]
+                }
+            ]
+        },
+        "component": {
+            "type": "application",
+            "group": "com.example.component",
+            "name": "my-component",
+            "version": "3.7.4",
+            "purl": "pkg:maven/com.example.component/my-component@3.7.4",
+            "externalReferences": [
+                {
+                    "type": "website",
+                    "url": "https://example.com"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://git.example.com/example/my-component"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:vcsRevision",
+                    "value": "0e3e6387c452f61c3ea015f0e03892ec1a2ae4ed"
+                },
+                {
+                    "name": "siemens:vcsClean",
+                    "value": "true"
+                }
+            ]
+        },
+        "properties": [
+            {
+                "name": "siemens:profile",
+                "value": "clearing"
+            }
+        ]
+    },
+    "components": [
+        {
+            "type": "library",
+            "bom-ref": "pkg:maven/commons-codec/commons-codec@1.15?type=jar",
+            "authors": [
+                {
+                    "name": "Daniel Rall of The Apache Software Foundation",
+                    "email": "dlr@finemaltcoding.com"
+                },
+                {
+                    "name": "David Graham of The Apache Software Foundation",
+                    "email": "dgraham@apache.org"
+                },
+                {
+                    "name": "Gary Gregory of The Apache Software Foundation",
+                    "email": "ggregory@apache.org"
+                },
+                {
+                    "name": "Henri Yandell of The Apache Software Foundation",
+                    "email": "bayard@apache.org"
+                },
+                {
+                    "name": "Jon S. Stevens of The Apache Software Foundation",
+                    "email": "jon@collab.net"
+                },
+                {
+                    "name": "Julius Davies of The Apache Software Foundation",
+                    "email": "julius@apache.org"
+                },
+                {
+                    "name": "Rob Tompkins of The Apache Software Foundation",
+                    "email": "chtompki@apache.org"
+                },
+                {
+                    "name": "Rodney Waldhoff of The Apache Software Foundation",
+                    "email": "rwaldhoff@apache.org"
+                },
+                {
+                    "name": "Scott Sanders of The Apache Software Foundation",
+                    "email": "sanders@totalsync.com"
+                },
+                {
+                    "name": "Thomas Neidhart of The Apache Software Foundation",
+                    "email": "tn@apache.org"
+                },
+                {
+                    "name": "Tim OBrien of The Apache Software Foundation",
+                    "email": "tobrien@apache.org"
+                }
+            ],
+            "group": "commons-codec",
+            "name": "commons-codec",
+            "version": "1.15",
+            "description": "The Apache Commons Codec package contains simple encoder and decoders for various formats such as Base64 and Hexadecimal. In addition to these widely used encoders and decoders, the codec package also maintains a collection of phonetic encoding utilities.",
+            "hashes": [
+                {
+                    "alg": "MD5",
+                    "content": "303baf002ce6d382198090aedd9d79a2"
+                },
+                {
+                    "alg": "SHA-1",
+                    "content": "49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "b3e9f6d63a790109bf0d056611fbed1cf69055826defeb9894a71369d246ed63"
+                },
+                {
+                    "alg": "SHA-512",
+                    "content": "da30a716770795fce390e4dd340a8b728f220c6572383ffef55bd5839655d5611fcc06128b2144f6cdcb36f53072a12ec80b04afee787665e7ad0b6e888a6787"
+                }
+            ],
+            "licenses": [
+                {
+                    "license": {
+                        "name": "Apache License, Version 2.0",
+                        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+            ],
+            "copyright": "Copyright 2002-2020 The Apache Software Foundation\nCopyright (C) 2002 Kevin Atkinson (kevina@gnu.org)\nCopyright (c) 2008 Alexander Beider & Stephen P. Morse.",
+            "purl": "pkg:maven/commons-codec/commons-codec@1.15?type=jar",
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "file:///binaries/49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d/commons-codec-1.15.jar",
+                    "comment": "relativePath"
+                },
+                {
+                    "type": "distribution",
+                    "url": "file:///sources/0843bc57fd042051e994846da8167bb7ca677a6d/commons-codec-1.15-sources.jar",
+                    "comment": "source archive (local copy)",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "d9684675e618f302440874d25332e62a"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "0843bc57fd042051e994846da8167bb7ca677a6d"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "7019940b2298d333edb946e2db3d10f1caacbbd52bb64e85832cfd0017e049cc"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "4c451f148d4c4c4f09e93aa12345dcf39e17ccba3c30f638a75a5df3af622e12595946619cb4553dffcc6f77d7ad43b1e216a637942e02da955a376150393804"
+                        }
+                    ]
+                },
+                {
+                    "type": "source-distribution",
+                    "url": "https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.15/commons-codec-1.15-sources.jar",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "d9684675e618f302440874d25332e62a"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "0843bc57fd042051e994846da8167bb7ca677a6d"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "7019940b2298d333edb946e2db3d10f1caacbbd52bb64e85832cfd0017e049cc"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "4c451f148d4c4c4f09e93aa12345dcf39e17ccba3c30f638a75a5df3af622e12595946619cb4553dffcc6f77d7ad43b1e216a637942e02da955a376150393804"
+                        }
+                    ]
+                },
+                {
+                    "type": "website",
+                    "url": "https://commons.apache.org/proper/commons-codec/"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/apache/commons-codec"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "siemens:filename",
+                    "value": "commons-codec-1.15.jar"
+                },
+                {
+                    "name": "siemens:primaryLanguage",
+                    "value": "Java"
+                },
+                {
+                    "name": "siemens:thirdPartyNotices",
+                    "value": "Apache Commons Codec\nCopyright 2002-2020 The Apache Software Foundation\nThis product includes software developed at\nThe Apache Software Foundation (https://www.apache.org/).\nsrc/test/org/apache/commons/codec/language/DoubleMetaphoneTest.java\ncontains test data from http://aspell.net/test/orig/batch0.tab.\nCopyright (C) 2002 Kevin Atkinson (kevina@gnu.org)\n===============================================================================\nThe content of package org.apache.commons.codec.language.bm has been translated\nfrom the original php source code available at http://stevemorse.org/phoneticinfo.htm\nwith permission from the original authors.\nOriginal source copyright:\nCopyright (c) 2008 Alexander Beider & Stephen P. Morse."
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:maven/org.apache.logging.log4j/log4j-api@2.17.1?type=jar",
+            "authors": [
+                {
+                    "name": "Bruce Brouwer of The Apache Software Foundation",
+                    "email": "bruce.brouwer@gmail.com"
+                },
+                {
+                    "name": "Carter Kozak of The Apache Software Foundation",
+                    "email": "ckozak@apache.org"
+                },
+                {
+                    "name": "Gary Gregory of Rocket Software",
+                    "email": "ggregory@apache.org"
+                },
+                {
+                    "name": "Matt Sicker of CloudBees",
+                    "email": "mattsicker@apache.org"
+                },
+                {
+                    "name": "Mikael Ståldal of Spotify",
+                    "email": "mikes@apache.org"
+                },
+                {
+                    "name": "Nick Williams of The Apache Software Foundation",
+                    "email": "nickwilliams@apache.org"
+                },
+                {
+                    "name": "Ralph Goers of Nextiva",
+                    "email": "rgoers@apache.org"
+                },
+                {
+                    "name": "Remko Popma of The Apache Software Foundation",
+                    "email": "rpopma@apache.org"
+                },
+                {
+                    "name": "Scott Deboy of The Apache Software Foundation",
+                    "email": "sdeboy@apache.org"
+                },
+                {
+                    "name": "Volkan Yazıcı of The Apache Software Foundation",
+                    "email": "vy@apache.org"
+                }
+            ],
+            "group": "org.apache.logging.log4j",
+            "name": "log4j-api",
+            "version": "2.17.1",
+            "description": "The Apache Log4j API",
+            "hashes": [
+                {
+                    "alg": "MD5",
+                    "content": "dfd5f2d81aba31583ee87fe16c7b78f8"
+                },
+                {
+                    "alg": "SHA-1",
+                    "content": "d771af8e336e372fb5399c99edabe0919aeaf5b2"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "b0d8a4c8ab4fb8b1888d0095822703b0e6d4793c419550203da9e69196161de4"
+                },
+                {
+                    "alg": "SHA-512",
+                    "content": "48a58c2f317d451ac1622bdfbfa5d3cd9de45d40d5d5df98f39fe6d53c74da56e200f8e3d19a309d4e1ea364369379c0ef9d79b928fc20ea743857f347259c03"
+                }
+            ],
+            "licenses": [
+                {
+                    "license": {
+                        "name": "Apache License, Version 2.0",
+                        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+            ],
+            "copyright": "Copyright 1999-1969 The Apache Software Foundation",
+            "purl": "pkg:maven/org.apache.logging.log4j/log4j-api@2.17.1?type=jar",
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "file:///binaries/d771af8e336e372fb5399c99edabe0919aeaf5b2/log4j-api-2.17.1.jar",
+                    "comment": "relativePath"
+                },
+                {
+                    "type": "distribution",
+                    "url": "file:///sources/d23d37cc41300a7f6eba7813855dbb224e2a3177/log4j-api-2.17.1-sources.jar",
+                    "comment": "source archive (local copy)",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "15f41a7cddbf60f741bc49966c38f75b"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "d23d37cc41300a7f6eba7813855dbb224e2a3177"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "198c1e77d61a46fc08d323e1931cd20b430d8a4114a17658b64d15ddb2d902b0"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "a8783de53b28ab067169a77c8722d06e3d5262c9f19e69cbacc72b4768c887768fa2453b63554a656ae7554daa38afa899b9f9ea8e1e578bbcd6e449a76f08a1"
+                        }
+                    ]
+                },
+                {
+                    "type": "source-distribution",
+                    "url": "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-api/2.17.1/log4j-api-2.17.1-sources.jar",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "15f41a7cddbf60f741bc49966c38f75b"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "d23d37cc41300a7f6eba7813855dbb224e2a3177"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "198c1e77d61a46fc08d323e1931cd20b430d8a4114a17658b64d15ddb2d902b0"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "a8783de53b28ab067169a77c8722d06e3d5262c9f19e69cbacc72b4768c887768fa2453b63554a656ae7554daa38afa899b9f9ea8e1e578bbcd6e449a76f08a1"
+                        }
+                    ]
+                },
+                {
+                    "type": "website",
+                    "url": "https://logging.apache.org/log4j/2.x/log4j-api/"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://gitbox.apache.org/repos/asf?p=logging-log4j2.git/log4j-api"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "siemens:filename",
+                    "value": "log4j-api-2.17.1.jar"
+                },
+                {
+                    "name": "siemens:primaryLanguage",
+                    "value": "Java"
+                },
+                {
+                    "name": "siemens:thirdPartyNotices",
+                    "value": "Apache Log4j API\nCopyright 1999-1969 The Apache Software Foundation\nThis product includes software developed at\nThe Apache Software Foundation (http://www.apache.org/)."
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:maven/org.apache.logging.log4j/log4j-core@2.17.1?type=jar",
+            "authors": [
+                {
+                    "name": "Bruce Brouwer of The Apache Software Foundation",
+                    "email": "bruce.brouwer@gmail.com"
+                },
+                {
+                    "name": "Carter Kozak of The Apache Software Foundation",
+                    "email": "ckozak@apache.org"
+                },
+                {
+                    "name": "Gary Gregory of Rocket Software",
+                    "email": "ggregory@apache.org"
+                },
+                {
+                    "name": "Matt Sicker of CloudBees",
+                    "email": "mattsicker@apache.org"
+                },
+                {
+                    "name": "Mikael Ståldal of Spotify",
+                    "email": "mikes@apache.org"
+                },
+                {
+                    "name": "Nick Williams of The Apache Software Foundation",
+                    "email": "nickwilliams@apache.org"
+                },
+                {
+                    "name": "Ralph Goers of Nextiva",
+                    "email": "rgoers@apache.org"
+                },
+                {
+                    "name": "Remko Popma of The Apache Software Foundation",
+                    "email": "rpopma@apache.org"
+                },
+                {
+                    "name": "Scott Deboy of The Apache Software Foundation",
+                    "email": "sdeboy@apache.org"
+                },
+                {
+                    "name": "Volkan Yazıcı of The Apache Software Foundation",
+                    "email": "vy@apache.org"
+                }
+            ],
+            "group": "org.apache.logging.log4j",
+            "name": "log4j-core",
+            "version": "2.17.1",
+            "description": "The Apache Log4j Implementation",
+            "hashes": [
+                {
+                    "alg": "MD5",
+                    "content": "8d2f5c52700336dae846b2c3ecde7a6e"
+                },
+                {
+                    "alg": "SHA-1",
+                    "content": "779f60f3844dadc3ef597976fcb1e5127b1f343d"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "c967f223487980b9364e94a7c7f9a8a01fd3ee7c19bdbf0b0f9f8cb8511f3d41"
+                },
+                {
+                    "alg": "SHA-512",
+                    "content": "8d3d6a17afc41cde43b19c9a696793d009d9271bc6430762f10157018453f8a53cde6e6aa4f3f0b703eaf1f2944d047398d29b470924ecc3290d1923b0e29750"
+                }
+            ],
+            "licenses": [
+                {
+                    "license": {
+                        "name": "Apache License, Version 2.0",
+                        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+            ],
+            "copyright": "Copyright 1999-2005 The Apache Software Foundation\nCopyright 1999-2012 Apache Software Foundation\nCopyright 2005-2006 Tim Fennell",
+            "purl": "pkg:maven/org.apache.logging.log4j/log4j-core@2.17.1?type=jar",
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "file:///binaries/779f60f3844dadc3ef597976fcb1e5127b1f343d/log4j-core-2.17.1.jar",
+                    "comment": "relativePath"
+                },
+                {
+                    "type": "distribution",
+                    "url": "file:///sources/311c00d3764db7fa3ba5f26d0acb5840e52454aa/log4j-core-2.17.1-sources.jar",
+                    "comment": "source archive (local copy)",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "48c27a7b2731f9627c1f44f04c3e2ec1"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "311c00d3764db7fa3ba5f26d0acb5840e52454aa"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "51cc2d5e9eedb7eca77f4fb19d38d2c97084c818013e14a1b2c8d38aea627792"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "bacc704b8a08ae61593164122cf8f9e4b977866991ecc34a6c616bd69ce630c75d7c450c8483a86a91701cf10aed8425b5b6e470907c597c977656f22e15791d"
+                        }
+                    ]
+                },
+                {
+                    "type": "source-distribution",
+                    "url": "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-core/2.17.1/log4j-core-2.17.1-sources.jar",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "48c27a7b2731f9627c1f44f04c3e2ec1"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "311c00d3764db7fa3ba5f26d0acb5840e52454aa"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "51cc2d5e9eedb7eca77f4fb19d38d2c97084c818013e14a1b2c8d38aea627792"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "bacc704b8a08ae61593164122cf8f9e4b977866991ecc34a6c616bd69ce630c75d7c450c8483a86a91701cf10aed8425b5b6e470907c597c977656f22e15791d"
+                        }
+                    ]
+                },
+                {
+                    "type": "website",
+                    "url": "https://logging.apache.org/log4j/2.x/log4j-core/"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://gitbox.apache.org/repos/asf?p=logging-log4j2.git/log4j-core"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "siemens:filename",
+                    "value": "log4j-core-2.17.1.jar"
+                },
+                {
+                    "name": "siemens:primaryLanguage",
+                    "value": "Java"
+                },
+                {
+                    "name": "siemens:thirdPartyNotices",
+                    "value": "Apache Log4j Core\nCopyright 1999-2012 Apache Software Foundation\nThis product includes software developed at\nThe Apache Software Foundation (http://www.apache.org/).\nResolverUtil.java\nCopyright 2005-2006 Tim Fennell"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:maven/org.apache.logging.log4j/log4j-jul@2.17.1?type=jar",
+            "authors": [
+                {
+                    "name": "Bruce Brouwer of The Apache Software Foundation",
+                    "email": "bruce.brouwer@gmail.com"
+                },
+                {
+                    "name": "Carter Kozak of The Apache Software Foundation",
+                    "email": "ckozak@apache.org"
+                },
+                {
+                    "name": "Gary Gregory of Rocket Software",
+                    "email": "ggregory@apache.org"
+                },
+                {
+                    "name": "Matt Sicker of CloudBees",
+                    "email": "mattsicker@apache.org"
+                },
+                {
+                    "name": "Mikael Ståldal of Spotify",
+                    "email": "mikes@apache.org"
+                },
+                {
+                    "name": "Nick Williams of The Apache Software Foundation",
+                    "email": "nickwilliams@apache.org"
+                },
+                {
+                    "name": "Ralph Goers of Nextiva",
+                    "email": "rgoers@apache.org"
+                },
+                {
+                    "name": "Remko Popma of The Apache Software Foundation",
+                    "email": "rpopma@apache.org"
+                },
+                {
+                    "name": "Scott Deboy of The Apache Software Foundation",
+                    "email": "sdeboy@apache.org"
+                },
+                {
+                    "name": "Volkan Yazıcı of The Apache Software Foundation",
+                    "email": "vy@apache.org"
+                }
+            ],
+            "group": "org.apache.logging.log4j",
+            "name": "log4j-jul",
+            "version": "2.17.1",
+            "description": "The Apache Log4j implementation of java.util.logging",
+            "hashes": [
+                {
+                    "alg": "MD5",
+                    "content": "e3059283f96656afeaad7737d8797f84"
+                },
+                {
+                    "alg": "SHA-1",
+                    "content": "881333b463d47828eda7443b19811763367b1916"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "b0bc5eeef841d4c22e0d7900d8545da7b1daa102b930483eed0459344816374f"
+                },
+                {
+                    "alg": "SHA-512",
+                    "content": "409f06962f1155f89a8b27fc51f98abb89a839bd3bc9e68069807e11eaa64a2934dced23b196c27287420780f54772f1ae8d0f45fc64527f0d2c0acf617088b2"
+                }
+            ],
+            "licenses": [
+                {
+                    "license": {
+                        "name": "Apache License, Version 2.0",
+                        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+            ],
+            "copyright": "Copyright 1999-1969 The Apache Software Foundation",
+            "purl": "pkg:maven/org.apache.logging.log4j/log4j-jul@2.17.1?type=jar",
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "file:///binaries/881333b463d47828eda7443b19811763367b1916/log4j-jul-2.17.1.jar",
+                    "comment": "relativePath"
+                },
+                {
+                    "type": "distribution",
+                    "url": "file:///sources/b08d85e27480fe6ede2b07aea6b66a8380e83f2b/log4j-jul-2.17.1-sources.jar",
+                    "comment": "source archive (local copy)",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "a7fc903f8072a6937065f60172164739"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "b08d85e27480fe6ede2b07aea6b66a8380e83f2b"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "d0ad88b90a817964eaf7c79cea8ee535e23944830a1a204f571e8c2135a25da1"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "180147df5561e110ce06656520b7f04231b05c5705d8b804386e6cb670777ab46f53074c8982af1eda8aae68c3fc603a906d3001a51c5f2f328594687e23736c"
+                        }
+                    ]
+                },
+                {
+                    "type": "source-distribution",
+                    "url": "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-jul/2.17.1/log4j-jul-2.17.1-sources.jar",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "a7fc903f8072a6937065f60172164739"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "b08d85e27480fe6ede2b07aea6b66a8380e83f2b"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "d0ad88b90a817964eaf7c79cea8ee535e23944830a1a204f571e8c2135a25da1"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "180147df5561e110ce06656520b7f04231b05c5705d8b804386e6cb670777ab46f53074c8982af1eda8aae68c3fc603a906d3001a51c5f2f328594687e23736c"
+                        }
+                    ]
+                },
+                {
+                    "type": "website",
+                    "url": "https://logging.apache.org/log4j/2.x/log4j-jul/"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://gitbox.apache.org/repos/asf?p=logging-log4j2.git/log4j-jul"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "siemens:filename",
+                    "value": "log4j-jul-2.17.1.jar"
+                },
+                {
+                    "name": "siemens:primaryLanguage",
+                    "value": "Java"
+                },
+                {
+                    "name": "siemens:thirdPartyNotices",
+                    "value": "Apache Log4j JUL Adapter\nCopyright 1999-1969 The Apache Software Foundation\nThis product includes software developed at\nThe Apache Software Foundation (http://www.apache.org/)."
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:maven/org.apache.logging.log4j/log4j-slf4j-impl@2.17.1?type=jar",
+            "authors": [
+                {
+                    "name": "Bruce Brouwer of The Apache Software Foundation",
+                    "email": "bruce.brouwer@gmail.com"
+                },
+                {
+                    "name": "Carter Kozak of The Apache Software Foundation",
+                    "email": "ckozak@apache.org"
+                },
+                {
+                    "name": "Gary Gregory of Rocket Software",
+                    "email": "ggregory@apache.org"
+                },
+                {
+                    "name": "Matt Sicker of CloudBees",
+                    "email": "mattsicker@apache.org"
+                },
+                {
+                    "name": "Mikael Ståldal of Spotify",
+                    "email": "mikes@apache.org"
+                },
+                {
+                    "name": "Nick Williams of The Apache Software Foundation",
+                    "email": "nickwilliams@apache.org"
+                },
+                {
+                    "name": "Ralph Goers of Nextiva",
+                    "email": "rgoers@apache.org"
+                },
+                {
+                    "name": "Remko Popma of The Apache Software Foundation",
+                    "email": "rpopma@apache.org"
+                },
+                {
+                    "name": "Scott Deboy of The Apache Software Foundation",
+                    "email": "sdeboy@apache.org"
+                },
+                {
+                    "name": "Volkan Yazıcı of The Apache Software Foundation",
+                    "email": "vy@apache.org"
+                }
+            ],
+            "group": "org.apache.logging.log4j",
+            "name": "log4j-slf4j-impl",
+            "version": "2.17.1",
+            "description": "The Apache Log4j SLF4J API binding to Log4j 2 Core",
+            "hashes": [
+                {
+                    "alg": "MD5",
+                    "content": "8d0e5934a9c341dbc3493d4039afd985"
+                },
+                {
+                    "alg": "SHA-1",
+                    "content": "84692d456bcce689355d33d68167875e486954dd"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "e9a03720e5d5076009c2530635da9d08485e28a0b0ec20708dadc51afb78e41e"
+                },
+                {
+                    "alg": "SHA-512",
+                    "content": "3559e139a0c6d47fa0af233ac079fbde2227d701a846d6e6f7463129f7237e587bc3c337aebe5e4088f633ea83d1456dbc5b1999d1d485da67bfe2d5c12cde21"
+                }
+            ],
+            "licenses": [
+                {
+                    "license": {
+                        "name": "Apache License, Version 2.0",
+                        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+            ],
+            "copyright": "Copyright 1999-1969 The Apache Software Foundation",
+            "purl": "pkg:maven/org.apache.logging.log4j/log4j-slf4j-impl@2.17.1?type=jar",
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "file:///binaries/84692d456bcce689355d33d68167875e486954dd/log4j-slf4j-impl-2.17.1.jar",
+                    "comment": "relativePath"
+                },
+                {
+                    "type": "distribution",
+                    "url": "file:///sources/b077be6d7d8f4f98576b6ac870576e9a288dea7b/log4j-slf4j-impl-2.17.1-sources.jar",
+                    "comment": "source archive (local copy)",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "c582848ffab8ca421688bf09e92265fe"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "b077be6d7d8f4f98576b6ac870576e9a288dea7b"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "6b14a82f122433614b45adba055a6578b6c849a9c0db8abd086cef34821183eb"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "ef25a6c8138cc477bee7b7a6890d06c7ac6f73b7c7c6831226433e5724dbab3fb9a3e0623eee75a5a48f62fd39234326387be6847a695082daaa995bd51792f5"
+                        }
+                    ]
+                },
+                {
+                    "type": "source-distribution",
+                    "url": "https://repo.maven.apache.org/maven2/org/apache/logging/log4j/log4j-slf4j-impl/2.17.1/log4j-slf4j-impl-2.17.1-sources.jar",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "c582848ffab8ca421688bf09e92265fe"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "b077be6d7d8f4f98576b6ac870576e9a288dea7b"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "6b14a82f122433614b45adba055a6578b6c849a9c0db8abd086cef34821183eb"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "ef25a6c8138cc477bee7b7a6890d06c7ac6f73b7c7c6831226433e5724dbab3fb9a3e0623eee75a5a48f62fd39234326387be6847a695082daaa995bd51792f5"
+                        }
+                    ]
+                },
+                {
+                    "type": "website",
+                    "url": "https://logging.apache.org/log4j/2.x/log4j-slf4j-impl/"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://gitbox.apache.org/repos/asf?p=logging-log4j2.git/log4j-slf4j-impl"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "siemens:filename",
+                    "value": "log4j-slf4j-impl-2.17.1.jar"
+                },
+                {
+                    "name": "siemens:primaryLanguage",
+                    "value": "Java"
+                },
+                {
+                    "name": "siemens:thirdPartyNotices",
+                    "value": "Apache Log4j SLF4J Binding\nCopyright 1999-1969 The Apache Software Foundation\nThis product includes software developed at\nThe Apache Software Foundation (http://www.apache.org/)."
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:maven/org.slf4j/jul-to-slf4j@1.7.32?type=jar",
+            "authors": [
+                {
+                    "name": "Ceki Gulcu of QOS.ch",
+                    "email": "ceki@qos.ch"
+                }
+            ],
+            "group": "org.slf4j",
+            "name": "jul-to-slf4j",
+            "version": "1.7.32",
+            "description": "JUL to SLF4J bridge",
+            "hashes": [
+                {
+                    "alg": "MD5",
+                    "content": "cf36bbee73d82b6b96a6414ef9f54df1"
+                },
+                {
+                    "alg": "SHA-1",
+                    "content": "8a055c04ab44e8e8326901cadf89080721348bdb"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "6dee8d85ad6943aff0600f14897c469e64bae0413ee33a15c448af00432c0642"
+                },
+                {
+                    "alg": "SHA-512",
+                    "content": "b87e398ec42ea9948c295f18edc0cd65031132a18b6fa77bf299d897e7bae7a07ec34eb223025794070002f107dc7b708e6bea0c595ec32f1212c767c9e3240b"
+                }
+            ],
+            "licenses": [
+                {
+                    "license": {
+                        "name": "MIT License",
+                        "url": "http://www.opensource.org/licenses/mit-license.php"
+                    }
+                }
+            ],
+            "copyright": "Copyright (c) 2004-2011 QOS.ch",
+            "purl": "pkg:maven/org.slf4j/jul-to-slf4j@1.7.32?type=jar",
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "file:///binaries/8a055c04ab44e8e8326901cadf89080721348bdb/jul-to-slf4j-1.7.32.jar",
+                    "comment": "relativePath"
+                },
+                {
+                    "type": "distribution",
+                    "url": "file:///sources/d03fa92a2a508b5595b896b93f13f04bcde11171/jul-to-slf4j-1.7.32-sources.jar",
+                    "comment": "source archive (local copy)",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "4780296e16ad37558df14c9481ee7074"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "d03fa92a2a508b5595b896b93f13f04bcde11171"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "5e22451d268f166e390f1aff0ae101d0f399771557026958b5ce52cb10b29f4a"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "c2a7664710aa6a1f11b6d51acd3fdc04f84de387edf497fb2f413bf7de9fc066d2a70c241fee61dedd2b236994557e6d4aa545a20b03cdda2a3003c7a0908f9f"
+                        }
+                    ]
+                },
+                {
+                    "type": "source-distribution",
+                    "url": "https://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.32/jul-to-slf4j-1.7.32-sources.jar",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "4780296e16ad37558df14c9481ee7074"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "d03fa92a2a508b5595b896b93f13f04bcde11171"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "5e22451d268f166e390f1aff0ae101d0f399771557026958b5ce52cb10b29f4a"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "c2a7664710aa6a1f11b6d51acd3fdc04f84de387edf497fb2f413bf7de9fc066d2a70c241fee61dedd2b236994557e6d4aa545a20b03cdda2a3003c7a0908f9f"
+                        }
+                    ]
+                },
+                {
+                    "type": "website",
+                    "url": "http://www.slf4j.org"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/qos-ch/slf4j/jul-to-slf4j"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "siemens:filename",
+                    "value": "jul-to-slf4j-1.7.32.jar"
+                },
+                {
+                    "name": "siemens:primaryLanguage",
+                    "value": "Java"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:maven/org.slf4j/slf4j-api@1.7.32?type=jar",
+            "authors": [
+                {
+                    "name": "Ceki Gulcu of QOS.ch",
+                    "email": "ceki@qos.ch"
+                }
+            ],
+            "group": "org.slf4j",
+            "name": "slf4j-api",
+            "version": "1.7.32",
+            "description": "The slf4j API",
+            "hashes": [
+                {
+                    "alg": "MD5",
+                    "content": "fbcf58513bc25b80f075d812aad3e3cf"
+                },
+                {
+                    "alg": "SHA-1",
+                    "content": "cdcff33940d9f2de763bc41ea05a0be5941176c3"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "3624f8474c1af46d75f98bc097d7864a323c81b3808aa43689a6e1c601c027be"
+                },
+                {
+                    "alg": "SHA-512",
+                    "content": "4ca4045775a879c3ce3021908db7b4778235a322fd8e2567da960156f24b9da86e6812a4956c8dc19920cd83e4c61141168c580829f43f10bbac925d465c3fd1"
+                }
+            ],
+            "licenses": [
+                {
+                    "license": {
+                        "name": "MIT License",
+                        "url": "http://www.opensource.org/licenses/mit-license.php"
+                    }
+                }
+            ],
+            "copyright": "Copyright (c) 2004-2011 QOS.ch",
+            "purl": "pkg:maven/org.slf4j/slf4j-api@1.7.32?type=jar",
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "file:///binaries/cdcff33940d9f2de763bc41ea05a0be5941176c3/slf4j-api-1.7.32.jar",
+                    "comment": "relativePath"
+                },
+                {
+                    "type": "distribution",
+                    "url": "file:///sources/4381b152f738580aef4e436b2692a3db30609b26/slf4j-api-1.7.32-sources.jar",
+                    "comment": "source archive (local copy)",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "6163f1227ba1f0ca544250a51eee5b1a"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "4381b152f738580aef4e436b2692a3db30609b26"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "b8b7c9f7715a1d7d85707ea62b3cec4f8f2f1e508d2584603a0b649f6576bd94"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "754a8ac6091dcecb9d5c14c5c56cd298de077919c23acda10730b129644ee1ec435a8c714bfabbe08a63ab1ba83acb1f4cb000a6c00b7317ad3d9672c4c7c77d"
+                        }
+                    ]
+                },
+                {
+                    "type": "source-distribution",
+                    "url": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.32/slf4j-api-1.7.32-sources.jar",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "6163f1227ba1f0ca544250a51eee5b1a"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "4381b152f738580aef4e436b2692a3db30609b26"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "b8b7c9f7715a1d7d85707ea62b3cec4f8f2f1e508d2584603a0b649f6576bd94"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "754a8ac6091dcecb9d5c14c5c56cd298de077919c23acda10730b129644ee1ec435a8c714bfabbe08a63ab1ba83acb1f4cb000a6c00b7317ad3d9672c4c7c77d"
+                        }
+                    ]
+                },
+                {
+                    "type": "website",
+                    "url": "http://www.slf4j.org"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/qos-ch/slf4j/slf4j-api"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:direct",
+                    "value": "false"
+                },
+                {
+                    "name": "siemens:filename",
+                    "value": "slf4j-api-1.7.32.jar"
+                },
+                {
+                    "name": "siemens:primaryLanguage",
+                    "value": "Java"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:maven/org.springframework.boot/spring-boot-starter-log4j2@2.5.7?type=jar",
+            "authors": [
+                {
+                    "name": "Pivotal of Pivotal Software, Inc.",
+                    "email": "info@pivotal.io"
+                }
+            ],
+            "group": "org.springframework.boot",
+            "name": "spring-boot-starter-log4j2",
+            "version": "2.5.7",
+            "description": "Starter for using Log4j2 for logging. An alternative to spring-boot-starter-logging",
+            "hashes": [
+                {
+                    "alg": "MD5",
+                    "content": "1abc9a9a69c6576489549b73ce59bcf2"
+                },
+                {
+                    "alg": "SHA-1",
+                    "content": "a9e2fb4e41ba21a3b45f6a584addbf10418b7e42"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "91b27a3a9547a07f48b19d4b9fec0963f0ba644954f553ee4fa0e3d46ee0af6f"
+                },
+                {
+                    "alg": "SHA-512",
+                    "content": "4eddf6d956ce16ca59af6d949ce3453452ead21a3dee811c9f0443dd900f4256ac9ec8682aeb4c4b116b41f219dbb295b4f6c72df165af28732d76365dabaf70"
+                }
+            ],
+            "licenses": [
+                {
+                    "license": {
+                        "name": "Apache License, Version 2.0",
+                        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+                    }
+                }
+            ],
+            "copyright": "Copyright (c) 2012-2021 Pivotal, Inc.",
+            "purl": "pkg:maven/org.springframework.boot/spring-boot-starter-log4j2@2.5.7?type=jar",
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "file:///binaries/a9e2fb4e41ba21a3b45f6a584addbf10418b7e42/spring-boot-starter-log4j2-2.5.7.jar",
+                    "comment": "relativePath"
+                },
+                {
+                    "type": "distribution",
+                    "url": "file:///sources/deaeb032b0ca20c23ff13df9cc4f584023720fa5/spring-boot-starter-log4j2-2.5.7-sources.jar",
+                    "comment": "source archive (local copy)",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "4f7b5512307f0dfadcdafb72b0244d0a"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "deaeb032b0ca20c23ff13df9cc4f584023720fa5"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "aa6147e19303c71a5193fa4a66dbfded061f1f9b32e4ac0d2392aa0be4b431f4"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "5734153bb4b03413d4a5140e521f69591d6ddd998249e82717aa3041820af7ebc90498d5a61dff29a216eb666132f572b9dfa400af53d9aaedfdf1c5d45289ea"
+                        }
+                    ]
+                },
+                {
+                    "type": "source-distribution",
+                    "url": "https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-starter-log4j2/2.5.7/spring-boot-starter-log4j2-2.5.7-sources.jar",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "4f7b5512307f0dfadcdafb72b0244d0a"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "deaeb032b0ca20c23ff13df9cc4f584023720fa5"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "aa6147e19303c71a5193fa4a66dbfded061f1f9b32e4ac0d2392aa0be4b431f4"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "5734153bb4b03413d4a5140e521f69591d6ddd998249e82717aa3041820af7ebc90498d5a61dff29a216eb666132f572b9dfa400af53d9aaedfdf1c5d45289ea"
+                        }
+                    ]
+                },
+                {
+                    "type": "website",
+                    "url": "https://spring.io/projects/spring-boot"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/spring-projects/spring-boot"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "siemens:filename",
+                    "value": "spring-boot-starter-log4j2-2.5.7.jar"
+                },
+                {
+                    "name": "siemens:primaryLanguage",
+                    "value": "Java"
+                },
+                {
+                    "name": "siemens:thirdPartyNotices",
+                    "value": "Spring Boot 2.5.7\nCopyright (c) 2012-2021 Pivotal, Inc.\nThis product is licensed to you under the Apache License, Version 2.0\n(the \"License\"). You may not use this product except in compliance with\nthe License."
+                }
+            ]
+        },
+        {
+            "type": "file",
+            "bom-ref": "foo.jar?a68edadecd5fa76b023fbbe818a4a77987e84946",
+            "name": "foo.jar",
+            "hashes": [
+                {
+                    "alg": "MD5",
+                    "content": "b8659d25aa33019b3f71176d757ea07c"
+                },
+                {
+                    "alg": "SHA-1",
+                    "content": "a68edadecd5fa76b023fbbe818a4a77987e84946"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "7bcfe6e813e9974bfec84a528ae2c9c33d60e00fa8682ee1705b827df0b13e3c"
+                },
+                {
+                    "alg": "SHA-512",
+                    "content": "e3cdb8bf49683b6650c2ee8c0a280d69f29d333d0942cea1db18b853aee59b963304c2dd84d4498062311585a6df3f7f51dc0ea6447f9aa9aded66b044756c0f"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "file:///binaries/a68edadecd5fa76b023fbbe818a4a77987e84946/foo.jar",
+                    "comment": "relativePath"
+                },
+                {
+                    "type": "distribution",
+                    "url": "file:///sources/6b75db9efc8c2f547ad9b6069579543453524f0d/foo-sources.jar",
+                    "comment": "source archive (local copy)",
+                    "hashes": [
+                        {
+                            "alg": "MD5",
+                            "content": "b3428dbf046d7b474921658532e04887"
+                        },
+                        {
+                            "alg": "SHA-1",
+                            "content": "6b75db9efc8c2f547ad9b6069579543453524f0d"
+                        },
+                        {
+                            "alg": "SHA-256",
+                            "content": "407b87ab90624a4f65e11f497f9bcda7f814fc6a94d1b42c8ae1c153c67304c6"
+                        },
+                        {
+                            "alg": "SHA-512",
+                            "content": "167666b1a7d82db5a5d501cf0dc24e5e1075123ef67b2bae1ee1b3d72343bd4a173856605c7d36ac6a05ee183363914639f654d42b60ec53ec05da96e794fabe"
+                        }
+                    ]
+                }
+            ],
+            "properties": [
+                {
+                    "name": "siemens:direct",
+                    "value": "true"
+                },
+                {
+                    "name": "siemens:filename",
+                    "value": "foo.jar"
+                },
+                {
+                    "name": "siemens:primaryLanguage",
+                    "value": "Java"
+                }
+            ]
+        }
+    ],
+    "externalReferences": [
+        {
+            "type": "other",
+            "url": "pkg:deb/debian/keycloak@4.8.3.Final",
+            "comment": "ExternalId=41983931\nLegalRemark=This component is only dynamically linked against.\nType=application"
+        }
+    ],
+    "dependencies": [
+        {
+            "ref": "foo.jar?a68edadecd5fa76b023fbbe818a4a77987e84946",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:maven/commons-codec/commons-codec@1.15?type=jar",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:maven/org.apache.logging.log4j/log4j-api@2.17.1?type=jar",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:maven/org.apache.logging.log4j/log4j-core@2.17.1?type=jar",
+            "dependsOn": [
+                "pkg:maven/org.apache.logging.log4j/log4j-api@2.17.1?type=jar"
+            ]
+        },
+        {
+            "ref": "pkg:maven/org.apache.logging.log4j/log4j-jul@2.17.1?type=jar",
+            "dependsOn": [
+                "pkg:maven/org.apache.logging.log4j/log4j-api@2.17.1?type=jar"
+            ]
+        },
+        {
+            "ref": "pkg:maven/org.apache.logging.log4j/log4j-slf4j-impl@2.17.1?type=jar",
+            "dependsOn": [
+                "pkg:maven/org.apache.logging.log4j/log4j-api@2.17.1?type=jar",
+                "pkg:maven/org.apache.logging.log4j/log4j-core@2.17.1?type=jar",
+                "pkg:maven/org.slf4j/slf4j-api@1.7.32?type=jar"
+            ]
+        },
+        {
+            "ref": "pkg:maven/org.slf4j/jul-to-slf4j@1.7.32?type=jar",
+            "dependsOn": [
+                "pkg:maven/org.slf4j/slf4j-api@1.7.32?type=jar"
+            ]
+        },
+        {
+            "ref": "pkg:maven/org.slf4j/slf4j-api@1.7.32?type=jar",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:maven/org.springframework.boot/spring-boot-starter-log4j2@2.5.7?type=jar",
+            "dependsOn": [
+                "pkg:maven/org.apache.logging.log4j/log4j-core@2.17.1?type=jar",
+                "pkg:maven/org.apache.logging.log4j/log4j-jul@2.17.1?type=jar",
+                "pkg:maven/org.apache.logging.log4j/log4j-slf4j-impl@2.17.1?type=jar",
+                "pkg:maven/org.slf4j/jul-to-slf4j@1.7.32?type=jar"
+            ]
+        }
+    ],
+    "definitions": {
+        "standards": [
+            {
+                "name": "Standard BOM",
+                "version": "${formatVersion}",
+                "description": "The Standard for Software Bills of Materials in Siemens",
+                "owner": "Siemens AG",
+                "externalReferences": [
+                    {
+                        "type": "website",
+                        "url": "https://sbom.siemens.io/"
+                    }
+                ],
+                "bom-ref": "standard-bom"
+            }
+        ]
+    }
+}
