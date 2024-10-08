@@ -8,8 +8,7 @@ from packageurl import PackageURL
 
 from standardbom.model import SbomComponent, SbomNature
 from standardbom.parser import StandardBomParser
-from abstract_sbom_compare import read_timestamp
-from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
+from tests.abstract_sbom_compare import AbstractSbomComparingTestCase, read_timestamp
 
 
 class SbomV2ParserTestCase(AbstractSbomComparingTestCase):
@@ -21,10 +20,9 @@ class SbomV2ParserTestCase(AbstractSbomComparingTestCase):
         bom = StandardBomParser.parse("tests/v2/full-valid.cdx.json")
         self.assertIsNotNone(bom)
 
-        self.assertIsNotNone(bom.metadata)
-        self.assertIsNotNone(bom.metadata.tools)
-        self.assertEqual(3, len(bom.metadata.tools))
-        self.assertEqual(datetime.fromisoformat("2022-07-08T15:00:00+00:00"), bom.metadata.timestamp)
+        self.assertIsNotNone(bom.tools)
+        self.assertEqual(3, len(bom.tools))
+        self.assertEqual(datetime.fromisoformat("2022-07-08T15:00:00+00:00"), bom.timestamp)
 
         self.assertEqual(1, len(bom.external_components))
 
@@ -42,7 +40,9 @@ class SbomV2ParserTestCase(AbstractSbomComparingTestCase):
                          "The Apache Commons Codec package contains simple encoder and decoders for various formats"
                          " such as Base64 and Hexadecimal. In addition to these widely used encoders and decoders,"
                          " the codec package also maintains a collection of phonetic encoding utilities.")
-        self.assertEqual(commons_codec.authors,
+        self.assertIsNotNone(commons_codec.authors)
+        self.assertEqual(1, len(commons_codec.authors))
+        self.assertEqual(commons_codec.authors[0].name,
                          "Henri Yandell <bayard@apache.org>, Tim OBrien <tobrien@apache.org>,"
                          " Scott Sanders <sanders@totalsync.com>, Rodney Waldhoff <rwaldhoff@apache.org>,"
                          " Daniel Rall <dlr@finemaltcoding.com>, Jon S. Stevens <jon@collab.net>,"

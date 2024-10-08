@@ -7,10 +7,9 @@ from datetime import datetime, timedelta, timezone
 from cyclonedx.model.contact import OrganizationalContact
 from packageurl import PackageURL
 
-from abstract_sbom_compare import read_timestamp
 from standardbom.model import SbomComponent, SbomNature
 from standardbom.parser import StandardBomParser
-from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
+from tests.abstract_sbom_compare import AbstractSbomComparingTestCase, read_timestamp
 
 
 class SbomV3ParserTestCase(AbstractSbomComparingTestCase):
@@ -22,10 +21,9 @@ class SbomV3ParserTestCase(AbstractSbomComparingTestCase):
         bom = StandardBomParser.parse("tests/v3/full-valid.cdx.json")
         self.assertIsNotNone(bom)
 
-        self.assertIsNotNone(bom.metadata)
-        self.assertIsNotNone(bom.metadata.tools)
-        self.assertEqual(3, len(bom.metadata.tools))
-        self.assertEqual(datetime.fromisoformat("2022-07-08T15:00:00+00:00"), bom.metadata.timestamp)
+        self.assertIsNotNone(bom.tools)
+        self.assertEqual(3, len(bom.tools))
+        self.assertEqual(datetime.fromisoformat("2022-07-08T15:00:00+00:00"), bom.timestamp)
 
         self.assertEqual(1, len(bom.external_components))
 
@@ -44,7 +42,6 @@ class SbomV3ParserTestCase(AbstractSbomComparingTestCase):
                          " such as Base64 and Hexadecimal. In addition to these widely used encoders and decoders,"
                          " the codec package also maintains a collection of phonetic encoding utilities.")
 
-        self.assertIsNone(commons_codec.author)  # deprecated
         self.assertListEqual([
             OrganizationalContact(name="Daniel Rall of The Apache Software Foundation", email="dlr@finemaltcoding.com"),
             OrganizationalContact(name="David Graham of The Apache Software Foundation", email="dgraham@apache.org"),

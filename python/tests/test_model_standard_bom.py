@@ -1,10 +1,13 @@
 # Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED
+import datetime
 import unittest
+from importlib.metadata import version
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
-from cyclonedx.model.component import Component, ComponentType
+from cyclonedx.model.component import ComponentType, Component
+from cyclonedx.model.contact import OrganizationalContact
 
-from standardbom.model import StandardBom, SbomComponent, ExternalComponent, is_tool_standardbom
+from standardbom.model import StandardBom, SbomComponent, ExternalComponent, is_standardbom_component_entry
 
 
 class StandardBomTestCase(unittest.TestCase):
@@ -16,7 +19,7 @@ class StandardBomTestCase(unittest.TestCase):
 
     def test_add_component(self):
         sbom = StandardBom()
-        sbom.add_component(SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY)))
+        sbom.add_component(Component(name="test.jar", type=ComponentType.LIBRARY))
         self.assertEqual(1, len(sbom.components))
         self.assertEqual(sbom.components[0].name, "test.jar")
         self.assertEqual(sbom.components[0].type, ComponentType.LIBRARY)
@@ -36,25 +39,72 @@ class StandardBomTestCase(unittest.TestCase):
         self.assertEqual(sbom.external_components[0].type, ExternalReferenceType.WEBSITE)
 
     def test_add_external_component2(self):
-        excomp = ExternalComponent()
-        excomp.type = ExternalReferenceType.WEBSITE
-        excomp.url = 'https://sbom.siemens.io'
+        ext_comp = ExternalComponent()
+        ext_comp.type = ExternalReferenceType.WEBSITE
+        ext_comp.url = 'https://sbom.siemens.io'
         sbom = StandardBom()
-        sbom.add_external_component(excomp)
+        sbom.add_external_component(ext_comp)
         self.assertEqual(1, len(sbom.external_components))
         self.assertEqual(sbom.external_components[0].url, 'https://sbom.siemens.io')
         self.assertEqual(sbom.external_components[0].type, ExternalReferenceType.WEBSITE)
 
     def test_tools_entry(self):
         sbom = StandardBom()
-        self.assertEqual(2, len(sbom.metadata.tools))  # cyclonedx-python-lib and standard-bom
-        [tool1, tool2] = sbom.metadata.tools
-        actual_tool = tool1 if is_tool_standardbom(tool1) else tool2
-        self.assertEqual('Siemens AG', actual_tool.vendor)
-        self.assertEqual('standard-bom', actual_tool.name)
-        self.assertEqual('2.5.0', actual_tool.version)
-        self.assertIsNotNone(actual_tool.external_references)
-        self.assertIsNotNone(1, len(actual_tool.external_references))
+        self.assertGreaterEqual(1, len(sbom.tools))  # standard-bom component is always present
+
+        component: SbomComponent = next(filter(lambda c: is_standardbom_component_entry(c.component), sbom.tools))
+        self.assertIsNotNone(component)
+        self.assertEqual('Siemens AG', component.supplier.name)
+        self.assertEqual('standard-bom', component.name)
+        self.assertEqual(version('standard-bom'), component.version)
+        self.assertEqual('https://sbom.siemens.io/', component.website)
+
+    def test_new_tools_added(self):
+        sbom = StandardBom()
+        sbom.add_tool(SbomComponent(Component(name='test-tool', type=ComponentType.APPLICATION)))
+        self.assertEqual(2, len(sbom.tools))
+
+        test_tool: SbomComponent = next(filter(lambda x: x.name == 'test-tool', sbom.tools))
+        self.assertIsNotNone(test_tool)
+        self.assertEqual('test-tool', test_tool.name)
+        self.assertEqual(ComponentType.APPLICATION, test_tool.type)
+
+    def test_supplier_entry(self):
+        sbom = StandardBom()
+        self.assertIsNotNone(sbom.supplier)
+        self.assertEqual('Siemens or its Affiliates', sbom.supplier.name)
+
+    def test_sbom_authors_is_initially_empty(self):
+        sbom = StandardBom()
+        self.assertIsNotNone(sbom.authors)
+        self.assertEqual(0, len(sbom.authors))
+
+    def test_sbom_authors_is_set(self):
+        sbom = StandardBom()
+        self.assertIsNotNone(sbom.authors)
+
+        sbom.authors = [OrganizationalContact(name='John Doe')]
+        self.assertEqual(1, len(sbom.authors))
+        self.assertEqual('John Doe', sbom.authors[0].name)
+
+        sbom.add_author(OrganizationalContact(name='Jane Doe', phone='1234567890', email='someone@somewhere.com'))
+        self.assertEqual(2, len(sbom.authors))
+
+        new_contact: OrganizationalContact = next(filter(lambda x: x.name == 'Jane Doe', sbom.authors))
+        self.assertIsNotNone(new_contact)
+        self.assertEqual('Jane Doe', new_contact.name)
+        self.assertEqual('1234567890', new_contact.phone)
+        self.assertEqual('someone@somewhere.com', new_contact.email)
+
+    def test_timestamp_provided(self):
+        sbom = StandardBom()
+        self.assertIsNotNone(sbom.timestamp)
+        self.assertGreaterEqual(datetime.datetime.now(tz=datetime.timezone.utc), sbom.timestamp)
+
+    def test_timestamp_set(self):
+        sbom = StandardBom()
+        sbom.timestamp = datetime.datetime(2025, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc)
+        self.assertEqual(datetime.datetime(2025, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc), sbom.timestamp)
 
     def test_serial_number_provided(self):
         sbom = StandardBom()
@@ -67,7 +117,7 @@ class StandardBomTestCase(unittest.TestCase):
 
     def test_serial_number_unique_for_same_content(self):
         sbom = StandardBom()
-        sbom.add_component(SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY)))
+        sbom.add_component(Component(name="test.jar", type=ComponentType.LIBRARY))
         sbom2 = StandardBom()
-        sbom2.add_component(SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY)))
+        sbom2.add_component(Component(name="test.jar", type=ComponentType.LIBRARY))
         self.assertNotEqual(sbom.serial_number, sbom2.serial_number)

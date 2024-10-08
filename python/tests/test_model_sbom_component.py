@@ -1,9 +1,9 @@
 # Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED
+
 import unittest
 
 from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, XsUri
-from cyclonedx.model.bom_ref import BomRef
-from cyclonedx.model.component import Component, ComponentType
+from cyclonedx.model.component import ComponentType, Component
 from cyclonedx.model.license import DisjunctiveLicense
 from packageurl import PackageURL
 
@@ -13,14 +13,15 @@ from standardbom.model import ExternalComponent, SbomComponent
 class SBomComponentTestCase(unittest.TestCase):
 
     def test_construct(self):
-        component = SbomComponent()
+        component = SbomComponent(Component(name="test"))
         self.assertEqual(ComponentType.LIBRARY, component.type)
-        self.assertEqual("INVALID", component.name)
+        self.assertEqual("test", component.name)
         self.assertIsNotNone(component.bom_ref)
         self.assertIsNone(component.group)
         self.assertIsNone(component.version)
         self.assertIsNone(component.purl)
-        self.assertIsNone(component.author)
+        self.assertIsNotNone(component.authors)
+        self.assertEqual(0, len(component.authors))
         self.assertIsNone(component.description)
         self.assertIsNone(component.copyright)
         self.assertIsNone(component.cpe)
@@ -33,7 +34,8 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertIsNone(component.group)
         self.assertIsNone(component.version)
         self.assertIsNone(component.purl)
-        self.assertIsNone(component.author)
+        self.assertIsNotNone(component.authors)
+        self.assertEqual(0, len(component.authors))
         self.assertIsNone(component.description)
         self.assertIsNone(component.copyright)
         self.assertIsNone(component.cpe)
@@ -46,9 +48,6 @@ class SBomComponentTestCase(unittest.TestCase):
 
         component.type = ComponentType.APPLICATION
         self.assertEqual(ComponentType.APPLICATION, component.type)
-
-        component.bom_ref = BomRef(value="test-ref")
-        self.assertEqual("test-ref", component.bom_ref.value)
 
         component.group = "test-group"
         self.assertEqual("test-group", component.group)
@@ -72,14 +71,14 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertEqual("cpe:2.3:a:evil_corp:mars_explorer:1.2.3:beta:*:*:*:*:*:*", component.cpe)
 
     def test_licenses(self):
-        component = SbomComponent()
-        self.assertListEqual(list(), component.licenses)
+        component = SbomComponent(Component(name="test"))
+        self.assertEqual(0, len(component.licenses))
 
         lic = DisjunctiveLicense(name="test",
                                  text=AttachedText(content="test license"),
                                  url=XsUri("test-uri"))
         component.add_license(lic)
-        self.assertListEqual([lic], component.licenses)
+        self.assertListEqual([lic], list(component.licenses))
 
     def test_third_party_notices(self):
         component = SbomComponent(Component(name="test"))

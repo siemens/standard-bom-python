@@ -1,17 +1,21 @@
 #
 # Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED
 #
+from datetime import datetime
 from enum import Enum
-from importlib.metadata import version
+from importlib.metadata import version as library_version
 from typing import Iterable, List, Optional
 from uuid import UUID
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
-from cyclonedx.model.bom import Bom, BomMetaData, Tool
+from cyclonedx.model.bom import Bom
 from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component, ComponentType
+from cyclonedx.model.contact import OrganizationalEntity, OrganizationalContact
 from cyclonedx.model.license import License, LicenseRepository
+from cyclonedx.model.tool import Tool
 from packageurl import PackageURL
+from sortedcontainers import SortedSet
 
 STANDARD_BOM_MODULE: str = 'standard-bom'
 
@@ -27,36 +31,22 @@ PROPERTY_VCS_REVISION = "siemens:vcsRevision"
 PROPERTY_SBOM_NATURE = "siemens:sbomNature"
 
 RELATIVE_PATH = "relativePath"
-SOURCE_ARCHIVE = "source archive"
-SOURCE_ARCHIVE_LOCAL = SOURCE_ARCHIVE + " (local copy)"
-SOURCE_ARCHIVE_URL = SOURCE_ARCHIVE + " (download location)"
-
-
-def is_source_archive(ex_ref: ExternalReference) -> bool:
-    return ex_ref.type == ExternalReferenceType.DISTRIBUTION \
-        and ex_ref.comment is not None \
-        and ex_ref.comment.startswith(SOURCE_ARCHIVE)
+SOURCE_ARCHIVE_LOCAL = "source archive (local copy)"
 
 
 def is_local_source_archive(ex_ref: ExternalReference) -> bool:
-    return is_source_archive(ex_ref) \
-        and ex_ref.comment == SOURCE_ARCHIVE_LOCAL
+    return (ex_ref.type == ExternalReferenceType.DISTRIBUTION
+            and ex_ref.comment is not None
+            and ex_ref.comment == SOURCE_ARCHIVE_LOCAL)
 
 
 def is_remote_source_archive(ex_ref: ExternalReference) -> bool:
-    return is_source_archive(ex_ref) \
-        and ex_ref.comment == SOURCE_ARCHIVE_URL
+    return ex_ref.type == ExternalReferenceType.SOURCE_DISTRIBUTION
 
 
 def is_source_artifact(ex_ref: ExternalReference) -> bool:
-    return is_source_archive(ex_ref) \
-        and (is_remote_source_archive(ex_ref)
-             or is_local_source_archive(ex_ref))
-
-
-def is_tool_standardbom(tool: Tool) -> bool:
-    return tool.vendor == 'Siemens AG' \
-        and tool.name == 'standard-bom'
+    return (is_remote_source_archive(ex_ref)
+            or is_local_source_archive(ex_ref))
 
 
 class SbomComponent:
@@ -66,11 +56,11 @@ class SbomComponent:
 
     component: Component
 
-    def __init__(self, component: Optional[Component] = None) -> None:
-        if component is None:
-            self.component = Component(name='INVALID')
-        else:
-            self.component = component
+    def __init__(self, component: Component) -> None:
+        self.component = component
+
+    def __lt__(self, other):
+        return self.component < other.component
 
     @property
     def name(self) -> str:
@@ -121,12 +111,33 @@ class SbomComponent:
         self.component.purl = value
 
     @property
-    def author(self) -> Optional[str]:
-        return self.component.author
+    def authors(self) -> SortedSet[OrganizationalContact]:
+        authors = self.component.authors
+        if authors is None:
+            authors = SortedSet()
 
-    @author.setter
-    def author(self, value: str) -> None:
-        self.component.author = value
+        # Backward compatibility with v2
+        if self.component.author is not None:
+            authors.add(OrganizationalContact(name=self.component.author))
+
+        return authors
+
+    @authors.setter
+    def authors(self, authors: Iterable[OrganizationalContact]) -> None:
+        self.component.authors = authors
+
+    def add_author(self, author: OrganizationalContact) -> None:
+        if self.authors is None:
+            self.authors = SortedSet()
+        self.authors.add(author)
+
+    @property
+    def supplier(self) -> Optional[OrganizationalEntity]:
+        return self.component.supplier
+
+    @supplier.setter
+    def supplier(self, value: OrganizationalEntity) -> None:
+        self.component.supplier = value
 
     @property
     def description(self) -> Optional[str]:
@@ -153,74 +164,82 @@ class SbomComponent:
         self.component.cpe = value
 
     @property
-    def licenses(self) -> List[License]:
-        if self.component.licenses is None:
-            self.component.licenses = LicenseRepository()
-        return list(self.component.licenses)
+    def licenses(self) -> LicenseRepository:
+        return self.component.licenses
+
+    @licenses.setter
+    def licenses(self, licenses: Iterable[License]) -> None:
+        self.component.licenses = LicenseRepository(licenses)
 
     def add_license(self, lic: License) -> None:
-        self.component.licenses.add(lic)
+        if self.licenses is None:
+            self.licenses = []
+        self.licenses.add(lic)
 
     @property
     def third_party_notices(self) -> Optional[str]:
-        return self.get_custom_property(PROPERTY_THIRD_PARTY_NOTICES)
+        return self.get_custom_property(self.component, PROPERTY_THIRD_PARTY_NOTICES)
 
     @third_party_notices.setter
     def third_party_notices(self, value: str) -> None:
-        self.set_custom_property(PROPERTY_THIRD_PARTY_NOTICES, value)
+        self.set_custom_property(self.component, PROPERTY_THIRD_PARTY_NOTICES, value)
 
     @property
     def direct_dependency(self) -> bool:
-        return self.get_custom_property(PROPERTY_DIRECT_DEPENDENCY) in ["True", "true"]
+        return self.get_custom_property(self.component, PROPERTY_DIRECT_DEPENDENCY) in ["True", "true"]
 
     @direct_dependency.setter
     def direct_dependency(self, value: str) -> None:
-        self.set_custom_property(PROPERTY_DIRECT_DEPENDENCY, value)
+        self.set_custom_property(self.component, PROPERTY_DIRECT_DEPENDENCY, value)
 
     @property
     def internal(self) -> bool:
-        return self.get_custom_property(PROPERTY_INTERNAL) in ["True", "true"]
+        return self.get_custom_property(self.component, PROPERTY_INTERNAL) in ["True", "true"]
 
     @internal.setter
     def internal(self, value: bool) -> None:
-        self.set_custom_property(PROPERTY_INTERNAL, f"{value}")
+        self.set_custom_property(self.component, PROPERTY_INTERNAL, f"{value}")
 
     @property
     def primary_language(self) -> Optional[str]:
-        return self.get_custom_property(PROPERTY_PRIMARY_LANGUAGE)
+        return self.get_custom_property(self.component, PROPERTY_PRIMARY_LANGUAGE)
 
     @primary_language.setter
     def primary_language(self, value: str) -> None:
-        self.set_custom_property(PROPERTY_PRIMARY_LANGUAGE, value)
+        self.set_custom_property(self.component, PROPERTY_PRIMARY_LANGUAGE, value)
 
     @property
     def legal_remark(self) -> Optional[str]:
-        return self.get_custom_property(PROPERTY_LEGAL_REMARK)
+        return self.get_custom_property(self.component, PROPERTY_LEGAL_REMARK)
 
     @legal_remark.setter
     def legal_remark(self, value: str) -> None:
-        self.set_custom_property(PROPERTY_LEGAL_REMARK, value)
+        self.set_custom_property(self.component, PROPERTY_LEGAL_REMARK, value)
 
     @property
     def filename(self) -> Optional[str]:
-        return self.get_custom_property(PROPERTY_FILENAME)
+        return self.get_custom_property(self.component, PROPERTY_FILENAME)
 
     @filename.setter
     def filename(self, value: str) -> None:
-        self.set_custom_property(PROPERTY_FILENAME, value)
+        self.set_custom_property(self.component, PROPERTY_FILENAME, value)
 
-    def get_custom_property(self, custom_property_key: str) -> Optional[str]:
-        found = next(filter(lambda prop: prop.name == custom_property_key, self.component.properties), None)
-        if found:
-            return found.value
+    @staticmethod
+    def get_custom_property(component: Optional[Component], custom_property_key: str) -> Optional[str]:
+        if component is not None and component.properties is not None and custom_property_key is not None:
+            found = next(filter(lambda prop: prop.name == custom_property_key, component.properties), None)
+            if found:
+                return found.value
         return None
 
-    def set_custom_property(self, custom_property_key: str, value: str) -> None:
-        found = next(filter(lambda prop: prop.name == custom_property_key, self.component.properties), None)
-        if found:
-            found.value = value
-        else:
-            self.component.properties.add(Property(name=custom_property_key, value=value))
+    @staticmethod
+    def set_custom_property(component: Optional[Component], custom_property_key: str, value: str) -> None:
+        if component is not None and component.properties is not None and custom_property_key is not None:
+            found = next(filter(lambda prop: prop.name == custom_property_key, component.properties), None)
+            if found:
+                found.value = value
+            else:
+                component.properties.add(Property(name=custom_property_key, value=value))
 
     @property
     def website(self) -> Optional[str]:
@@ -246,6 +265,8 @@ class SbomComponent:
                           self.component.external_references), None)
         if ref:
             ref_str = str(ref.url)
+            if ref_str.startswith("file:///"):
+                return ref_str[len("file:///"):]
             if ref_str.startswith("file:"):
                 return ref_str[len("file:"):]
             return ref_str
@@ -288,8 +309,7 @@ class SbomComponent:
                                self.component.external_references)))
 
     def add_remote_source(self, url: str, hashes: Optional[Iterable[HashType]] = None) -> None:
-        ex_ref = ExternalReference(type=ExternalReferenceType.DISTRIBUTION, comment=SOURCE_ARCHIVE_URL,
-                                   url=XsUri(url), hashes=hashes)
+        ex_ref = ExternalReference(type=ExternalReferenceType.SOURCE_DISTRIBUTION, url=XsUri(url), hashes=hashes)
         self.component.external_references.add(ex_ref)
 
     def _get_external_reference(self, ex_ref_type: ExternalReferenceType) -> Optional[ExternalReference]:
@@ -368,9 +388,8 @@ class SourceArtifact:
             if local_file:
                 raise ValueError('Cannot specify both local_file and download_url')
             self.external_ref = ExternalReference(
-                type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                 url=XsUri(download_url),
-                comment=SOURCE_ARCHIVE_URL,
                 hashes=hashes)
         elif local_file:
             self.external_ref = ExternalReference(
@@ -380,9 +399,8 @@ class SourceArtifact:
                 hashes=hashes)
         else:
             self.external_ref = ExternalReference(
-                type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                 url=XsUri('https://example.com'),
-                comment=SOURCE_ARCHIVE,
                 hashes=hashes)
 
     @property
@@ -478,86 +496,128 @@ class SbomNature(Enum):
     BINARY = "binary"
 
 
+def is_valid_serial_number(serial_number):
+    return not (serial_number is None or "urn:uuid:None" == serial_number)
+
+
+def is_standardbom_component_entry(component: Component) -> bool:
+    return component.supplier is not None \
+        and component.supplier.name == 'Siemens AG' \
+        and component.name == STANDARD_BOM_MODULE
+
+
+def is_standardbom_tool_entry(tool: Tool) -> bool:
+    return tool.vendor == 'Siemens AG' \
+        and tool.name == STANDARD_BOM_MODULE
+
+
 class StandardBom:
     """
     Main DTO for the complete "Standard BOM" JSON structure.
     """
 
-    cyclone_dx_sbom: Bom
+    bom: Bom
 
-    def __init__(self, cyclone_dx_sbom: Optional[Bom] = None) -> None:
-        if cyclone_dx_sbom is None:
-            self.cyclone_dx_sbom = Bom()
+    def __init__(self, bom: Optional[Bom] = None) -> None:
+        if bom is None:
+            self.bom = Bom()
         else:
-            self.cyclone_dx_sbom = cyclone_dx_sbom
-            self.cyclone_dx_sbom.metadata.tools = \
-                [tool for tool in self.cyclone_dx_sbom.metadata.tools if not is_tool_standardbom(tool)]
-        self.cyclone_dx_sbom.metadata.tools.add(self.get_standard_bom_descriptor())
+            self.bom = bom
+        self._insert_standard_bom_tools_entry_if_missing()
+        self._set_supplier_if_missing()
 
-    def __set_property(self, property_name: str, value: str) -> None:
+    def _insert_standard_bom_tools_entry_if_missing(self):
+        standard_bom_tools_entry = None
+        for comp in self.bom.metadata.tools.components:
+            if is_standardbom_component_entry(comp):
+                standard_bom_tools_entry = comp
+
+        # checking tools entry for backward compatibility with v2
+        if standard_bom_tools_entry is None:
+            for tool in self.bom.metadata.tools.tools:
+                if is_standardbom_tool_entry(tool):
+                    standard_bom_tools_entry = tool
+
+        if standard_bom_tools_entry is None:
+            component = Component(
+                name=STANDARD_BOM_MODULE,
+                version=library_version(STANDARD_BOM_MODULE),
+                supplier=OrganizationalEntity(name='Siemens AG'),
+                external_references=[ExternalReference(type=ExternalReferenceType.WEBSITE,
+                                                       url=XsUri('https://sbom.siemens.io/'))]
+            )
+            self.bom.metadata.tools.components.add(component)
+
+    def _set_supplier_if_missing(self):
+        if not self.bom.metadata.supplier:
+            self.bom.metadata.supplier = OrganizationalEntity(name='Siemens or its Affiliates')
+
+    def _set_metadata_property(self, property_name: str, value: str) -> None:
         existing = next(filter(lambda p: p.name == property_name,
-                               self.cyclone_dx_sbom.metadata.properties), None)
+                               self.bom.metadata.properties), None)
         if existing:
             if value:
                 # update existing
                 existing.value = value
             else:
                 # remove existing
-                self.cyclone_dx_sbom.metadata.properties.remove(existing)
+                self.bom.metadata.properties.remove(existing)
         else:
             if value:
                 # add new
                 prop = Property(name=property_name, value=value) if value else None
-                self.cyclone_dx_sbom.metadata.properties.add(prop)
+                self.bom.metadata.properties.add(prop)
             else:
                 # nothing to do
                 pass
 
-    def __get_property(self, property_name: str) -> Optional[str]:
+    def _get_metadata_property(self, property_name: str) -> Optional[str]:
         prop = next(filter(lambda p: p.name == property_name,
-                           self.cyclone_dx_sbom.metadata.properties), None)
+                           self.bom.metadata.properties), None)
         return prop.value if prop else None
-
-    @staticmethod
-    def get_standard_bom_descriptor() -> Tool:
-        result = Tool()
-        result.vendor = 'Siemens AG'
-        result.name = 'standard-bom'
-        result.version = '2.5.0'
-        website = ExternalReference(type=ExternalReferenceType.WEBSITE, url=XsUri('https://sbom.siemens.io/'))
-        website.comment = f"Generated by the {STANDARD_BOM_MODULE} Python library v{version(STANDARD_BOM_MODULE)}"
-        result.external_references = [website]
-        return result
-
-    @property
-    def metadata(self) -> BomMetaData:
-        return self.cyclone_dx_sbom.metadata
 
     @property
     def serial_number(self) -> UUID:
-        return self.cyclone_dx_sbom.serial_number
+        return self.bom.serial_number
+
+    @serial_number.setter
+    def serial_number(self, serial_number: UUID) -> None:
+        self.bom.serial_number = serial_number
 
     @property
-    def components(self) -> List[SbomComponent]:
-        return list(map(lambda c: SbomComponent(c), self.cyclone_dx_sbom.components))
+    def version(self) -> int:
+        return self.bom.version
 
-    def add_component(self, sbom_component: SbomComponent) -> None:
-        self.cyclone_dx_sbom.components.add(sbom_component.component)
+    @version.setter
+    def version(self, version: int) -> None:
+        self.bom.version = version
+
+    @property
+    def components(self) -> 'SortedSet[SbomComponent]':
+        comps = self.bom.components
+        return SortedSet(map(lambda c: SbomComponent(c), comps))
+
+    @components.setter
+    def components(self, components: Iterable[Component]) -> None:
+        self.bom.components = components
+
+    def add_component(self, component: Component) -> None:
+        self.bom.components.add(component)
 
     @property
     def external_components(self) -> List[ExternalComponent]:
-        return list(map(lambda er: ExternalComponent(er), self.cyclone_dx_sbom.external_references))
+        return list(map(lambda er: ExternalComponent(er), self.bom.external_references))
 
     def add_external_component(self, external_component: ExternalComponent) -> None:
-        self.cyclone_dx_sbom.external_references.add(external_component.external_ref)
+        self.bom.external_references.add(external_component.external_ref)
 
     @property
     def profile(self) -> Optional[str]:
-        return self.__get_property(PROPERTY_PROFILE)
+        return self._get_metadata_property(PROPERTY_PROFILE)
 
     @profile.setter
     def profile(self, value: str) -> None:
-        self.__set_property(PROPERTY_PROFILE, value)
+        self._set_metadata_property(PROPERTY_PROFILE, value)
 
     @property
     def vcs_clean(self) -> bool:
@@ -577,17 +637,69 @@ class StandardBom:
 
     @property
     def sbom_nature(self) -> Optional[SbomNature]:
-        value = self.__get_property(PROPERTY_SBOM_NATURE)
+        value = self._get_metadata_property(PROPERTY_SBOM_NATURE)
         return SbomNature(value) if value else None
 
     @sbom_nature.setter
     def sbom_nature(self, value: SbomNature) -> None:
-        self.__set_property(PROPERTY_SBOM_NATURE, str(value))
+        self._set_metadata_property(PROPERTY_SBOM_NATURE, str(value))
 
     @property
     def internal(self) -> bool:
-        return SbomComponent(self.metadata.component).get_custom_property(PROPERTY_INTERNAL) in ["True", "true"]
+        return SbomComponent.get_custom_property(self.bom.metadata.component, PROPERTY_INTERNAL) in ["True", "true"]
 
     @internal.setter
     def internal(self, value: bool) -> None:
-        SbomComponent(self.metadata.component).set_custom_property(PROPERTY_INTERNAL, f"{value}")
+        SbomComponent.set_custom_property(self.bom.metadata.component, PROPERTY_INTERNAL, f"{value}")
+
+    @property
+    def timestamp(self) -> datetime:
+        return self.bom.metadata.timestamp
+
+    @timestamp.setter
+    def timestamp(self, timestamp: datetime) -> None:
+        self.bom.metadata.timestamp = timestamp
+
+    @property
+    def authors(self) -> SortedSet[OrganizationalContact]:
+        return self.bom.metadata.authors
+
+    @authors.setter
+    def authors(self, authors: Iterable[OrganizationalContact]) -> None:
+        self.bom.metadata.authors = authors
+
+    def add_author(self, author: OrganizationalContact) -> None:
+        if self.bom.metadata.authors is None:
+            self.bom.metadata.authors = SortedSet()
+        self.bom.metadata.authors.add(author)
+
+    @property
+    def tools(self) -> SortedSet[SbomComponent]:
+        tools = self.bom.metadata.tools.components
+
+        # checking tools entry for backward compatibility with v2
+        if self.bom.metadata.tools.tools is not None and len(self.bom.metadata.tools.tools) > 0:
+            comps: SortedSet[Component] = SortedSet(map(lambda t: Component(
+                name=t.name,
+                version=t.version,
+                supplier=OrganizationalEntity(name=t.vendor),
+                external_references=t.external_references
+            ), self.bom.metadata.tools.tools))
+            tools = tools.union(comps)
+
+        return SortedSet(map(lambda c: SbomComponent(c), tools))
+
+    def add_tool(self, component: SbomComponent) -> None:
+        self.bom.metadata.tools.components.add(component.component)
+
+    @property
+    def component(self) -> Optional[SbomComponent]:
+        return SbomComponent(self.bom.metadata.component) if self.bom.metadata.component is not None else None
+
+    @component.setter
+    def component(self, component: SbomComponent) -> None:
+        self.bom.metadata.component = component.component
+
+    @property
+    def supplier(self) -> Optional[OrganizationalEntity]:
+        return self.bom.metadata.supplier
