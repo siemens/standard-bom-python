@@ -1,0 +1,41 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "version": 1,
+    "serialNumber": "urn:uuid:be128065-bdf5-464d-83c3-c6881cf8b1d3",
+    "metadata": {
+        "timestamp": "2022-12-21T13:01:46Z",
+        "tools": {}
+    },
+    "components": [
+        {
+            "type": "library",
+            "bom-ref": "pkg:nuget/dummy@1.2.3",
+            "name": ".NET Runtime",
+            "version": "1.2.3,",
+            "purl": "pkg:nuget/dummy@1.2.3"
+        }
+    ],
+    "dependencies": [
+        {
+            "ref": "pkg:nuget/dummy@1.2.3"
+        }
+    ],
+    "definitions": {
+        "standards": [
+            {
+                "name": "Standard BOM",
+                "version": "3.0.0",
+                "description": "Siemens SBOM Standard",
+                "owner": "Siemens AG",
+                "externalReferences": [
+                    {
+                        "type": "website",
+                        "url": "https://sbom.siemens.io/"
+                    }
+                ],
+                "bom-ref": "standard-bom"
+            }
+        ]
+    }
+}

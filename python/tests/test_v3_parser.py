@@ -129,6 +129,13 @@ class SbomV3ParserTestCase(AbstractSbomComparingTestCase):
         actual_bom, expected_bom = self.write_read_compare(input_filename, output_filename)
         self.assertEqual(actual_bom.serial_number, expected_bom.serial_number)
 
+    def test_single_dependency(self):
+        input_filename = "tests/v3/single-dependency.cdx.json"
+        output_filename = "output/v3/single-dependency.cdx.json"
+
+        actual_bom, expected_bom = self.write_read_compare(input_filename, output_filename)
+        self.assertEqual(actual_bom.serial_number, expected_bom.serial_number)
+
     def test_read_write_profile(self):
         input_filename = "tests/v3/full-valid.cdx.json"
         output_filename = "output/v3/test-profile.cdx.json"
