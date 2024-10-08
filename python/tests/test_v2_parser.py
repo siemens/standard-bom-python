@@ -7,7 +7,8 @@ from datetime import datetime, timedelta, timezone
 from packageurl import PackageURL
 
 from standardbom.model import SbomComponent, SbomNature
-from standardbom.parser import read_timestamp, StandardBomParser
+from standardbom.parser import StandardBomParser
+from abstract_sbom_compare import read_timestamp
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
 

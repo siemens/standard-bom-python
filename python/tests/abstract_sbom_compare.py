@@ -1,11 +1,14 @@
 import unittest
+from abc import ABC
+from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
+from dateutil import parser as dateparser
 from deepdiff import DeepDiff
 
 from standardbom.model import StandardBom
 from standardbom.parser import StandardBomParser
-from abc import ABC
 
 
 class AbstractSbomComparingTestCase(ABC, unittest.TestCase):
@@ -28,3 +31,13 @@ class AbstractSbomComparingTestCase(ABC, unittest.TestCase):
                        exclude_regex_paths='\\._')
         self.assertEqual({}, erg)
         return actual_bom, expected_bom
+
+
+def read_timestamp(param) -> Optional[datetime]:
+    if param is None:
+        return None
+    try:
+        timestamp = dateparser.isoparse(param)
+        return timestamp
+    except ValueError:
+        return None

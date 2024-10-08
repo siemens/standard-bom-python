@@ -7,8 +7,9 @@ from datetime import datetime, timedelta, timezone
 from cyclonedx.model.contact import OrganizationalContact
 from packageurl import PackageURL
 
+from abstract_sbom_compare import read_timestamp
 from standardbom.model import SbomComponent, SbomNature
-from standardbom.parser import read_timestamp, StandardBomParser
+from standardbom.parser import StandardBomParser
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
 
