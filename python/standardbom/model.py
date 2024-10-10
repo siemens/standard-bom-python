@@ -621,19 +621,19 @@ class StandardBom:
 
     @property
     def vcs_clean(self) -> bool:
-        return self.__get_property(PROPERTY_VCS_CLEAN) in ["True", "true"]
+        return SbomComponent.get_custom_property(self.bom.metadata.component, PROPERTY_VCS_CLEAN) in ["True", "true"]
 
     @vcs_clean.setter
     def vcs_clean(self, value: bool) -> None:
-        self.__set_property(PROPERTY_VCS_CLEAN, str(value))
+        SbomComponent.set_custom_property(self.bom.metadata.component, PROPERTY_VCS_CLEAN, f"{value}")
 
     @property
     def vcs_revision(self) -> Optional[str]:
-        return self.__get_property(PROPERTY_VCS_REVISION)
+        return SbomComponent.get_custom_property(self.bom.metadata.component, PROPERTY_VCS_REVISION)
 
     @vcs_revision.setter
     def vcs_revision(self, value: str) -> None:
-        self.__set_property(PROPERTY_VCS_REVISION, value)
+        SbomComponent.set_custom_property(self.bom.metadata.component, PROPERTY_VCS_REVISION, value)
 
     @property
     def sbom_nature(self) -> Optional[SbomNature]:
