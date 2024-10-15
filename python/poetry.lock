@@ -120,13 +120,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "cyclonedx-python-lib"
-version = "8.0.0rc2"
+version = "8.3.0"
 description = "Python library for CycloneDX"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "cyclonedx_python_lib-8.0.0rc2-py3-none-any.whl", hash = "sha256:d336942d8a1f5a8795d77e1de75aca6907a7e050733297f675e80c4fbd715a26"},
-    {file = "cyclonedx_python_lib-8.0.0rc2.tar.gz", hash = "sha256:0e19d71575553c97c8d0ab5e4ee079d5665561ed9eb6a2abd92da4bec04cc847"},
+    {file = "cyclonedx_python_lib-8.3.0-py3-none-any.whl", hash = "sha256:80519d8de7f7d18287495d34c48a79c7bd9dcea5bbb57e929d9fa98039bec721"},
+    {file = "cyclonedx_python_lib-8.3.0.tar.gz", hash = "sha256:d60f6060ad11a5a77ccbf7827acc16a40741f00c97f0ab21201617cd1fc44a7d"},
 ]
 
 [package.dependencies]
@@ -239,13 +239,13 @@ files = [
 
 [[package]]
 name = "license-expression"
-version = "30.3.1"
+version = "30.4.0"
 description = "license-expression is a comprehensive utility library to parse, compare, simplify and normalize license expressions (such as SPDX license expressions) using boolean logic."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "license_expression-30.3.1-py3-none-any.whl", hash = "sha256:97904b9185c7bbb1e98799606fa7424191c375e70ba63a524b6f7100e42ddc46"},
-    {file = "license_expression-30.3.1.tar.gz", hash = "sha256:60d5bec1f3364c256a92b9a08583d7ea933c7aa272c8d36d04144a89a3858c01"},
+    {file = "license_expression-30.4.0-py3-none-any.whl", hash = "sha256:7c8f240c6e20d759cb8455e49cb44a923d9e25c436bf48d7e5b8eea660782c04"},
+    {file = "license_expression-30.4.0.tar.gz", hash = "sha256:6464397f8ed4353cc778999caec43b099f8d8d5b335f282e26a9eb9435522f05"},
 ]
 
 [package.dependencies]
@@ -596,4 +596,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "073fd12f21b9e9f17cc922257de2fc2062ba6db361a86e9a663c9e1f80dbd641"
+content-hash = "8933d00f64ee75ba6287a5279282c6d4719bc64e8d3ce3084661f6e76324e1a1"
