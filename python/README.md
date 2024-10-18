@@ -59,11 +59,13 @@ Once you have those prerequisites you can perform following development tasks lo
     poetry run flake8
     ```
 
-- Run all unit tests with
+- Run all unit tests with all test cases and static code analysis
 
     ```bash
-    poetry run coverage run --branch -m unittest discover -v
+    poetry run tox run
     ```
+
+    This will run all the tests for all supported Python versions as well as static linting and type checking.
 
 ## License
 
