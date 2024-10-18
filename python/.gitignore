@@ -10,3 +10,4 @@
 *.pyc
 toms_demo.py
 /.poetry-cache
+/.tox/
