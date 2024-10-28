@@ -32,3 +32,27 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
 
         self.write_read_compare(input_filename, output_filename)
 
+    def test_write_without_dependencies(self):
+        output_filename = "output/v3/without-dependencies.cdx.json"
+
+        sbom = StandardBom()
+        StandardBomParser.save(sbom, output_filename)
+        self.assertTrue(path.exists(output_filename))
+
+        with open(output_filename, 'r') as file:
+            data = json.load(file)
+            self.assertNotIn("dependencies", data)
+
+    @skip("bom-ref is injected automatically by the upstream library")
+    def test_write_without_components_bom_ref(self):
+        output_filename = "output/v3/without-components-bom-ref.cdx.json"
+
+        sbom = StandardBom()
+        component = Component(name="test", version="1.0.0")
+        sbom.add_component(component)
+        StandardBomParser.save(sbom, output_filename)
+        self.assertTrue(path.exists(output_filename))
+
+        with open(output_filename, 'r') as file:
+            data = json.load(file)
+            self.assertIsNone(data["components"][0]["bom-ref"])
