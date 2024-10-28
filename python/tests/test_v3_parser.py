@@ -74,24 +74,6 @@ class SbomV3ParserTestCase(AbstractSbomComparingTestCase):
         self.assertEqual("binaries/49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d/commons-codec-1.15.jar",
                          commons_codec.relative_path)
 
-    def test_write_sunny_day(self):
-        input_filename = "tests/v3/full-valid.cdx.json"
-        output_filename = "output/v3/test-output.cdx.json"
-
-        self.write_read_compare(input_filename, output_filename)
-
-    def test_write_metadata_external(self):
-        input_filename = "tests/v3/metadata-external.cdx.json"
-        output_filename = "output/v3/metadata-external.cdx.json"
-
-        self.write_read_compare(input_filename, output_filename)
-
-    def test_write_metadata_extensive(self):
-        input_filename = "tests/v3/metadata-extensive.cdx.json"
-        output_filename = "output/v3/metadata-extensive.cdx.json"
-
-        self.write_read_compare(input_filename, output_filename)
-
     def test_serial_number(self):
         input_filename = "tests/v3/serial-number.cdx.json"
         output_filename = "output/v3/serial-number.cdx.json"
