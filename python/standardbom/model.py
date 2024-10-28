@@ -12,6 +12,7 @@ from cyclonedx.model.bom import Bom
 from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.contact import OrganizationalEntity, OrganizationalContact
+from cyclonedx.model.definition import Definitions, Standard
 from cyclonedx.model.license import License, LicenseRepository
 from cyclonedx.model.tool import Tool
 from packageurl import PackageURL
@@ -524,6 +525,7 @@ class StandardBom:
         else:
             self.bom = bom
         self._insert_standard_bom_tools_entry_if_missing()
+        self._insert_standard_bom_definitions_entry_if_missing()
         self._set_supplier_if_missing()
 
     def _insert_standard_bom_tools_entry_if_missing(self):
@@ -547,6 +549,27 @@ class StandardBom:
                                                        url=XsUri('https://sbom.siemens.io/'))]
             )
             self.bom.metadata.tools.components.add(component)
+
+    def _insert_standard_bom_definitions_entry_if_missing(self):
+        definitions_entry = self.bom.definitions
+        if (definitions_entry is None
+            or definitions_entry.standards is None
+            or not any((standard.name == 'Standard BOM'
+                        and standard.owner == 'Siemens AG') for standard in definitions_entry.standards)):
+            standard = Standard(
+                bom_ref='standard-bom',
+                name='Standard BOM',
+                version='3.0.0',
+                description='The Standard for Software Bills of Materials in Siemens',
+                owner='Siemens AG',
+                external_references=[
+                    ExternalReference(type=ExternalReferenceType.WEBSITE, url=XsUri('https://sbom.siemens.io/'))]
+            )
+            if definitions_entry is None:
+                definitions_entry = Definitions(standards=[standard])
+            else:
+                definitions_entry.standards.add(standard)
+            self.bom.definitions = definitions_entry
 
     def _set_supplier_if_missing(self):
         if not self.bom.metadata.supplier:
@@ -703,3 +726,11 @@ class StandardBom:
     @property
     def supplier(self) -> Optional[OrganizationalEntity]:
         return self.bom.metadata.supplier
+
+    @property
+    def definitions(self) -> Optional[Definitions]:
+        return self.bom.definitions
+
+    @definitions.setter
+    def definitions(self, definitions: Definitions) -> None:
+        self.bom.definitions = definitions

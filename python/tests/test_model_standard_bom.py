@@ -6,6 +6,7 @@ from importlib.metadata import version
 from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.component import ComponentType, Component
 from cyclonedx.model.contact import OrganizationalContact
+from cyclonedx.model.definition import Standard
 
 from standardbom.model import StandardBom, SbomComponent, ExternalComponent, is_standardbom_component_entry
 
@@ -117,7 +118,32 @@ class StandardBomTestCase(unittest.TestCase):
 
     def test_serial_number_unique_for_same_content(self):
         sbom = StandardBom()
-        sbom.add_component(Component(name="test.jar", type=ComponentType.LIBRARY))
+        sbom.add_component(Component(name='test.jar', type=ComponentType.LIBRARY))
         sbom2 = StandardBom()
-        sbom2.add_component(Component(name="test.jar", type=ComponentType.LIBRARY))
+        sbom2.add_component(Component(name='test.jar', type=ComponentType.LIBRARY))
         self.assertNotEqual(sbom.serial_number, sbom2.serial_number)
+
+    def test_definitions_entry_is_provided(self):
+        sbom = StandardBom()
+        self.assertIsNotNone(sbom.definitions)
+
+    def test_definitions_standards_entry_is_provided(self):
+        sbom = StandardBom()
+        self.assertIsNotNone(sbom.definitions)
+        self.assertIsNotNone(sbom.definitions.standards)
+        self.assertEqual(1, len(sbom.definitions.standards))
+        self.assertIsNotNone(sbom.definitions)
+        self.assertIsNotNone(sbom.definitions.standards)
+        self.assertGreaterEqual(1, len(sbom.definitions.standards))
+
+        sbom_standard: Standard = next(filter(lambda x: x.name == 'Standard BOM' and x.owner == 'Siemens AG',
+                                              sbom.definitions.standards))
+        self.assertIsNotNone(sbom_standard)
+        self.assertEqual('standard-bom', f'{sbom_standard.bom_ref}')
+        self.assertEqual('Standard BOM', sbom_standard.name)
+        self.assertEqual('3.0.0', sbom_standard.version)
+        self.assertEqual('Siemens AG', sbom_standard.owner)
+        self.assertIsNotNone(sbom_standard.external_references)
+        self.assertEqual(1, len(sbom_standard.external_references))
+        self.assertEqual('https://sbom.siemens.io/', f'{sbom_standard.external_references[0].url}')
+        self.assertEqual(ExternalReferenceType.WEBSITE, sbom_standard.external_references[0].type)

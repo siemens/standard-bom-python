@@ -26,7 +26,7 @@
             {
                 "name": "Standard BOM",
                 "version": "3.0.0",
-                "description": "Siemens SBOM Standard",
+                "description": "The Standard for Software Bills of Materials in Siemens",
                 "owner": "Siemens AG",
                 "externalReferences": [
                     {

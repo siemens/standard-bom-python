@@ -24,10 +24,6 @@ class StandardBomParser:
         with open(filename, 'r', encoding='utf-8') as json_file:
             json_content = json.loads(json_file.read())
 
-            # TODO: monkey patching .definitions
-            # remove definitions from json_content
-            json_content.pop('definitions', None)
-
             bom: Bom = Bom.from_json(data=json_content)  # type: ignore[attr-defined]
             return StandardBom(bom)
 
