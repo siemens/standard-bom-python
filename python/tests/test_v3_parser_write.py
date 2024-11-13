@@ -59,8 +59,7 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
             data = json.load(file)
             self.assertNotIn("dependencies", data)
 
-    @skip("bom-ref is injected automatically by the upstream library")
-    def test_write_without_components_bom_ref(self):
+    def test_write_with_components_bom_ref(self):
         output_filename = "output/v3/without-components-bom-ref.cdx.json"
 
         sbom = StandardBom()
@@ -71,4 +70,4 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
 
         with open(output_filename, 'r') as file:
             data = json.load(file)
-            self.assertIsNone(data["components"][0]["bom-ref"])
+            self.assertIsNotNone(data["components"][0]["bom-ref"])
