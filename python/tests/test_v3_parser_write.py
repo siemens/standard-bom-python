@@ -3,7 +3,6 @@
 #
 import json
 from os import path
-from unittest import skip
 
 from cyclonedx.model.component import Component
 
@@ -71,3 +70,31 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         with open(output_filename, 'r') as file:
             data = json.load(file)
             self.assertIsNotNone(data["components"][0]["bom-ref"])
+
+    def test_write_after_add_component(self):
+        output_filename = "output/v3/after-add-component.cdx.json"
+
+        sbom = StandardBom()
+        component = Component(name="test", version="1.0.0")
+        sbom.add_component(component)
+        StandardBomParser.save(sbom, output_filename)
+        self.assertTrue(path.exists(output_filename))
+
+        with open(output_filename, 'r') as file:
+            data = json.load(file)
+            self.assertEqual(data["components"][0]["name"], "test")
+            self.assertEqual(data["components"][0]["version"], "1.0.0")
+
+    def test_write_after_components_add_component(self):
+        output_filename = "output/v3/after-components-add-component.cdx.json"
+
+        sbom = StandardBom()
+        component = Component(name="test", version="1.0.0")
+        sbom.components.add(component)
+        StandardBomParser.save(sbom, output_filename)
+        self.assertTrue(path.exists(output_filename))
+
+        with open(output_filename, 'r') as file:
+            data = json.load(file)
+            self.assertEqual(data["components"][0]["name"], "test")
+            self.assertEqual(data["components"][0]["version"], "1.0.0")
