@@ -18,6 +18,8 @@ from cyclonedx.model.tool import Tool
 from packageurl import PackageURL
 from sortedcontainers import SortedSet
 
+from standardbom.immutable import ImmutableList
+
 STANDARD_BOM_MODULE: str = 'standard-bom'
 
 PROPERTY_DIRECT_DEPENDENCY = "siemens:direct"
@@ -112,14 +114,17 @@ class SbomComponent:
         self.component.purl = value
 
     @property
-    def authors(self) -> SortedSet[OrganizationalContact]:
-        authors = self.component.authors
-        if authors is None:
-            authors = SortedSet()
+    def authors(self) -> ImmutableList[OrganizationalContact]:
+        if self.component.authors is None:
+            authors = ImmutableList[OrganizationalContact]()
+        else:
+            authors = ImmutableList(self.component.authors)
 
         # Backward compatibility with v2
         if self.component.author is not None:
-            authors.add(OrganizationalContact(name=self.component.author))
+            authors_list = list(authors)
+            authors_list.append(OrganizationalContact(name=self.component.author))
+            authors = ImmutableList(authors_list)
 
         return authors
 
@@ -128,9 +133,9 @@ class SbomComponent:
         self.component.authors = authors
 
     def add_author(self, author: OrganizationalContact) -> None:
-        if self.authors is None:
-            self.authors = SortedSet()
-        self.authors.add(author)
+        if self.component.authors is None:
+            self.component.authors = SortedSet()
+        self.component.authors.add(author)
 
     @property
     def supplier(self) -> Optional[OrganizationalEntity]:
@@ -616,9 +621,10 @@ class StandardBom:
         self.bom.version = version
 
     @property
-    def components(self) -> 'SortedSet[SbomComponent]':
+    def components(self) -> ImmutableList[SbomComponent]:
         comps = self.bom.components
-        return SortedSet(map(lambda c: SbomComponent(c), comps))
+        sbom_comps = map(lambda c: SbomComponent(c), comps)
+        return ImmutableList(*sbom_comps)
 
     @components.setter
     def components(self, components: Iterable[Component]) -> None:
@@ -697,7 +703,7 @@ class StandardBom:
         self.bom.metadata.authors.add(author)
 
     @property
-    def tools(self) -> SortedSet[SbomComponent]:
+    def tools(self) -> ImmutableList[SbomComponent]:
         tools = self.bom.metadata.tools.components
 
         # checking tools entry for backward compatibility with v2
@@ -710,10 +716,10 @@ class StandardBom:
             ), self.bom.metadata.tools.tools))
             tools = tools.union(comps)
 
-        return SortedSet(map(lambda c: SbomComponent(c), tools))
+        return ImmutableList(*map(lambda c: SbomComponent(c), tools))
 
-    def add_tool(self, component: SbomComponent) -> None:
-        self.bom.metadata.tools.components.add(component.component)
+    def add_tool(self, sbom_component: SbomComponent) -> None:
+        self.bom.metadata.tools.components.add(sbom_component.component)
 
     @property
     def component(self) -> Optional[SbomComponent]:

@@ -12,7 +12,7 @@ from standardbom.model import ExternalComponent, SbomComponent
 
 class SBomComponentTestCase(unittest.TestCase):
 
-    def test_construct(self):
+    def test_construct_default_from_component(self):
         component = SbomComponent(Component(name="test"))
         self.assertEqual(ComponentType.LIBRARY, component.type)
         self.assertEqual("test", component.name)

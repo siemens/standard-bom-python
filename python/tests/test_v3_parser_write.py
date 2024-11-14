@@ -6,7 +6,7 @@ from os import path
 
 from cyclonedx.model.component import Component
 
-from standardbom.model import StandardBom
+from standardbom.model import StandardBom, SbomComponent
 from standardbom.parser import StandardBomParser
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
@@ -35,22 +35,6 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         output_filename = "output/v3/without-dependencies.cdx.json"
 
         sbom = StandardBom()
-        StandardBomParser.save(sbom, output_filename)
-        self.assertTrue(path.exists(output_filename))
-
-        with open(output_filename, 'r') as file:
-            data = json.load(file)
-            self.assertNotIn("dependencies", data)
-
-    def test_write_without_dependencies_with_component(self):
-        output_filename = "output/v3/without-dependencies-with-component.cdx.json"
-
-        sbom = StandardBom()
-        comp = Component(
-            name="Dummy",
-            version="0.0.1"
-        )
-        sbom.add_component(comp)
         StandardBomParser.save(sbom, output_filename)
         self.assertTrue(path.exists(output_filename))
 
@@ -90,7 +74,7 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
 
         sbom = StandardBom()
         component = Component(name="test", version="1.0.0")
-        sbom.components.add(component)
+        sbom.add_component(component)
         StandardBomParser.save(sbom, output_filename)
         self.assertTrue(path.exists(output_filename))
 

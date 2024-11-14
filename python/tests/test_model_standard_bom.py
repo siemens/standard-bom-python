@@ -60,6 +60,23 @@ class StandardBomTestCase(unittest.TestCase):
         self.assertEqual(version('standard-bom'), component.version)
         self.assertEqual('https://sbom.siemens.io/', component.website)
 
+    def test_tools_add_tool_and_get(self):
+        sbom = StandardBom()
+        tool = SbomComponent(Component(name='test-tool', type=ComponentType.APPLICATION))
+        sbom.add_tool(tool)
+        self.assertEqual(2, len(sbom.tools))
+
+        test_tool: SbomComponent = next(filter(lambda x: x.name == 'test-tool', sbom.tools))
+        self.assertIsNotNone(test_tool)
+        self.assertEqual('test-tool', test_tool.name)
+        self.assertEqual(ComponentType.APPLICATION, test_tool.type)
+
+    def test_tools_is_immutable(self):
+        sbom = StandardBom()
+        tool = SbomComponent(Component(name='test-tool', type=ComponentType.APPLICATION))
+        with self.assertRaises(AttributeError):
+            sbom.tools.add(tool)
+
     def test_new_tools_added(self):
         sbom = StandardBom()
         sbom.add_tool(SbomComponent(Component(name='test-tool', type=ComponentType.APPLICATION)))
@@ -96,6 +113,20 @@ class StandardBomTestCase(unittest.TestCase):
         self.assertEqual('Jane Doe', new_contact.name)
         self.assertEqual('1234567890', new_contact.phone)
         self.assertEqual('someone@somewhere.com', new_contact.email)
+
+    def test_sbom_authors_add_and_get(self):
+        sbom = StandardBom()
+        author = OrganizationalContact(name='John Doe')
+        sbom.authors.add(author)
+        self.assertEqual(1, len(sbom.authors))
+        self.assertEqual('John Doe', sbom.authors[0].name)
+
+    def test_sbom_authors_set_and_get(self):
+        sbom = StandardBom()
+        author = OrganizationalContact(name='John Doe')
+        sbom.authors = [author]
+        self.assertEqual(1, len(sbom.authors))
+        self.assertEqual('John Doe', sbom.authors[0].name)
 
     def test_timestamp_provided(self):
         sbom = StandardBom()
@@ -147,3 +178,15 @@ class StandardBomTestCase(unittest.TestCase):
         self.assertEqual(1, len(sbom_standard.external_references))
         self.assertEqual('https://sbom.siemens.io/', f'{sbom_standard.external_references[0].url}')
         self.assertEqual(ExternalReferenceType.WEBSITE, sbom_standard.external_references[0].type)
+
+    def test_sbom_components_is_immutable(self):
+        sbom = StandardBom()
+        component = SbomComponent(Component(name="test", version="1.0.0"))
+        with self.assertRaises(AttributeError):
+            sbom.components.add(component)
+
+    def test_sbom_external_components_is_immutable(self):
+        sbom = StandardBom()
+        ext_comp = ExternalComponent(ExternalReference(type=ExternalReferenceType.WEBSITE, url=XsUri("sbom.siemens.io")))
+        with self.assertRaises(AttributeError):
+            sbom.external_components.add(ext_comp)
