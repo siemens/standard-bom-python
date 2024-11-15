@@ -33,8 +33,8 @@ This gives you our DTOs and the Standard BOM parser:
 
 In order to build this library on your local PC, and/or contribute to this library, mind the following prerequisites:
 
-- [Python](https://www.python.org/doc/versions/) > v3.8.1 - ideally > v3.10
-- [Poetry](https://python-poetry.org/) > v1.3.0
+- [Python](https://www.python.org/doc/versions/) > v3.9 - ideally > v3.12
+- [Poetry](https://python-poetry.org/) > v1.8.0
 
 ---
 Once you have those prerequisites you can perform following development tasks locally:
@@ -52,12 +52,6 @@ Once you have those prerequisites you can perform following development tasks lo
     ```
 
     This will generate the build artifacts under `dist/` folder.
-
-- Check PEP-8 linting compliance with
-
-    ```bash
-    poetry run flake8
-    ```
 
 - Run all unit tests with all test cases and static code analysis
 
