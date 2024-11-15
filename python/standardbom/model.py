@@ -52,6 +52,34 @@ def is_source_artifact(ex_ref: ExternalReference) -> bool:
             or is_local_source_archive(ex_ref))
 
 
+class ExternalComponent:
+    reference: ExternalReference
+
+    def __init__(self, external_ref: Optional[ExternalReference] = None) -> None:
+        if external_ref is None:
+            self.reference = ExternalReference(
+                type=ExternalReferenceType.OTHER,
+                url=XsUri('https://example.com'))
+        else:
+            self.reference = external_ref
+
+    @property
+    def url(self) -> str:
+        return str(self.reference.url)
+
+    @url.setter
+    def url(self, value: str) -> None:
+        self.reference.url = XsUri(value)
+
+    @property
+    def type(self) -> ExternalReferenceType:
+        return self.reference.type
+
+    @type.setter
+    def type(self, value: ExternalReferenceType) -> None:
+        self.reference.type = value
+
+
 class SbomComponent:
     """
     Describes an entry in a standard-bom-compliant SBOM.
@@ -330,11 +358,14 @@ class SbomComponent:
         return reference
 
     @property
-    def external_components(self) -> List['ExternalComponent']:
-        return list(map(lambda er: ExternalComponent(er), self.component.external_references))
+    def external_components(self) -> ImmutableList[ExternalComponent]:
+        references = self.component.external_references
+        return ImmutableList(*map(lambda er: ExternalComponent(er), references))
 
-    def add_external_component(self, external_component: 'ExternalComponent') -> None:
-        self.component.external_references.add(external_component.external_ref)
+    def add_external_component(self, external: ExternalComponent | ExternalReference) -> None:
+        self.component.external_references.add(external
+                                               if isinstance(external, ExternalReference)
+                                               else external.reference)
 
     @property
     def md5(self) -> Optional[str]:
@@ -467,34 +498,6 @@ class SourceArtifact:
             h.content = value
         else:
             self.external_ref.hashes.add(HashType(alg=algorithm, content=value))
-
-
-class ExternalComponent:
-    external_ref: ExternalReference
-
-    def __init__(self, external_ref: Optional[ExternalReference] = None) -> None:
-        if external_ref is None:
-            self.external_ref = ExternalReference(
-                type=ExternalReferenceType.OTHER,
-                url=XsUri('https://example.com'))
-        else:
-            self.external_ref = external_ref
-
-    @property
-    def url(self) -> str:
-        return str(self.external_ref.url)
-
-    @url.setter
-    def url(self, value: str) -> None:
-        self.external_ref.url = XsUri(value)
-
-    @property
-    def type(self) -> ExternalReferenceType:
-        return self.external_ref.type
-
-    @type.setter
-    def type(self, value: ExternalReferenceType) -> None:
-        self.external_ref.type = value
 
 
 class SbomNature(Enum):
@@ -630,15 +633,20 @@ class StandardBom:
     def components(self, components: Iterable[Component]) -> None:
         self.bom.components = components
 
-    def add_component(self, component: Component) -> None:
-        self.bom.components.add(component)
+    def add_component(self, component: Component | SbomComponent) -> None:
+        self.bom.components.add(component
+                                if isinstance(component, Component)
+                                else component.component)
 
     @property
-    def external_components(self) -> List[ExternalComponent]:
-        return list(map(lambda er: ExternalComponent(er), self.bom.external_references))
+    def external_components(self) -> ImmutableList[ExternalComponent]:
+        references = self.bom.external_references
+        return ImmutableList(*map(lambda er: ExternalComponent(er), references))
 
-    def add_external_component(self, external_component: ExternalComponent) -> None:
-        self.bom.external_references.add(external_component.external_ref)
+    def add_external_component(self, external: ExternalReference | ExternalComponent) -> None:
+        self.bom.external_references.add(external
+                                         if isinstance(external, ExternalReference)
+                                         else external.reference)
 
     @property
     def profile(self) -> Optional[str]:
@@ -718,8 +726,10 @@ class StandardBom:
 
         return ImmutableList(*map(lambda c: SbomComponent(c), tools))
 
-    def add_tool(self, sbom_component: SbomComponent) -> None:
-        self.bom.metadata.tools.components.add(sbom_component.component)
+    def add_tool(self, tool: Component | SbomComponent) -> None:
+        self.bom.metadata.tools.components.add(tool
+                                               if isinstance(tool, Component)
+                                               else tool.component)
 
     @property
     def component(self) -> Optional[SbomComponent]:

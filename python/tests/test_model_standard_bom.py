@@ -25,21 +25,28 @@ class StandardBomTestCase(unittest.TestCase):
         self.assertEqual(sbom.components[0].name, "test.jar")
         self.assertEqual(sbom.components[0].type, ComponentType.LIBRARY)
 
+    def test_add_component_sbom_component(self):
+        sbom = StandardBom()
+        sbom.add_component(SbomComponent(Component(name="test.jar", type=ComponentType.LIBRARY)))
+        self.assertEqual(1, len(sbom.components))
+        self.assertEqual(sbom.components[0].name, "test.jar")
+        self.assertEqual(sbom.components[0].type, ComponentType.LIBRARY)
+
     def test_empty_external_components(self):
         sbom = StandardBom()
         self.assertIsNotNone(sbom)
         self.assertIsNotNone(sbom.external_components)
         self.assertEqual(0, len(sbom.external_components))
 
-    def test_add_external_component(self):
+    def test_add_external_component_external_reference(self):
         sbom = StandardBom()
-        sbom.add_external_component(ExternalComponent(ExternalReference(type=ExternalReferenceType.WEBSITE,
-                                                                        url=XsUri("sbom.siemens.io"))))
+        sbom.add_external_component(ExternalReference(type=ExternalReferenceType.WEBSITE,
+                                                      url=XsUri("sbom.siemens.io")))
         self.assertEqual(1, len(sbom.external_components))
         self.assertEqual(sbom.external_components[0].url, "sbom.siemens.io")
         self.assertEqual(sbom.external_components[0].type, ExternalReferenceType.WEBSITE)
 
-    def test_add_external_component2(self):
+    def test_add_external_component(self):
         ext_comp = ExternalComponent()
         ext_comp.type = ExternalReferenceType.WEBSITE
         ext_comp.url = 'https://sbom.siemens.io'
@@ -62,7 +69,7 @@ class StandardBomTestCase(unittest.TestCase):
 
     def test_tools_add_tool_and_get(self):
         sbom = StandardBom()
-        tool = SbomComponent(Component(name='test-tool', type=ComponentType.APPLICATION))
+        tool = Component(name='test-tool', type=ComponentType.APPLICATION)
         sbom.add_tool(tool)
         self.assertEqual(2, len(sbom.tools))
 
@@ -73,11 +80,33 @@ class StandardBomTestCase(unittest.TestCase):
 
     def test_tools_is_immutable(self):
         sbom = StandardBom()
-        tool = SbomComponent(Component(name='test-tool', type=ComponentType.APPLICATION))
+        tool = Component(name='test-tool', type=ComponentType.APPLICATION)
         with self.assertRaises(AttributeError):
+            # noinspection PyUnresolvedReferences
             sbom.tools.add(tool)
 
-    def test_new_tools_added(self):
+    def test_tools_is_iterable(self):
+        sbom = StandardBom()
+        tool = Component(name='test-tool', type=ComponentType.APPLICATION)
+        sbom.add_tool(tool)
+        # sbom.tools has tool and standard-bom, check existence of tool
+        test_tool_exists = False
+        for comp in sbom.tools:
+            if comp.name == 'test-tool':
+                test_tool_exists = True
+        self.assertTrue(test_tool_exists)
+
+    def test_add_tool(self):
+        sbom = StandardBom()
+        sbom.add_tool(Component(name='test-tool', type=ComponentType.APPLICATION))
+        self.assertEqual(2, len(sbom.tools))
+
+        test_tool: SbomComponent = next(filter(lambda x: x.name == 'test-tool', sbom.tools))
+        self.assertIsNotNone(test_tool)
+        self.assertEqual('test-tool', test_tool.name)
+        self.assertEqual(ComponentType.APPLICATION, test_tool.type)
+
+    def test_add_tool_sbom_component(self):
         sbom = StandardBom()
         sbom.add_tool(SbomComponent(Component(name='test-tool', type=ComponentType.APPLICATION)))
         self.assertEqual(2, len(sbom.tools))
@@ -183,10 +212,27 @@ class StandardBomTestCase(unittest.TestCase):
         sbom = StandardBom()
         component = SbomComponent(Component(name="test", version="1.0.0"))
         with self.assertRaises(AttributeError):
+            # noinspection PyUnresolvedReferences
             sbom.components.add(component)
+
+    def test_sbom_components_is_iterable(self):
+        sbom = StandardBom()
+        component = Component(name="test", version="1.0.0")
+        sbom.add_component(component)
+        for comp in sbom.components:
+            self.assertEqual(comp.component, component)
 
     def test_sbom_external_components_is_immutable(self):
         sbom = StandardBom()
-        ext_comp = ExternalComponent(ExternalReference(type=ExternalReferenceType.WEBSITE, url=XsUri("sbom.siemens.io")))
+        ext_comp = ExternalComponent(
+            ExternalReference(type=ExternalReferenceType.WEBSITE, url=XsUri("sbom.siemens.io")))
         with self.assertRaises(AttributeError):
+            # noinspection PyUnresolvedReferences
             sbom.external_components.add(ext_comp)
+
+    def test_sbom_external_components_is_iterable(self):
+        sbom = StandardBom()
+        external = ExternalReference(type=ExternalReferenceType.WEBSITE, url=XsUri("sbom.siemens.io"))
+        sbom.add_external_component(external)
+        for comp in sbom.external_components:
+            self.assertEqual(comp.reference, external)

@@ -200,14 +200,43 @@ class SBomComponentTestCase(unittest.TestCase):
         component.sha512 = "changed"
         self.assertEqual("changed", component.sha512)
 
-    def test_add_get_external_components(self):
+    def test_add_external_component_external_reference(self):
         component = SbomComponent(Component(name="test"))
         component.add_external_component(ExternalComponent(ExternalReference(
             type=ExternalReferenceType.BOM,
             url=XsUri("test")
         )))
         self.assertEqual(1, len(component.external_components))
-        self.assertEqual(ExternalReferenceType.BOM, component.external_components[0].external_ref.type)
+        self.assertEqual(ExternalReferenceType.BOM, component.external_components[0].reference.type)
+
+    def test_add_external_component(self):
+        component = SbomComponent(Component(name="test"))
+        component.add_external_component(ExternalReference(
+            type=ExternalReferenceType.BOM,
+            url=XsUri("test")
+        ))
+        self.assertEqual(1, len(component.external_components))
+        self.assertEqual(ExternalReferenceType.BOM, component.external_components[0].reference.type)
+
+    def test_external_components_are_immutable(self):
+        component = SbomComponent(Component(name="test"))
+        reference = ExternalReference(
+            type=ExternalReferenceType.BOM,
+            url=XsUri("test")
+        )
+        with self.assertRaises(AttributeError):
+            # noinspection PyUnresolvedReferences
+            component.external_components.add(reference)
+
+    def test_external_components_are_iterable(self):
+        component = SbomComponent(Component(name="test"))
+        e = ExternalReference(
+            type=ExternalReferenceType.BOM,
+            url=XsUri("test")
+        )
+        component.add_external_component(e)
+        for external_comp in component.external_components:
+            self.assertEqual(e, external_comp.reference)
 
 
 if __name__ == '__main__':

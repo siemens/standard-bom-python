@@ -10,7 +10,7 @@ This library is mainly a wrapper for the official
 
 TODO: Add installation instructions after publish
 
-This gives you our DTOs and the Standard BOM parser:
+The library provides Standard BOM parser and serializer classes. The parser class is used to read a Standard BOM from a file, and the serializer class is used to write a Standard BOM to a file.
 
 - Read a Standard BOM from a JSON file:
 
@@ -27,6 +27,48 @@ This gives you our DTOs and the Standard BOM parser:
 
     bom = ...
     StandardBomParser.save(bom, "sbom.cdx.json")
+    ```
+
+- Create a Standard BOM document programmatically:
+
+    The `StandardBom` class is a subclass of the `cyclonedx.bom.Bom` class from the upstream library
+    [cyclonedx-python-lib](https://github.com/CycloneDX/cyclonedx-python-lib) since this library is a wrapper of the
+    model objects from the upstream library.
+
+    ```python
+    from standardbom.model import StandardBom, Component, ComponentType
+    from cyclonedx.model.contact import OrganizationalContact
+
+    bom = StandardBom()
+    bom.add_author(OrganizationalContact(name='John Doe'))
+    bom.add_tool(Component(name='Sample Tool', version='1.0.0', type=ComponentType.APPLICATION))
+    bom.add_component(Component(name='Sample Component', version='1.2.3', type=ComponentType.LIBRARY))
+    ```
+    You can also use the Standard BOM wrapper classes to create and edit the Standard BOM document.
+    For example, you can do the following similar to the example abode:
+
+    ```python
+    from standardbom.model import StandardBom, Component, ComponentType, SbomComponent
+    from cyclonedx.model.contact import OrganizationalContact
+
+    bom = StandardBom()
+    bom.add_author(OrganizationalContact(name='John Doe'))
+    bom.add_tool(SbomComponent(Component(name='Sample Tool', version='1.0.0', type=ComponentType.APPLICATION)))
+    bom.add_component(SbomComponent(Component(name='Sample Component', version='1.2.3', type=ComponentType.LIBRARY)))
+    ```
+
+- Retrieve fields from the Standard BOM object:
+
+    Once you retrieve several fields from the `StandardBom` object, you get the wrapped Standard BOM types for these
+    fields. For example, the `tools` or `components` getters returns a list of `SbomComponent` objects:
+
+    ```python
+    from typing import Iterable
+    from standardbom.model import SbomComponent
+
+    bom = ...
+    components: Iterable[SbomComponent] = bom.components
+    tools: Iterable[SbomComponent] = bom.tools
     ```
 
 ## Development
