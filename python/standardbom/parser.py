@@ -28,9 +28,20 @@ class StandardBomParser:
             return StandardBom(bom)
 
     @staticmethod
-    def save(sbom: StandardBom, output_filename: str, indent=4) -> None:
+    def save(sbom: StandardBom, output_filename: str, indent=4, with_dependencies=True) -> None:
         output_file = Path(output_filename)
         output_file.parent.mkdir(exist_ok=True, parents=True)
 
         writer = JsonV1Dot6(bom=sbom.bom)
         writer.output_to_file(filename=output_filename, allow_overwrite=True, indent=indent)
+
+        if not with_dependencies:
+            StandardBomParser._patch_to_remove_dependencies(output_filename, indent)
+
+    @staticmethod
+    def _patch_to_remove_dependencies(output_filename, indent=4):
+        with open(output_filename, 'r') as file:
+            data = json.load(file)
+            data.pop('dependencies', None)
+        with open(output_filename, 'w') as file:
+            json.dump(data, file, indent=indent)
