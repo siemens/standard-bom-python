@@ -29,6 +29,18 @@ The library provides Standard BOM parser and serializer classes. The parser clas
     StandardBomParser.save(bom, "sbom.cdx.json")
     ```
 
+    If you'd like to skip the `.dependencies` field in the output file, you can use the following code:
+
+    ```python
+    from standardbom.parser import StandardBomParser
+
+    bom = ...
+    StandardBomParser.save(bom, "sbom.cdx.json", with_dependencies=False)
+    ```
+
+    This will save the Standard BOM to the file without the `.dependencies` field, which is `prohibited` in the
+    [`external` profile](https://sbom.siemens.io/v3/profiles.html).
+
 - Create a Standard BOM document programmatically:
 
     The `StandardBom` class is a subclass of the `cyclonedx.bom.Bom` class from the upstream library
