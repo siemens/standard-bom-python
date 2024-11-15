@@ -33,7 +33,7 @@ This gives you our DTOs and the Standard BOM parser:
 
 In order to build this library on your local PC, and/or contribute to this library, mind the following prerequisites:
 
-- [Python](https://www.python.org/doc/versions/) > v3.9 - ideally > v3.12
+- [Python](https://www.python.org/doc/versions/) > v3.10 - ideally > v3.12
 - [Poetry](https://python-poetry.org/) > v1.8.0
 
 ---
