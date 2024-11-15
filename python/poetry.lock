@@ -120,13 +120,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "cyclonedx-python-lib"
-version = "8.3.0"
+version = "8.4.0"
 description = "Python library for CycloneDX"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "cyclonedx_python_lib-8.3.0-py3-none-any.whl", hash = "sha256:80519d8de7f7d18287495d34c48a79c7bd9dcea5bbb57e929d9fa98039bec721"},
-    {file = "cyclonedx_python_lib-8.3.0.tar.gz", hash = "sha256:d60f6060ad11a5a77ccbf7827acc16a40741f00c97f0ab21201617cd1fc44a7d"},
+    {file = "cyclonedx_python_lib-8.4.0-py3-none-any.whl", hash = "sha256:fd44efd601f651c8865acf0dfeacb0df19a2b50ec69ead0262096fd2f67197b9"},
+    {file = "cyclonedx_python_lib-8.4.0.tar.gz", hash = "sha256:1d86efc1e81c0fd01141658b8aed5248c4f4d8d300d7ced9e1dfc39abeafc0a9"},
 ]
 
 [package.dependencies]
@@ -479,13 +479,13 @@ dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments
 
 [[package]]
 name = "python-dateutil"
-version = "2.9.0"
+version = "2.9.0.post0"
 description = "Extensions to the standard Python datetime module"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 files = [
-    {file = "python-dateutil-2.9.0.tar.gz", hash = "sha256:78e73e19c63f5b20ffa567001531680d939dc042bf7850431877645523c66709"},
-    {file = "python_dateutil-2.9.0-py2.py3-none-any.whl", hash = "sha256:cbf2f1da5e6083ac2fbfd4da39a25f34312230110440f424a14c7558bb85d82e"},
+    {file = "python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"},
+    {file = "python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"},
 ]
 
 [package.dependencies]
@@ -596,4 +596,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "9d5934233f5f65186283fa5365d709e4b40c95bcdfcbf3d109ceb3faf29ec1e5"
+content-hash = "9833b21315bc42d28bc57b368a6e9307ed101d75fc597303a1fed788f94dc8aa"
