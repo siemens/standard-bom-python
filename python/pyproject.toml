@@ -27,7 +27,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.10"
 python-dateutil = "2.9.0.post0"
-cyclonedx-python-lib = "8.4.0"
+cyclonedx-python-lib = "8.5.0"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.6.1"
