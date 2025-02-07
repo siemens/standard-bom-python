@@ -1,9 +1,12 @@
-[tool.poetry]
+[project]
 name = "standard-bom"
 version = "3.0.0"
 description = "Standard BOM Format Library"
 keywords = ["sbom", "software-bill-of-materials", "cyclonedx", "cdx"]
-authors = ["Hakan Dilek <hakan.dilek@siemens.com>", "Thomas Jensen <jensenthomas@siemens.com>"]
+authors = [
+    { name="Hakan Dilek", email="hakan.dilek@siemens.com" },
+    { name="Thomas Jensen", email="jensenthomas@siemens.com"}
+]
 license = "MIT"
 homepage = "https://sbom.siemens.io/"
 readme = "README.md"
@@ -19,15 +22,22 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-packages = [
-    {include = "standardbom"},
-    {include = "standardbom/py.typed"},
-]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-python-dateutil = "2.9.0.post0"
-cyclonedx-python-lib = "8.7.0"
+requires-python = "^3.10"
+dependencies = [
+    "python-dateutil (>=2.9.0.post0,<3.0.0)",
+    "cyclonedx-python-lib(>=8.7.0,<9.0.0)",
+]
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = true
+packages = [
+    { include = "standardbom" },
+    { include = "standardbom/py.typed" },
+]
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.6.1"
@@ -38,6 +48,3 @@ mypy = "^1.11.2"
 types-python-dateutil = "^2.9.0.20240906"
 tox = "^4.23.0"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
