@@ -607,7 +607,7 @@ class StandardBom:
         else:
             if value:
                 # add new
-                prop = Property(name=property_name, value=value) if value else None
+                prop = Property(name=property_name, value=value)
                 self.bom.metadata.properties.add(prop)
             else:
                 # nothing to do
