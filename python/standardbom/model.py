@@ -726,13 +726,12 @@ class StandardBom:
         tools = self.bom.metadata.tools.components
 
         # checking tools entry for backward compatibility with v2
-        if self.bom.metadata.tools.tools is not None and len(self.bom.metadata.tools.tools) > 0:
-            comps: SortedSet[Component] = SortedSet(map(lambda t: Component(
-                name=t.name,
-                version=t.version,
-                supplier=OrganizationalEntity(name=t.vendor),
-                external_references=t.external_references
-            ), self.bom.metadata.tools.tools))
+        tools_list = self.bom.metadata.tools.tools
+        if tools_list is not None and len(tools_list) > 0:
+            m = map(lambda t: Component(name=t.name if t.name else "(unknown tool)",
+                                        version=t.version, supplier=OrganizationalEntity(name=t.vendor),
+                                        external_references=t.external_references), tools_list)
+            comps: SortedSet[Component] = SortedSet(m)
             tools = tools.union(comps)
 
         return ImmutableList(*map(lambda c: SbomComponent(c), tools))
