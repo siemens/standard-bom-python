@@ -159,7 +159,7 @@ class SbomComponent:
 
     @authors.setter
     def authors(self, authors: Iterable[OrganizationalContact]) -> None:
-        self.component.authors = authors
+        self.component.authors = SortedSet(authors)
 
     def add_author(self, author: OrganizationalContact) -> None:
         if self.component.authors is None:
@@ -642,7 +642,7 @@ class StandardBom:
 
     @components.setter
     def components(self, components: Iterable[Component]) -> None:
-        self.bom.components = components
+        self.bom.components = SortedSet(components)
 
     def add_component(self, component: Component | SbomComponent) -> None:
         self.bom.components.add(component
@@ -714,7 +714,7 @@ class StandardBom:
 
     @authors.setter
     def authors(self, authors: Iterable[OrganizationalContact]) -> None:
-        self.bom.metadata.authors = authors
+        self.bom.metadata.authors = SortedSet(authors)
 
     def add_author(self, author: OrganizationalContact) -> None:
         if self.bom.metadata.authors is None:
