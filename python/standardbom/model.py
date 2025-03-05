@@ -1,10 +1,11 @@
 #
 # Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED
 #
+import enum
 from datetime import datetime
 from enum import Enum
 from importlib.metadata import version as library_version
-from typing import Iterable, List, Optional
+from typing import Iterable, List, Optional, Any
 from uuid import UUID
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
@@ -500,9 +501,19 @@ class SourceArtifact:
             self.external_ref.hashes.add(HashType(alg=algorithm, content=value))
 
 
-class SbomNature(Enum):
+class SbomNature(str, Enum):
     SOURCE = "source"
     BINARY = "binary"
+
+    def __new__(cls, value: object, *args: Any, **kwargs: Any) -> 'SbomNature':
+        if not isinstance(value, (str, enum.auto)):
+            raise TypeError(
+                f"Values of StrEnums must be strings: {value!r} is a {type(value)}"
+            )
+        return super().__new__(cls, value, *args, **kwargs)
+
+    def __str__(self) -> str:
+        return str(self.value)
 
 
 def is_valid_serial_number(serial_number):
