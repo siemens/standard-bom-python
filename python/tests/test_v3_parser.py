@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from cyclonedx.model.contact import OrganizationalContact
 from packageurl import PackageURL
 
-from standardbom.model import SbomComponent, SbomNature
+from standardbom.model import SbomNature
 from standardbom.parser import StandardBomParser
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase, read_timestamp
 
@@ -28,7 +28,7 @@ class SbomV3ParserTestCase(AbstractSbomComparingTestCase):
         self.assertEqual(1, len(bom.external_components))
 
         self.assertEqual(9, len(bom.components))
-        commons_codec: SbomComponent = next(comp for comp in bom.components if comp.name == "commons-codec")
+        commons_codec = next(comp for comp in bom.components if comp.name == "commons-codec")
         self.assertIsNotNone(commons_codec)
         self.assertEqual(commons_codec.name, "commons-codec")
         self.assertEqual(commons_codec.group, "commons-codec")

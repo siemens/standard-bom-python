@@ -2,7 +2,7 @@ import unittest
 from abc import ABC
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple
 
 from cyclonedx.model.bom_ref import BomRef
 from dateutil import parser as dateparser
@@ -22,7 +22,7 @@ exclude_regex_paths = [
 
 
 class AbstractSbomComparingTestCase(ABC, unittest.TestCase):
-    def write_read_compare(self, input_filename, output_filename) -> (StandardBom, StandardBom):
+    def write_read_compare(self, input_filename, output_filename) -> Tuple[StandardBom, StandardBom]:
         expected_bom = StandardBomParser.parse(input_filename)
         StandardBomParser.save(expected_bom, output_filename)
         self.assertTrue(Path(output_filename).is_file())

@@ -28,7 +28,9 @@ description = "Run type checker"
 deps = [
     "mypy>=1.8",
     "types-python-dateutil>=2.8",
+    "sortedcontainers-stubs>=2.4",
+    "deepdiff>=8",
 ]
 commands = [
-    ["mypy", "-p", "standardbom", { replace = "posargs", extend = true} ],
+    ["mypy", "-p", "standardbom", "-p", "tests", { replace = "posargs", extend = true} ],
 ]

@@ -100,7 +100,7 @@ class ImmutableListTestCase(unittest.TestCase):
         self.assertEqual(il, (11, 12, 13, 14, 15))
 
     def test_map_values_from_a_set(self):
-        lst: SortedSet[int] = SortedSet([1, 2, 3, 4, 5])
+        lst = SortedSet([1, 2, 3, 4, 5])
         mapped = map(lambda x: x + 10, lst)
         il = ImmutableList(mapped)
         self.assertEqual(il, (11, 12, 13, 14, 15))

@@ -6,7 +6,6 @@ from importlib.metadata import version
 from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.component import ComponentType, Component
 from cyclonedx.model.contact import OrganizationalContact
-from cyclonedx.model.definition import Standard
 
 from standardbom.model import StandardBom, SbomComponent, ExternalComponent, is_standardbom_component_entry
 
@@ -60,7 +59,7 @@ class StandardBomTestCase(unittest.TestCase):
         sbom = StandardBom()
         self.assertGreaterEqual(1, len(sbom.tools))  # standard-bom component is always present
 
-        component: SbomComponent = next(filter(lambda c: is_standardbom_component_entry(c.component), sbom.tools))
+        component = next(filter(lambda c: is_standardbom_component_entry(c.component), sbom.tools))
         self.assertIsNotNone(component)
         self.assertEqual('Siemens AG', component.supplier.name)
         self.assertEqual('standard-bom', component.name)
@@ -73,7 +72,7 @@ class StandardBomTestCase(unittest.TestCase):
         sbom.add_tool(tool)
         self.assertEqual(2, len(sbom.tools))
 
-        test_tool: SbomComponent = next(filter(lambda x: x.name == 'test-tool', sbom.tools))
+        test_tool = next(filter(lambda x: x.name == 'test-tool', sbom.tools))
         self.assertIsNotNone(test_tool)
         self.assertEqual('test-tool', test_tool.name)
         self.assertEqual(ComponentType.APPLICATION, test_tool.type)
@@ -101,7 +100,7 @@ class StandardBomTestCase(unittest.TestCase):
         sbom.add_tool(Component(name='test-tool', type=ComponentType.APPLICATION))
         self.assertEqual(2, len(sbom.tools))
 
-        test_tool: SbomComponent = next(filter(lambda x: x.name == 'test-tool', sbom.tools))
+        test_tool = next(filter(lambda x: x.name == 'test-tool', sbom.tools))
         self.assertIsNotNone(test_tool)
         self.assertEqual('test-tool', test_tool.name)
         self.assertEqual(ComponentType.APPLICATION, test_tool.type)
@@ -111,7 +110,7 @@ class StandardBomTestCase(unittest.TestCase):
         sbom.add_tool(SbomComponent(Component(name='test-tool', type=ComponentType.APPLICATION)))
         self.assertEqual(2, len(sbom.tools))
 
-        test_tool: SbomComponent = next(filter(lambda x: x.name == 'test-tool', sbom.tools))
+        test_tool = next(filter(lambda x: x.name == 'test-tool', sbom.tools))
         self.assertIsNotNone(test_tool)
         self.assertEqual('test-tool', test_tool.name)
         self.assertEqual(ComponentType.APPLICATION, test_tool.type)
@@ -137,7 +136,7 @@ class StandardBomTestCase(unittest.TestCase):
         sbom.add_author(OrganizationalContact(name='Jane Doe', phone='1234567890', email='someone@somewhere.com'))
         self.assertEqual(2, len(sbom.authors))
 
-        new_contact: OrganizationalContact = next(filter(lambda x: x.name == 'Jane Doe', sbom.authors))
+        new_contact = next(filter(lambda x: x.name == 'Jane Doe', sbom.authors))
         self.assertIsNotNone(new_contact)
         self.assertEqual('Jane Doe', new_contact.name)
         self.assertEqual('1234567890', new_contact.phone)
@@ -196,8 +195,8 @@ class StandardBomTestCase(unittest.TestCase):
         self.assertIsNotNone(sbom.definitions.standards)
         self.assertGreaterEqual(1, len(sbom.definitions.standards))
 
-        sbom_standard: Standard = next(filter(lambda x: x.name == 'Standard BOM' and x.owner == 'Siemens AG',
-                                              sbom.definitions.standards))
+        sbom_standard = next(filter(lambda x: x.name == 'Standard BOM' and x.owner == 'Siemens AG',
+                                    sbom.definitions.standards))
         self.assertIsNotNone(sbom_standard)
         self.assertEqual('standard-bom', f'{sbom_standard.bom_ref}')
         self.assertEqual('Standard BOM', sbom_standard.name)
