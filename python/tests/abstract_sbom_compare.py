@@ -6,7 +6,7 @@ from typing import Optional, Tuple
 
 from cyclonedx.model.bom_ref import BomRef
 from dateutil import parser as dateparser
-from deepdiff import DeepDiff
+from deepdiff import DeepDiff  # type: ignore[attr-defined]
 
 from standardbom.model import StandardBom
 from standardbom.parser import StandardBomParser
@@ -22,7 +22,7 @@ exclude_regex_paths = [
 
 
 class AbstractSbomComparingTestCase(ABC, unittest.TestCase):
-    def write_read_compare(self, input_filename, output_filename) -> Tuple[StandardBom, StandardBom]:
+    def write_read_compare(self, input_filename: str, output_filename: str) -> Tuple[StandardBom, StandardBom]:
         expected_bom = StandardBomParser.parse(input_filename)
         StandardBomParser.save(expected_bom, output_filename)
         self.assertTrue(Path(output_filename).is_file())
@@ -46,7 +46,7 @@ class AbstractSbomComparingTestCase(ABC, unittest.TestCase):
         return actual_bom, expected_bom
 
 
-def read_timestamp(param) -> Optional[datetime]:
+def read_timestamp(param: str | None) -> Optional[datetime]:
     if param is None:
         return None
     try:

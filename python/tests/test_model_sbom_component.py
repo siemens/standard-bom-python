@@ -4,6 +4,7 @@ import unittest
 
 from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.component import ComponentType, Component
+from cyclonedx.model.contact import OrganizationalContact
 from cyclonedx.model.license import DisjunctiveLicense
 from packageurl import PackageURL
 
@@ -12,7 +13,7 @@ from standardbom.model import ExternalComponent, SbomComponent
 
 class SBomComponentTestCase(unittest.TestCase):
 
-    def test_construct_default_from_component(self):
+    def test_construct_default_from_component(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertEqual(ComponentType.LIBRARY, component.type)
         self.assertEqual("test", component.name)
@@ -26,7 +27,7 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertIsNone(component.copyright)
         self.assertIsNone(component.cpe)
 
-    def test_direct_fields(self):
+    def test_direct_fields(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertEqual("test", component.name)
         self.assertEqual(ComponentType.LIBRARY, component.type)
@@ -40,7 +41,7 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertIsNone(component.copyright)
         self.assertIsNone(component.cpe)
 
-    def test_property_setters(self):
+    def test_property_setters(self) -> None:
         component = SbomComponent(Component(name="test"))
 
         component.name = "42"
@@ -58,8 +59,8 @@ class SBomComponentTestCase(unittest.TestCase):
         component.purl = PackageURL(type="generic", name="foo.zip")
         self.assertEqual("foo.zip", component.purl.name)
 
-        component.author = "Lex Luthor"
-        self.assertEqual("Lex Luthor", component.author)
+        component.add_author(OrganizationalContact(name="Lex Luthor"))
+        self.assertEqual("Lex Luthor", component.authors[0].name)
 
         component.description = "evil unicorn powder"
         self.assertEqual("evil unicorn powder", component.description)
@@ -70,7 +71,7 @@ class SBomComponentTestCase(unittest.TestCase):
         component.cpe = "cpe:2.3:a:evil_corp:mars_explorer:1.2.3:beta:*:*:*:*:*:*"
         self.assertEqual("cpe:2.3:a:evil_corp:mars_explorer:1.2.3:beta:*:*:*:*:*:*", component.cpe)
 
-    def test_licenses(self):
+    def test_licenses(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertEqual(0, len(component.licenses))
 
@@ -80,81 +81,81 @@ class SBomComponentTestCase(unittest.TestCase):
         component.add_license(lic)
         self.assertListEqual([lic], list(component.licenses))
 
-    def test_third_party_notices(self):
+    def test_third_party_notices(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.third_party_notices)
 
         component.third_party_notices = "test123"
         self.assertEqual("test123", component.third_party_notices)
 
-    def test_direct_dependency(self):
+    def test_direct_dependency(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertFalse(component.direct_dependency)
 
-        component.direct_dependency = "true"
+        component.direct_dependency = "true"  # type: ignore[assignment]
         self.assertTrue(component.direct_dependency)
 
-        component.direct_dependency = "True"
+        component.direct_dependency = "True"  # type: ignore[assignment]
         self.assertTrue(component.direct_dependency)
 
-        component.direct_dependency = "False"
+        component.direct_dependency = "False"  # type: ignore[assignment]
         self.assertFalse(component.direct_dependency)
 
-        component.direct_dependency = "something"
+        component.direct_dependency = "something"  # type: ignore[assignment]
         self.assertFalse(component.direct_dependency)
 
-    def test_internal(self):
+    def test_internal(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertFalse(component.internal)
 
-        component.internal = "true"
+        component.internal = "true"  # type: ignore[assignment]
         self.assertTrue(component.internal)
 
-        component.internal = "True"
+        component.internal = "True"  # type: ignore[assignment]
         self.assertTrue(component.internal)
 
-        component.internal = "False"
+        component.internal = "False"  # type: ignore[assignment]
         self.assertFalse(component.internal)
 
-        component.internal = "something"
+        component.internal = "something"  # type: ignore[assignment]
         self.assertFalse(component.internal)
 
-    def test_primary_language(self):
+    def test_primary_language(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.primary_language)
 
         component.primary_language = "test123"
         self.assertEqual("test123", component.primary_language)
 
-    def test_legal_remark(self):
+    def test_legal_remark(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.legal_remark)
 
         component.legal_remark = "test123"
         self.assertEqual("test123", component.legal_remark)
 
-    def test_filename(self):
+    def test_filename(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.filename)
 
         component.filename = "test123"
         self.assertEqual("test123", component.filename)
 
-    def test_website(self):
+    def test_website(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.website)
 
         component.website = "test123"
         self.assertEqual("test123", component.website)
 
-    def test_repo_url(self):
+    def test_repo_url(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.repo_url)
 
         component.repo_url = "test123"
         self.assertEqual("test123", component.repo_url)
 
-    def test_relative_path(self):
+    def test_relative_path(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.relative_path)
 
@@ -164,7 +165,7 @@ class SBomComponentTestCase(unittest.TestCase):
         component.relative_path = "file:changed"
         self.assertEqual("changed", component.relative_path)
 
-    def test_md5(self):
+    def test_md5(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.md5)
 
@@ -173,7 +174,7 @@ class SBomComponentTestCase(unittest.TestCase):
         component.md5 = "changed"
         self.assertEqual("changed", component.md5)
 
-    def test_sha1(self):
+    def test_sha1(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.sha1)
 
@@ -182,7 +183,7 @@ class SBomComponentTestCase(unittest.TestCase):
         component.sha1 = "changed"
         self.assertEqual("changed", component.sha1)
 
-    def test_sha256(self):
+    def test_sha256(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.sha256)
 
@@ -191,7 +192,7 @@ class SBomComponentTestCase(unittest.TestCase):
         component.sha256 = "changed"
         self.assertEqual("changed", component.sha256)
 
-    def test_sha512(self):
+    def test_sha512(self) -> None:
         component = SbomComponent(Component(name="test"))
         self.assertIsNone(component.sha512)
 
@@ -200,7 +201,7 @@ class SBomComponentTestCase(unittest.TestCase):
         component.sha512 = "changed"
         self.assertEqual("changed", component.sha512)
 
-    def test_add_external_component_external_reference(self):
+    def test_add_external_component_external_reference(self) -> None:
         component = SbomComponent(Component(name="test"))
         component.add_external_component(ExternalComponent(ExternalReference(
             type=ExternalReferenceType.BOM,
@@ -209,7 +210,7 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertEqual(1, len(component.external_components))
         self.assertEqual(ExternalReferenceType.BOM, component.external_components[0].reference.type)
 
-    def test_add_external_component(self):
+    def test_add_external_component(self) -> None:
         component = SbomComponent(Component(name="test"))
         component.add_external_component(ExternalReference(
             type=ExternalReferenceType.BOM,
@@ -218,17 +219,16 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertEqual(1, len(component.external_components))
         self.assertEqual(ExternalReferenceType.BOM, component.external_components[0].reference.type)
 
-    def test_external_components_are_immutable(self):
+    def test_external_components_are_immutable(self) -> None:
         component = SbomComponent(Component(name="test"))
         reference = ExternalReference(
             type=ExternalReferenceType.BOM,
             url=XsUri("test")
         )
         with self.assertRaises(AttributeError):
-            # noinspection PyUnresolvedReferences
-            component.external_components.add(reference)
+            component.external_components.add(reference)  # type: ignore[attr-defined]
 
-    def test_external_components_are_iterable(self):
+    def test_external_components_are_iterable(self) -> None:
         component = SbomComponent(Component(name="test"))
         e = ExternalReference(
             type=ExternalReferenceType.BOM,

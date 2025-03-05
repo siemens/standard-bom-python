@@ -2,13 +2,13 @@
 # Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED
 #
 from dataclasses import dataclass
-from typing import Iterable, TypeVar, Generic, Union, Tuple
+from typing import Iterable, TypeVar, Generic, Union, Tuple, Any, Iterator
 
 T = TypeVar('T')
 
 
 @dataclass(frozen=True)
-class ImmutableList(Generic[T]):
+class ImmutableList(Generic[T], Iterable[T]):
     _items: Tuple[T, ...]
 
     def __init__(self, *args: Union[T, Iterable[T]]) -> None:
@@ -24,16 +24,17 @@ class ImmutableList(Generic[T]):
     def __getitem__(self, index: int) -> T:
         return self._items[index]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T]:
         return iter(self._items)
 
     def __str__(self) -> str:
         return str(self._items)
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         if isinstance(other, ImmutableList):
             return self._items == other._items
-        return self._items == other
+        eq: bool = self._items == other
+        return eq
 
     def __hash__(self) -> int:
         return hash(self._items)

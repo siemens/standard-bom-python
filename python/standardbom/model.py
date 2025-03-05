@@ -91,8 +91,8 @@ class SbomComponent:
     def __init__(self, component: Component) -> None:
         self.component = component
 
-    def __lt__(self, other):
-        return self.component < other.component
+    def __lt__(self, other: Any) -> bool:
+        return self.component < other.component if isinstance(other, SbomComponent) else False
 
     @property
     def name(self) -> str:
@@ -147,7 +147,7 @@ class SbomComponent:
         if self.component.authors is None:
             authors = ImmutableList[OrganizationalContact]()
         else:
-            authors = ImmutableList(self.component.authors)
+            authors = ImmutableList[OrganizationalContact](self.component.authors)
 
         # Backward compatibility with v2
         if self.component.author is not None:
@@ -517,7 +517,7 @@ class SbomNature(str, Enum):
         return str(self.value)
 
 
-def is_valid_serial_number(serial_number):
+def is_valid_serial_number(serial_number: str | None) -> bool:
     return not (serial_number is None or "urn:uuid:None" == serial_number)
 
 
@@ -548,8 +548,8 @@ class StandardBom:
         self._insert_standard_bom_definitions_entry_if_missing()
         self._set_supplier_if_missing()
 
-    def _insert_standard_bom_tools_entry_if_missing(self):
-        standard_bom_tools_entry = None
+    def _insert_standard_bom_tools_entry_if_missing(self) -> None:
+        standard_bom_tools_entry: Tool | Component | None = None
         for comp in self.bom.metadata.tools.components:
             if is_standardbom_component_entry(comp):
                 standard_bom_tools_entry = comp
@@ -570,7 +570,7 @@ class StandardBom:
             )
             self.bom.metadata.tools.components.add(component)
 
-    def _insert_standard_bom_definitions_entry_if_missing(self):
+    def _insert_standard_bom_definitions_entry_if_missing(self) -> None:
         definitions_entry = self.bom.definitions
         if (definitions_entry is None
             or definitions_entry.standards is None
@@ -591,7 +591,7 @@ class StandardBom:
                 definitions_entry.standards.add(standard)
             self.bom.definitions = definitions_entry
 
-    def _set_supplier_if_missing(self):
+    def _set_supplier_if_missing(self) -> None:
         if not self.bom.metadata.supplier:
             self.bom.metadata.supplier = OrganizationalEntity(name='Siemens or its Affiliates')
 

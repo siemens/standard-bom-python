@@ -28,7 +28,7 @@ class StandardBomParser:
             return StandardBom(bom)
 
     @staticmethod
-    def save(sbom: StandardBom, output_filename: str, indent=4, with_dependencies=True) -> None:
+    def save(sbom: StandardBom, output_filename: str, indent: int = 4, with_dependencies: bool = True) -> None:
         output_file = Path(output_filename)
         output_file.parent.mkdir(exist_ok=True, parents=True)
 
@@ -39,7 +39,7 @@ class StandardBomParser:
             StandardBomParser._patch_to_remove_dependencies(output_filename, indent)
 
     @staticmethod
-    def _patch_to_remove_dependencies(output_filename, indent=4):
+    def _patch_to_remove_dependencies(output_filename: str, indent: int = 4) -> None:
         with open(output_filename, 'r') as file:
             data = json.load(file)
             data.pop('dependencies', None)
