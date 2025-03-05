@@ -12,6 +12,10 @@ TODO: Add installation instructions after publish
 
 The library provides Standard BOM parser and serializer classes. The parser class is used to read a Standard BOM from a file, and the serializer class is used to write a Standard BOM to a file.
 
+> 💡 **Hint:**
+  This library provides strict type checking using [mypy](https://mypy.readthedocs.io/en/stable/).
+  Using [mypy with strict type checks](https://mypy.readthedocs.io/en/stable/existing_code.html#introduce-stricter-options) in your own codebase is recommended to ensure type safety.
+
 ## Read a Standard BOM from a JSON file
 
 ```python
@@ -82,6 +86,19 @@ from standardbom.model import SbomComponent
 bom = ...
 components: Iterable[SbomComponent] = bom.components
 tools: Iterable[SbomComponent] = bom.tools
+```
+
+## Setting licenses to a component
+
+You can set licenses to a component by using the `licenses` setter method of the `SbomComponent`
+class. `SbomComponent.licenses` setter method accepts an iterable of type `License` which can be a `LicenseExpression` or a `DisjunctiveLicense`:
+
+```python
+from cyclonedx.model.license import LicenseExpression
+
+component = SbomComponent(...)
+licenses = [LicenseExpression(value="MIT")]
+component.licenses = licenses
 ```
 
 ## Development
