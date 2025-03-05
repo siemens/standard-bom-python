@@ -4,9 +4,9 @@
 import json
 from os import path
 
-from cyclonedx.model.component import Component
+from cyclonedx.model.component import Component, ComponentType
 
-from standardbom.model import StandardBom
+from standardbom.model import StandardBom, SbomComponent
 from standardbom.parser import StandardBomParser
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
@@ -115,3 +115,52 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         with open(output_filename, 'r') as file:
             data = json.load(file)
             self.assertNotIn("dependencies", data)
+
+    def test_write_with_added_license(self):
+        output_filename = "output/v3/with_added_license.json"
+
+        sbom = StandardBom()
+        comp = SbomComponent(Component(
+            name="Dummy",
+            version="0.0.1",
+            type=ComponentType.LIBRARY,
+        ))
+
+        from cyclonedx.model.license import LicenseExpression
+        comp.add_license(LicenseExpression("MIT"))
+
+        sbom.add_component(comp)
+        StandardBomParser.save(sbom, output_filename, with_dependencies=False)
+
+        self.assertTrue(path.exists(output_filename))
+        with open(output_filename, 'r') as file:
+            data = json.load(file)
+            self.assertEqual(data["components"][0]["name"], "Dummy")
+            self.assertEqual(data["components"][0]["version"], "0.0.1")
+            self.assertEqual(data["components"][0]["type"], ComponentType.LIBRARY)
+            self.assertEqual(data["components"][0]["licenses"], [{'expression': 'MIT'}])
+
+    def test_write_with_set_licenses(self):
+        output_filename = "output/v3/with_set_licenses.json"
+
+        sbom = StandardBom()
+        comp = SbomComponent(Component(
+            name="Dummy",
+            version="0.0.1",
+            type=ComponentType.LIBRARY,
+        ))
+
+        from cyclonedx.model.license import LicenseExpression
+        licenses = [LicenseExpression("MIT")]
+        comp.licenses = licenses
+
+        sbom.add_component(comp)
+        StandardBomParser.save(sbom, output_filename, with_dependencies=False)
+
+        self.assertTrue(path.exists(output_filename))
+        with open(output_filename, 'r') as file:
+            data = json.load(file)
+            self.assertEqual(data["components"][0]["name"], "Dummy")
+            self.assertEqual(data["components"][0]["version"], "0.0.1")
+            self.assertEqual(data["components"][0]["type"], ComponentType.LIBRARY)
+            self.assertEqual(data["components"][0]["licenses"], [{'expression': 'MIT'}])
