@@ -6,82 +6,83 @@ A Python library for creating and consuming documents in
 This library is mainly a wrapper for the official
 [cyclonedx-python-lib](https://github.com/CycloneDX/cyclonedx-python-lib/) library.
 
-## Usage
+## Installation
 
 TODO: Add installation instructions after publish
 
 The library provides Standard BOM parser and serializer classes. The parser class is used to read a Standard BOM from a file, and the serializer class is used to write a Standard BOM to a file.
 
-- Read a Standard BOM from a JSON file:
+## Read a Standard BOM from a JSON file
 
-    ```python
-    from standardbom.parser import StandardBomParser
+```python
+from standardbom.parser import StandardBomParser
 
-    bom = StandardBomParser.parse("sbom.cdx.json")
-    ```
+bom = StandardBomParser.parse("sbom.cdx.json")
+```
 
-- Write a Standard BOM to a JSON file:
+## Write a Standard BOM to a JSON file
 
-    ```python
-    from standardbom.parser import StandardBomParser
+```python
+from standardbom.parser import StandardBomParser
 
-    bom = ...
-    StandardBomParser.save(bom, "sbom.cdx.json")
-    ```
+bom = ...
+StandardBomParser.save(bom, "sbom.cdx.json")
+```
 
-    If you'd like to skip the `.dependencies` field in the output file, you can use the following code:
+If you'd like to skip the `.dependencies` field in the output file, you can use the following code:
 
-    ```python
-    from standardbom.parser import StandardBomParser
+```python
+from standardbom.parser import StandardBomParser
 
-    bom = ...
-    StandardBomParser.save(bom, "sbom.cdx.json", with_dependencies=False)
-    ```
+bom = ...
+StandardBomParser.save(bom, "sbom.cdx.json", with_dependencies=False)
+```
 
-    This will save the Standard BOM to the file without the `.dependencies` field, which is `prohibited` in the
-    [`external` profile](https://sbom.siemens.io/v3/profiles.html).
+This will save the Standard BOM to the file without the `.dependencies` field, which is `prohibited` in the
+[`external` profile](https://sbom.siemens.io/v3/profiles.html).
 
-- Create a Standard BOM document programmatically:
+## Create a Standard BOM document programmatically
 
-    The `StandardBom` class is a subclass of the `cyclonedx.bom.Bom` class from the upstream library
-    [cyclonedx-python-lib](https://github.com/CycloneDX/cyclonedx-python-lib) since this library is a wrapper of the
-    model objects from the upstream library.
+The `StandardBom` class is a subclass of the `cyclonedx.bom.Bom` class from the upstream library
+[cyclonedx-python-lib](https://github.com/CycloneDX/cyclonedx-python-lib) since this library is a wrapper of the
+model objects from the upstream library.
 
-    ```python
-    from standardbom.model import StandardBom, Component, ComponentType
-    from cyclonedx.model.contact import OrganizationalContact
+```python
+from standardbom.model import StandardBom, Component, ComponentType
+from cyclonedx.model.contact import OrganizationalContact
 
-    bom = StandardBom()
-    bom.add_author(OrganizationalContact(name='John Doe'))
-    bom.add_tool(Component(name='Sample Tool', version='1.0.0', type=ComponentType.APPLICATION))
-    bom.add_component(Component(name='Sample Component', version='1.2.3', type=ComponentType.LIBRARY))
-    ```
-    You can also use the Standard BOM wrapper classes to create and edit the Standard BOM document.
-    For example, you can do the following similar to the example abode:
+bom = StandardBom()
+bom.add_author(OrganizationalContact(name='John Doe'))
+bom.add_tool(Component(name='Sample Tool', version='1.0.0', type=ComponentType.APPLICATION))
+bom.add_component(Component(name='Sample Component', version='1.2.3', type=ComponentType.LIBRARY))
+```
 
-    ```python
-    from standardbom.model import StandardBom, Component, ComponentType, SbomComponent
-    from cyclonedx.model.contact import OrganizationalContact
+You can also use the Standard BOM wrapper classes to create and edit the Standard BOM document.
+For example, you can do the following similar to the example abode:
 
-    bom = StandardBom()
-    bom.add_author(OrganizationalContact(name='John Doe'))
-    bom.add_tool(SbomComponent(Component(name='Sample Tool', version='1.0.0', type=ComponentType.APPLICATION)))
-    bom.add_component(SbomComponent(Component(name='Sample Component', version='1.2.3', type=ComponentType.LIBRARY)))
-    ```
+```python
+from standardbom.model import StandardBom, Component, ComponentType, SbomComponent
+from cyclonedx.model.contact import OrganizationalContact
 
-- Retrieve fields from the Standard BOM object:
+bom = StandardBom()
+bom.add_author(OrganizationalContact(name='John Doe'))
+bom.add_tool(SbomComponent(Component(name='Sample Tool', version='1.0.0', type=ComponentType.APPLICATION)))
+bom.add_component(SbomComponent(Component(name='Sample Component', version='1.2.3', type=ComponentType.LIBRARY)))
+```
 
-    Once you retrieve several fields from the `StandardBom` object, you get the wrapped Standard BOM types for these
-    fields. For example, the `tools` or `components` getters returns a list of `SbomComponent` objects:
+## Retrieve fields from the Standard BOM object
 
-    ```python
-    from typing import Iterable
-    from standardbom.model import SbomComponent
+Once you retrieve several fields from the `StandardBom` object, you get the wrapped Standard BOM types for these
+fields. For example, the `tools` or `components` getters returns a list of `SbomComponent` objects:
 
-    bom = ...
-    components: Iterable[SbomComponent] = bom.components
-    tools: Iterable[SbomComponent] = bom.tools
-    ```
+```python
+from typing import Iterable
+from standardbom.model import SbomComponent
+
+bom = ...
+components: Iterable[SbomComponent] = bom.components
+tools: Iterable[SbomComponent] = bom.tools
+```
 
 ## Development
 
