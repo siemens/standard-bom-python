@@ -348,8 +348,9 @@ class SbomComponent:
         self.component.external_references.add(ex_ref)
 
     def _get_external_reference(self, ex_ref_type: ExternalReferenceType) -> Optional[ExternalReference]:
-        return next(filter(lambda ex_ref: ex_ref.type == ex_ref_type if ex_ref else False,
-                           self.component.external_references), None)
+        external_reference = next(filter(lambda ex_ref: ex_ref is not None and ex_ref.type == ex_ref_type,
+                                         self.component.external_references), None)
+        return external_reference
 
     def _set_external_reference(self, ex_ref_type: ExternalReferenceType, url: str) -> ExternalReference:
         reference = next(filter(lambda ex_ref: ex_ref.type == ex_ref_type, self.component.external_references), None)
