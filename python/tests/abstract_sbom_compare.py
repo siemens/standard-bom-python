@@ -6,7 +6,7 @@ from typing import Optional, Tuple
 
 from cyclonedx.model.bom_ref import BomRef
 from dateutil import parser as dateparser
-from deepdiff import DeepDiff  # type: ignore[attr-defined]
+from deepdiff import DeepDiff
 
 from standardbom.model import StandardBom
 from standardbom.parser import StandardBomParser
