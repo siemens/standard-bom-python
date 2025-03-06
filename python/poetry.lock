@@ -149,14 +149,14 @@ xml-validation = ["lxml (>=4,<6)"]
 
 [[package]]
 name = "deepdiff"
-version = "8.2.0"
+version = "8.3.0"
 description = "Deep Difference and Search of any Python object/data. Recreate objects by adding adding deltas to each other."
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "deepdiff-8.2.0-py3-none-any.whl", hash = "sha256:5091f2cdfd372b1b9f6bfd8065ba323ae31118dc4e42594371b38c8bea3fd0a4"},
-    {file = "deepdiff-8.2.0.tar.gz", hash = "sha256:6ec78f65031485735545ffbe7a61e716c3c2d12ca6416886d5e9291fc76c46c3"},
+    {file = "deepdiff-8.3.0-py3-none-any.whl", hash = "sha256:838acf1b17d228f4155bcb69bb265c41cbb5b2aba2575f07efa67ad9b9b7a0b5"},
+    {file = "deepdiff-8.3.0.tar.gz", hash = "sha256:92a8d7c75a4b26b385ec0372269de258e20082307ccf74a4314341add3d88391"},
 ]
 
 [package.dependencies]
@@ -680,4 +680,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "39baaf8b51a3357e0e5eea4b7171127dbcd24ef47accbf18569bee5ba59920d8"
+content-hash = "57f049c331fa7e117e8f0675feb4a4dec9f05abffe0b6e24857c355ebb5341b3"
