@@ -9,3 +9,11 @@ venv/
 /website/site/
 /.idea/
 .poetry-cache/
+/.coverage
+/coverage.xml
+/output/
+/dist/
+*.pyc
+toms_demo.py
+/.poetry-cache
+/.tox/
