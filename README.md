@@ -135,6 +135,6 @@ Once you have those prerequisites you can perform following development tasks lo
 
 ## License
 
-This project is Inner Source under the [MIT license](LICENSE).
+This project is Inner Source under the [MIT license](LICENSE) (SPDX-License-Identifier: MIT).
 
 Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED

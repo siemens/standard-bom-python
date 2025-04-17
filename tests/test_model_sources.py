@@ -1,4 +1,5 @@
 # Copyright (c) Siemens AG 2019-2024 ALL RIGHTS RESERVED
+# SPDX-License-Identifier: MIT
 import unittest
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, XsUri
