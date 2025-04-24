@@ -1,6 +1,6 @@
 [project]
 name = "standard-bom"
-version = "3.0.3"
+version = "4.0.0"
 description = "Standard BOM Format Library"
 keywords = ["sbom", "software-bill-of-materials", "cyclonedx", "cdx"]
 authors = [
