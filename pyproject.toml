@@ -5,7 +5,8 @@ description = "Standard BOM Format Library"
 keywords = ["sbom", "software-bill-of-materials", "cyclonedx", "cdx"]
 authors = [
     { name="Hakan Dilek", email="hakan.dilek@siemens.com" },
-    { name="Thomas Jensen", email="jensenthomas@siemens.com"}
+    { name="Thomas Jensen", email="jensenthomas@siemens.com"},
+    { name="Leo Reinmann", email="leo.reinmann@siemens.com"}
 ]
 license = "MIT"
 homepage = "https://sbom.siemens.io/"
