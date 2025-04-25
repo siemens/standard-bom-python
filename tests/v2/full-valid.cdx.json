@@ -7,7 +7,7 @@
         "tools": [
             {
                 "vendor": "Siemens AG",
-                "name": "standard-bom",
+                "name": "siemens-standard-bom",
                 "version": "${formatVersion}",
                 "externalReferences": [
                     {

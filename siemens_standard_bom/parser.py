@@ -11,7 +11,7 @@ from pathlib import Path
 from cyclonedx.model.bom import Bom
 from cyclonedx.output.json import JsonV1Dot6
 
-from standardbom.model import StandardBom
+from siemens_standard_bom.model import StandardBom
 
 
 class StandardBomParser:

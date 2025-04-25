@@ -20,9 +20,9 @@ from cyclonedx.model.tool import Tool
 from packageurl import PackageURL
 from sortedcontainers import SortedSet
 
-from standardbom.immutable import ImmutableList
+from siemens_standard_bom.immutable import ImmutableList
 
-STANDARD_BOM_MODULE: str = 'standard-bom'
+STANDARD_BOM_MODULE: str = 'siemens-standard-bom'
 
 PROPERTY_DIRECT_DEPENDENCY = "siemens:direct"
 PROPERTY_FILENAME = "siemens:filename"

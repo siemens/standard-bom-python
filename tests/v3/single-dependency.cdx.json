@@ -34,7 +34,7 @@
                         "url": "https://sbom.siemens.io/"
                     }
                 ],
-                "bom-ref": "standard-bom"
+                "bom-ref": "siemens-standard-bom"
             }
         ]
     }

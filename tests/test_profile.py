@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 import unittest
 
-from standardbom.model import StandardBom
+from siemens_standard_bom.model import StandardBom
 
 
 class ProfilesTestCase(unittest.TestCase):

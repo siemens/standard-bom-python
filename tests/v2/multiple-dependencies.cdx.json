@@ -7,7 +7,7 @@
     "timestamp": "2022-12-21T13:01:46Z",
       "tools": [
         {
-          "name": "standard-bom",
+          "name": "siemens-standard-bom",
           "vendor": "Siemens AG",
           "version": "2.4.0"
         }

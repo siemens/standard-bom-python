@@ -19,7 +19,7 @@ The library provides Standard BOM parser and serializer classes. The parser clas
 ## Read a Standard BOM from a JSON file
 
 ```python
-from standardbom.parser import StandardBomParser
+from siemens_standard_bom.parser import StandardBomParser
 
 bom = StandardBomParser.parse("sbom.cdx.json")
 ```
@@ -27,7 +27,7 @@ bom = StandardBomParser.parse("sbom.cdx.json")
 ## Write a Standard BOM to a JSON file
 
 ```python
-from standardbom.parser import StandardBomParser
+from siemens_standard_bom.parser import StandardBomParser
 
 bom = ...
 StandardBomParser.save(bom, "sbom.cdx.json")
@@ -36,7 +36,7 @@ StandardBomParser.save(bom, "sbom.cdx.json")
 If you'd like to skip the `.dependencies` field in the output file, you can use the following code:
 
 ```python
-from standardbom.parser import StandardBomParser
+from siemens_standard_bom.parser import StandardBomParser
 
 bom = ...
 StandardBomParser.save(bom, "sbom.cdx.json", with_dependencies=False)
@@ -52,7 +52,7 @@ The `StandardBom` class is a subclass of the `cyclonedx.bom.Bom` class from the 
 model objects from the upstream library.
 
 ```python
-from standardbom.model import StandardBom, Component, ComponentType
+from siemens_standard_bom.model import StandardBom, Component, ComponentType
 from cyclonedx.model.contact import OrganizationalContact
 
 bom = StandardBom()
@@ -65,7 +65,7 @@ You can also use the Standard BOM wrapper classes to create and edit the Standar
 For example, you can do the following similar to the example abode:
 
 ```python
-from standardbom.model import StandardBom, Component, ComponentType, SbomComponent
+from siemens_standard_bom.model import StandardBom, Component, ComponentType, SbomComponent
 from cyclonedx.model.contact import OrganizationalContact
 
 bom = StandardBom()
@@ -81,7 +81,7 @@ fields. For example, the `tools` or `components` getters returns a list of `Sbom
 
 ```python
 from typing import Iterable
-from standardbom.model import SbomComponent
+from siemens_standard_bom.model import SbomComponent
 
 bom = ...
 components: Iterable[SbomComponent] = bom.components

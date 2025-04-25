@@ -9,7 +9,7 @@ from cyclonedx.model.component import ComponentType, Component
 from cyclonedx.model.contact import OrganizationalContact
 from sortedcontainers import SortedSet
 
-from standardbom.model import StandardBom, SbomComponent, ExternalComponent, is_standardbom_component_entry
+from siemens_standard_bom.model import StandardBom, SbomComponent, ExternalComponent, is_standardbom_component_entry
 
 
 class StandardBomTestCase(unittest.TestCase):
@@ -63,8 +63,8 @@ class StandardBomTestCase(unittest.TestCase):
 
         component = next(filter(lambda c: is_standardbom_component_entry(c.component), sbom.tools))
         assert component is not None
-        self.assertEqual('standard-bom', component.name)
-        self.assertEqual(version('standard-bom'), component.version)
+        self.assertEqual('siemens-standard-bom', component.name)
+        self.assertEqual(version('siemens-standard-bom'), component.version)
         self.assertEqual('https://sbom.siemens.io/', component.website)
         assert component.supplier is not None
         self.assertEqual('Siemens AG', component.supplier.name)

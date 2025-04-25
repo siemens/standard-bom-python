@@ -5,7 +5,7 @@ import unittest
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, XsUri
 from cyclonedx.model.component import ComponentType, Component
 
-from standardbom.model import SbomComponent, SOURCE_ARCHIVE_LOCAL, SourceArtifact
+from siemens_standard_bom.model import SbomComponent, SOURCE_ARCHIVE_LOCAL, SourceArtifact
 
 
 class StandardBomSourcesTestCase(unittest.TestCase):

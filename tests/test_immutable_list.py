@@ -5,7 +5,7 @@ from dataclasses import FrozenInstanceError
 
 from sortedcontainers import SortedSet
 
-from standardbom.immutable import ImmutableList
+from siemens_standard_bom.immutable import ImmutableList
 
 
 class ImmutableListTestCase(unittest.TestCase):

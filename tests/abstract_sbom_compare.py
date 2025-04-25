@@ -13,8 +13,8 @@ from cyclonedx.model.bom_ref import BomRef
 from dateutil import parser as dateparser
 from deepdiff import DeepDiff
 
-from standardbom.model import StandardBom
-from standardbom.parser import StandardBomParser
+from siemens_standard_bom.model import StandardBom
+from siemens_standard_bom.parser import StandardBomParser
 
 # excluding bom_ref values mainly from metadata.component.bom_ref
 exclude_regex_paths = [

@@ -20,7 +20,7 @@ deps = [
     "flake8>=7",
 ]
 commands = [
-    ["flake8", "standardbom", "tests"], { replace = "posargs", extend = true} ,
+    ["flake8", "siemens_standard_bom", "tests"], { replace = "posargs", extend = true} ,
 ]
 
 [env.type]
@@ -32,5 +32,5 @@ deps = [
     "deepdiff>=8",
 ]
 commands = [
-    ["mypy", "-p", "standardbom", "-p", "tests", { replace = "posargs", extend = true} ],
+    ["mypy", "-p", "siemens_standard_bom", "-p", "tests", { replace = "posargs", extend = true} ],
 ]

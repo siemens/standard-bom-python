@@ -9,7 +9,7 @@ from cyclonedx.model.contact import OrganizationalContact
 from cyclonedx.model.license import DisjunctiveLicense
 from packageurl import PackageURL
 
-from standardbom.model import ExternalComponent, SbomComponent
+from siemens_standard_bom.model import ExternalComponent, SbomComponent
 
 
 class SBomComponentTestCase(unittest.TestCase):

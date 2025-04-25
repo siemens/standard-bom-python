@@ -1,5 +1,5 @@
 [project]
-name = "standard-bom"
+name = "siemens-standard-bom"
 version = "4.0.0"
 description = "Standard BOM Format Library"
 keywords = ["sbom", "software-bill-of-materials", "cyclonedx", "cdx"]
@@ -36,8 +36,8 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 package-mode = true
 packages = [
-    { include = "standardbom" },
-    { include = "standardbom/py.typed" },
+    { include = "siemens_standard_bom" },
+    { include = "siemens_standard_bom/py.typed" },
 ]
 
 [tool.poetry.group.dev.dependencies]

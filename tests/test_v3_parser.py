@@ -8,8 +8,8 @@ from datetime import datetime, timedelta, timezone
 from cyclonedx.model.contact import OrganizationalContact
 from packageurl import PackageURL
 
-from standardbom.model import SbomNature
-from standardbom.parser import StandardBomParser
+from siemens_standard_bom.model import SbomNature
+from siemens_standard_bom.parser import StandardBomParser
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase, read_timestamp
 
 

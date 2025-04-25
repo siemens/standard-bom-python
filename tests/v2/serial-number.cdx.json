@@ -14,7 +14,7 @@
               "url": "https://sbom.siemens.io/"
             }
           ],
-          "name": "standard-bom",
+          "name": "siemens-standard-bom",
           "vendor": "Siemens AG",
           "version": "2.4.0"
         }

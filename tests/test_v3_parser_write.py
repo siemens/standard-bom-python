@@ -8,8 +8,8 @@ from os import path
 from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.license import LicenseExpression
 
-from standardbom.model import StandardBom, SbomComponent
-from standardbom.parser import StandardBomParser
+from siemens_standard_bom.model import StandardBom, SbomComponent
+from siemens_standard_bom.parser import StandardBomParser
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
 
