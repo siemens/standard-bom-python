@@ -25,7 +25,7 @@ jobs:
         with:
           python-version:  ${{ matrix.python }}
           cache: poetry
-          cache-dependency-path: python/poetry.lock
+          cache-dependency-path: poetry.lock
       - name: Set Poetry environment
         run: |
           poetry env use ${{ matrix.python-version }}
@@ -55,7 +55,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: poetry
-          cache-dependency-path: python/poetry.lock
+          cache-dependency-path: poetry.lock
       - name: Set Poetry environment
         run: |
           poetry env use 3.12
