@@ -1,5 +1,8 @@
 # Standard BOM for Python
 
+[![build](https://github.com/siemens/standard-bom-python/actions/workflows/ci.yml/badge.svg)](https://github.com/siemens/standard-bom-python/actions/workflows/ci.yml)
+[![GitHub Tag](https://img.shields.io/github/v/tag/siemens/standard-bom-python)](https://github.com/siemens/standard-bom-python/releases/latest)
+
 A Python library for creating and consuming documents in
 [standard-bom format](https://sbom.siemens.io/latest/format.html).
 
@@ -8,7 +11,19 @@ This library is mainly a wrapper for the official
 
 ## Installation
 
-TODO: Add installation instructions after publish
+To install the library, run following command ...
+
+... for pip:
+
+```shell
+pip install siemens-standard-bom
+```
+
+... for Poetry:
+
+```shell
+poetry add siemens-standard-bom
+```
 
 The library provides Standard BOM parser and serializer classes. The parser class is used to read a Standard BOM from a file, and the serializer class is used to write a Standard BOM to a file.
 
