@@ -11,7 +11,19 @@ This library is mainly a wrapper for the official
 
 ## Installation
 
-TODO: Add installation instructions after publish
+To install the library, run following command:
+
+### PyPI
+
+```shell
+pip install siemens_standard_bom
+```
+
+### Poetry
+
+```shell
+poetry add siemens_standard_bom
+```
 
 The library provides Standard BOM parser and serializer classes. The parser class is used to read a Standard BOM from a file, and the serializer class is used to write a Standard BOM to a file.
 
