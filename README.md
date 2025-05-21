@@ -1,5 +1,8 @@
 # Standard BOM for Python
 
+[![build](https://github.com/siemens/standard-bom-python/actions/workflows/ci.yml/badge.svg)](https://github.com/siemens/standard-bom-python/actions/workflows/ci.yml)
+[![GitHub Tag](https://img.shields.io/github/v/tag/siemens/standard-bom-python)](https://github.com/siemens/standard-bom-python/releases/latest)
+
 A Python library for creating and consuming documents in
 [standard-bom format](https://sbom.siemens.io/latest/format.html).
 
