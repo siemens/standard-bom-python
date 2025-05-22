@@ -4,9 +4,9 @@ version = "4.0.0"
 description = "Standard BOM Format Library"
 keywords = ["sbom", "software-bill-of-materials", "cyclonedx", "cdx"]
 authors = [
-    { name="Hakan Dilek", email="hakan.dilek@siemens.com" },
-    { name="Thomas Jensen", email="jensenthomas@siemens.com"},
-    { name="Leo Reinmann", email="leo.reinmann@siemens.com"}
+    { name = "Hakan Dilek", email = "hakan.dilek@siemens.com" },
+    { name = "Thomas Jensen", email = "jensenthomas@siemens.com" },
+    { name = "Leo Reinmann", email = "leo.reinmann@siemens.com" },
 ]
 license = "MIT"
 readme = "README.md"
@@ -22,7 +22,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-urls = { homepage = "https://sbom.siemens.io/" }
+urls = { homepage = "https://sbom.siemens.io/", repository = "https://github.com/siemens/standard-bom-python", "Bug Tracker" = "https://github.com/siemens/standard-bom-python/issues", documentation = "https://github.com/siemens/standard-bom-python/blob/main/README.md" }
 
 requires-python = ">=3.10,<4.0"
 dependencies = [
@@ -49,4 +49,3 @@ mypy = "^1.15.0"
 types-python-dateutil = "^2.9.0.20241206"
 tox = "^4.24.1"
 sortedcontainers-stubs = "^2.4.2"
-
