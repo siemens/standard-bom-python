@@ -6,8 +6,9 @@
 A Python library for creating and consuming documents in
 [standard-bom format](https://sbom.siemens.io/latest/format.html).
 
-This library is mainly a wrapper for the official
-[cyclonedx-python-lib](https://github.com/CycloneDX/cyclonedx-python-lib/) library.
+This library is mainly a wrapper for the official [cyclonedx-python-lib](https://github.com/CycloneDX/cyclonedx-python-lib/) library with Standard BOM support.
+"Standard BOM" is our Siemens-internal SBOM format.
+Every Standard BOM document is a 100% CycloneDX document, so both CycloneDX and Standard BOM formats are supported.
 
 ## Installation
 
@@ -120,8 +121,8 @@ component.licenses = licenses
 
 In order to build this library on your local PC, and/or contribute to this library, mind the following prerequisites:
 
-- [Python](https://www.python.org/doc/versions/) > v3.10 - ideally > v3.12
-- [Poetry](https://python-poetry.org/) > v1.8.0
+- [Python](https://www.python.org/doc/versions/) >=3.10, <4.0
+- [Poetry](https://python-poetry.org/) >= v2.0
 
 ---
 Once you have those prerequisites you can perform following development tasks locally:
