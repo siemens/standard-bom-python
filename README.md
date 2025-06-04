@@ -6,9 +6,10 @@
 A Python library for creating and consuming documents in
 [standard-bom format](https://sbom.siemens.io/latest/format.html).
 
-This library is mainly a wrapper for the official [cyclonedx-python-lib](https://github.com/CycloneDX/cyclonedx-python-lib/) library with Standard BOM support.
-"Standard BOM" is our Siemens-internal SBOM format.
-Every Standard BOM document is a 100% CycloneDX document, so both CycloneDX and Standard BOM formats are supported.
+"Standard BOM" is our Siemens-internal SBOM format based on the [Siemens CycloneDX Property Taxonomy](https://github.com/siemens/cyclonedx-property-taxonomy), which is 100% compatible with the CycloneDX.
+
+Every Standard BOM document is a 100% CycloneDX document, so both CycloneDX and Standard BOM formats are supported both
+for reading and writing SBOMs with this library.
 
 ## Installation
 
