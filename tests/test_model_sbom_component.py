@@ -58,7 +58,10 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertEqual("42.42", component.version)
 
         component.purl = PackageURL(type="generic", name="foo.zip")
-        self.assertEqual("foo.zip", component.purl.name)
+        if component.purl is not None:
+            self.assertEqual("foo.zip", component.purl.name)
+        else:
+            self.fail("component.purl should not be None")
 
         component.add_author(OrganizationalContact(name="Lex Luthor"))
         self.assertEqual("Lex Luthor", component.authors[0].name)
@@ -93,16 +96,16 @@ class SBomComponentTestCase(unittest.TestCase):
         component = SbomComponent(Component(name="test"))
         self.assertFalse(component.direct_dependency)
 
-        component.direct_dependency = "true"  # type: ignore[assignment]
+        component.direct_dependency = "true"
         self.assertTrue(component.direct_dependency)
 
-        component.direct_dependency = "True"  # type: ignore[assignment]
+        component.direct_dependency = "True"
         self.assertTrue(component.direct_dependency)
 
-        component.direct_dependency = "False"  # type: ignore[assignment]
+        component.direct_dependency = "False"
         self.assertFalse(component.direct_dependency)
 
-        component.direct_dependency = "something"  # type: ignore[assignment]
+        component.direct_dependency = "something"
         self.assertFalse(component.direct_dependency)
 
     def test_internal(self) -> None:
