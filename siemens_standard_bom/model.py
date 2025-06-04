@@ -596,7 +596,7 @@ class StandardBom:
         if not self.bom.metadata.supplier:
             self.bom.metadata.supplier = OrganizationalEntity(name='Siemens or its Affiliates')
 
-    def _set_metadata_property(self, property_name: str, value: str) -> None:
+    def _set_metadata_property(self, property_name: str, value: Optional[str | None]) -> None:
         existing = next(filter(lambda p: p.name == property_name,
                                self.bom.metadata.properties), None)
         if existing:
@@ -666,7 +666,7 @@ class StandardBom:
         return self._get_metadata_property(PROPERTY_PROFILE)
 
     @profile.setter
-    def profile(self, value: str) -> None:
+    def profile(self, value: Optional[str | None]) -> None:
         self._set_metadata_property(PROPERTY_PROFILE, value)
 
     @property

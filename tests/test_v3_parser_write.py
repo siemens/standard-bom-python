@@ -152,7 +152,7 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         ))
 
         licenses = [LicenseExpression("MIT")]
-        comp.licenses = licenses   # type: ignore[assignment] # this is a mypy issue
+        comp.licenses = licenses
 
         sbom.add_component(comp)
         StandardBomParser.save(sbom, output_filename, with_dependencies=False)
