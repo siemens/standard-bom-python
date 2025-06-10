@@ -17,7 +17,7 @@ jobs:
         runs-on: ubuntu-latest
         environment:
             name: pypi
-            url: https://pypi.org/p/siemens-standard-bom-python
+            url: https://pypi.org/p/siemens-standard-bom
         permissions:
             id-token: write
         needs: call-build-and-test-workflow
