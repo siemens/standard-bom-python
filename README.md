@@ -1,12 +1,15 @@
 # Standard BOM for Python
 
 [![build](https://github.com/siemens/standard-bom-python/actions/workflows/ci.yml/badge.svg)](https://github.com/siemens/standard-bom-python/actions/workflows/ci.yml)
+![coverage](badges/coverage-python.svg)
 [![GitHub Tag](https://img.shields.io/github/v/tag/siemens/standard-bom-python)](https://github.com/siemens/standard-bom-python/releases/latest)
 
 A Python library for creating and consuming documents in
 [standard-bom format](https://sbom.siemens.io/latest/format.html).
 
-"Standard BOM" is our Siemens-internal SBOM format based on the [Siemens CycloneDX Property Taxonomy](https://github.com/siemens/cyclonedx-property-taxonomy), which is 100% compatible with the CycloneDX.
+"Standard BOM" is our Siemens-internal SBOM format based on
+the [Siemens CycloneDX Property Taxonomy](https://github.com/siemens/cyclonedx-property-taxonomy), which is 100% compatible with the
+CycloneDX.
 
 Every Standard BOM document is a 100% CycloneDX document, so both CycloneDX and Standard BOM formats are supported both
 for reading and writing SBOMs with this library.
@@ -27,11 +30,13 @@ pip install siemens-standard-bom
 poetry add siemens-standard-bom
 ```
 
-The library provides Standard BOM parser and serializer classes. The parser class is used to read a Standard BOM from a file, and the serializer class is used to write a Standard BOM to a file.
+The library provides Standard BOM parser and serializer classes. The parser class is used to read a Standard BOM from a file, and the
+serializer class is used to write a Standard BOM to a file.
 
 > 💡 **Hint:**
-  This library provides strict type checking using [mypy](https://mypy.readthedocs.io/en/stable/).
-  Using [mypy with strict type checks](https://mypy.readthedocs.io/en/stable/existing_code.html#introduce-stricter-options) in your own codebase is recommended to ensure type safety.
+> This library provides strict type checking using [mypy](https://mypy.readthedocs.io/en/stable/).
+> Using [mypy with strict type checks](https://mypy.readthedocs.io/en/stable/existing_code.html#introduce-stricter-options) in your own
+> codebase is recommended to ensure type safety.
 
 ## Read a Standard BOM from a JSON file
 
@@ -108,7 +113,8 @@ tools: Iterable[SbomComponent] = bom.tools
 ## Setting licenses to a component
 
 You can set licenses to a component by using the `licenses` setter method of the `SbomComponent`
-class. `SbomComponent.licenses` setter method accepts an iterable of type `License` which can be a `LicenseExpression` or a `DisjunctiveLicense`:
+class. `SbomComponent.licenses` setter method accepts an iterable of type `License` which can be a `LicenseExpression` or
+a `DisjunctiveLicense`:
 
 ```python
 from cyclonedx.model.license import LicenseExpression
@@ -134,13 +140,13 @@ Once you have those prerequisites you can perform following development tasks lo
     poetry install
     ```
 
-    then
+  then
 
     ```bash
     poetry build
     ```
 
-    This will generate the build artifacts under `dist/` folder.
+  This will generate the build artifacts under `dist/` folder.
 
 - Run all unit tests with all test cases and static code analysis
 
@@ -148,7 +154,7 @@ Once you have those prerequisites you can perform following development tasks lo
     poetry run tox run
     ```
 
-    This will run all the tests for all supported Python versions as well as static linting and type checking.
+  This will run all the tests for all supported Python versions as well as static linting and type checking.
 
 ## License
 

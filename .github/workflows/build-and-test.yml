@@ -73,6 +73,34 @@ jobs:
                     name: pytest-results-${{ matrix.python-version }}
                     path: coverage.xml
 
+    coverage-badge:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        needs:
+            - tests
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Download coverage artifact
+                uses: actions/download-artifact@v4
+                with:
+                    name: pytest-results-3.13
+            -   name: Run coverage badge
+                run: |
+                    sudo apt-get install xq
+                    pip install anybadge
+                    mkdir -p badges/
+                    cov_value=$(xq --xpath "//coverage/@line-rate" coverage.xml)
+                    cov_rounded=$(printf "%.1f\n" $(bc <<< "100*${cov_value}"))
+                    echo "Coverage found: ${cov_rounded}%"
+                    anybadge --label python:coverage --value ${cov_rounded} --suffix "%" --file badges/coverage-python.svg --overwrite
+            -   uses: stefanzweifel/git-auto-commit-action@v5
+                with:
+                    commit_message: "chore(docs): update coverage badge"
+                    commit_user_name: "CI/CD Push Token"
+
     lint:
         runs-on: ubuntu-latest
         steps:
