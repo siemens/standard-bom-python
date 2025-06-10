@@ -72,6 +72,17 @@ jobs:
                 with:
                     name: pytest-results-${{ matrix.python-version }}
                     path: coverage.xml
+            -   name: Run coverage badge
+                run: |
+                    sudo apt-get install xq
+                    pip install anybadge
+                    cov_value=$(xq --xpath "//coverage/@line-rate" coverage.xml)
+                    cov_rounded=$(printf "%.1f\n" $(bc <<< "100*${cov_value}"))
+                    echo "Coverage found: ${cov_rounded}%"
+                    anybadge --label python:coverage --value ${cov_rounded} --suffix "%" --file .github/badges/coverage-python.svg --overwrite
+            -   uses: stefanzweifel/git-auto-commit-action@v5
+                with:
+                    commit_message: "chore(docs): update coverage badge"
 
     lint:
         runs-on: ubuntu-latest
