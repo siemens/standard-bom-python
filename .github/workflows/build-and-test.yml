@@ -88,7 +88,7 @@ jobs:
                 run: |
                     sudo apt-get install xq
                     pip install anybadge
-                    mkdir -p .github/badges/
+                    mkdir -p badges/
                     cov_value=$(xq --xpath "//coverage/@line-rate" coverage.xml)
                     cov_rounded=$(printf "%.1f\n" $(bc <<< "100*${cov_value}"))
                     echo "Coverage found: ${cov_rounded}%"
