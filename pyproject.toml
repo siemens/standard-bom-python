@@ -41,11 +41,11 @@ packages = [
 ]
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.6.12"
-pytest = "^8.3.5"
-flake8 = "^7.1.2"
-deepdiff = "^8.3.0"
-mypy = "^1.15.0"
-types-python-dateutil = "^2.9.0.20241206"
-tox = "^4.24.1"
-sortedcontainers-stubs = "^2.4.2"
+coverage = "^7.9.2"
+pytest = "^8.4.1"
+flake8 = "^7.3.0"
+deepdiff = "^8.5.0"
+mypy = "^1.17.0"
+types-python-dateutil = "^2.9.0.20250708"
+tox = "^4.27.0"
+sortedcontainers-stubs = "^2.4.3"
