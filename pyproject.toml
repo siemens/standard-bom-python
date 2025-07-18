@@ -1,6 +1,6 @@
 [project]
 name = "siemens-standard-bom"
-version = "4.0.0"
+version = "4.1.0"
 description = "Standard BOM Format Library"
 keywords = ["sbom", "software-bill-of-materials", "cyclonedx", "cdx"]
 authors = [
