@@ -4,7 +4,7 @@
 import unittest
 
 from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, XsUri
-from cyclonedx.model.component import ComponentType, Component
+from cyclonedx.model.component import ComponentType, Component, ComponentScope
 from cyclonedx.model.contact import OrganizationalContact
 from cyclonedx.model.license import DisjunctiveLicense
 from packageurl import PackageURL
@@ -27,6 +27,7 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertIsNone(component.description)
         self.assertIsNone(component.copyright)
         self.assertIsNone(component.cpe)
+        self.assertIsNone(component.scope)
 
     def test_direct_fields(self) -> None:
         component = SbomComponent(Component(name="test"))
@@ -41,6 +42,7 @@ class SBomComponentTestCase(unittest.TestCase):
         self.assertIsNone(component.description)
         self.assertIsNone(component.copyright)
         self.assertIsNone(component.cpe)
+        self.assertIsNone(component.scope)
 
     def test_property_setters(self) -> None:
         component = SbomComponent(Component(name="test"))
@@ -74,6 +76,9 @@ class SBomComponentTestCase(unittest.TestCase):
 
         component.cpe = "cpe:2.3:a:evil_corp:mars_explorer:1.2.3:beta:*:*:*:*:*:*"
         self.assertEqual("cpe:2.3:a:evil_corp:mars_explorer:1.2.3:beta:*:*:*:*:*:*", component.cpe)
+
+        component.scope = ComponentScope.REQUIRED
+        self.assertEqual(ComponentScope.REQUIRED, component.scope)
 
     def test_licenses(self) -> None:
         component = SbomComponent(Component(name="test"))
@@ -241,6 +246,22 @@ class SBomComponentTestCase(unittest.TestCase):
         component.add_external_component(e)
         for external_comp in component.external_components:
             self.assertEqual(e, external_comp.reference)
+
+    def test_scope(self) -> None:
+        component = SbomComponent(Component(name="test"))
+        self.assertIsNone(component.scope)
+
+        component.scope = ComponentScope.REQUIRED
+        self.assertEqual(ComponentScope.REQUIRED, component.scope)
+        self.assertEqual("required", component.scope)
+
+        component.scope = ComponentScope.OPTIONAL
+        self.assertEqual(ComponentScope.OPTIONAL, component.scope)
+        self.assertEqual("optional", component.scope)
+
+        component.scope = ComponentScope.EXCLUDED
+        self.assertEqual(ComponentScope.EXCLUDED, component.scope)
+        self.assertEqual("excluded", component.scope)
 
 
 if __name__ == '__main__':

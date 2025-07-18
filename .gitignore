@@ -3,18 +3,19 @@
 # SPDX-License-Identifier: MIT
 #
 
-bin/
-.vscode/
-/_support/
-venv/
-/website/site/
-/.idea/
 .poetry-cache/
-/.coverage
-/coverage.xml
-/output/
-/dist/
+.vscode/
 *.pyc
-toms_demo.py
+
+/.coverage
+/.idea/
 /.poetry-cache
 /.tox/
+/coverage.xml
+/dist/
+/output/
+/tests/output/*
+/website/site/
+bin/
+toms_demo.py
+venv/

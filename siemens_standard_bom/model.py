@@ -12,7 +12,7 @@ from uuid import UUID
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.bom_ref import BomRef
-from cyclonedx.model.component import Component, ComponentType
+from cyclonedx.model.component import Component, ComponentType, ComponentScope
 from cyclonedx.model.contact import OrganizationalEntity, OrganizationalContact
 from cyclonedx.model.definition import Definitions, Standard
 from cyclonedx.model.license import License, LicenseRepository
@@ -142,6 +142,14 @@ class SbomComponent:
     @purl.setter
     def purl(self, value: PackageURL) -> None:
         self.component.purl = value
+
+    @property
+    def scope(self) -> Optional[ComponentScope]:
+        return self.component.scope
+
+    @scope.setter
+    def scope(self, value: ComponentScope) -> None:
+        self.component.scope = value
 
     @property
     def authors(self) -> ImmutableList[OrganizationalContact]:
