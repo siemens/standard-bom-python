@@ -130,14 +130,14 @@ toml = ["tomli ; python_full_version <= \"3.11.0a6\""]
 
 [[package]]
 name = "cyclonedx-python-lib"
-version = "9.1.0"
+version = "10.4.1"
 description = "Python library for CycloneDX"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "cyclonedx_python_lib-9.1.0-py3-none-any.whl", hash = "sha256:55693fca8edaecc3363b24af14e82cc6e659eb1e8353e58b587c42652ce0fb52"},
-    {file = "cyclonedx_python_lib-9.1.0.tar.gz", hash = "sha256:86935f2c88a7b47a529b93c724dbd3e903bc573f6f8bd977628a7ca1b5dadea1"},
+    {file = "cyclonedx_python_lib-10.4.1-py3-none-any.whl", hash = "sha256:1073d5855cdab02b7367f037c47cb46f4c82cadbc745e063edbb9160290efda2"},
+    {file = "cyclonedx_python_lib-10.4.1.tar.gz", hash = "sha256:ee017dee867ffb9b449b955161fd235a7c6245e87a5169998e10a0ce61292efb"},
 ]
 
 [package.dependencies]
@@ -145,11 +145,12 @@ license-expression = ">=30,<31"
 packageurl-python = ">=0.11,<2"
 py-serializable = ">=2.0.0,<3.0.0"
 sortedcontainers = ">=2.4.0,<3.0.0"
+typing_extensions = {version = ">=4.6,<5.0", markers = "python_version < \"3.13\""}
 
 [package.extras]
-json-validation = ["jsonschema[format] (>=4.18,<5.0)"]
-validation = ["jsonschema[format] (>=4.18,<5.0)", "lxml (>=4,<6)"]
-xml-validation = ["lxml (>=4,<6)"]
+json-validation = ["jsonschema[format] (>=4.18,<5.0)", "referencing (>=0.28.4)"]
+validation = ["jsonschema[format] (>=4.18,<5.0)", "lxml (>=4,<7)", "referencing (>=0.28.4)"]
+xml-validation = ["lxml (>=4,<7)"]
 
 [[package]]
 name = "deepdiff"
@@ -695,11 +696,12 @@ version = "4.12.2"
 description = "Backported and Experimental Type Hints for Python 3.8+"
 optional = false
 python-versions = ">=3.8"
-groups = ["dev"]
+groups = ["main", "dev"]
 files = [
     {file = "typing_extensions-4.12.2-py3-none-any.whl", hash = "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d"},
     {file = "typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"},
 ]
+markers = {main = "python_version < \"3.13\""}
 
 [[package]]
 name = "virtualenv"
@@ -725,4 +727,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "b7eec9557dd524f3bfb4889537bbf825a51955ceb435747decae691fb46bd5f6"
+content-hash = "d906343cf3d00cb0656c2038f934ecd4af738a46b782c3791267dd6f4729a08f"
