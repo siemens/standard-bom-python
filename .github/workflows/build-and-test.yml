@@ -96,7 +96,7 @@ jobs:
                     cov_rounded=$(printf "%.1f\n" $(bc <<< "100*${cov_value}"))
                     echo "Coverage found: ${cov_rounded}%"
                     anybadge --label python:coverage --value ${cov_rounded} --suffix "%" --file badges/coverage-python.svg --overwrite
-            -   uses: stefanzweifel/git-auto-commit-action@v5
+            -   uses: stefanzweifel/git-auto-commit-action@v6
                 with:
                     commit_message: "chore(docs): update coverage badge"
                     commit_user_name: "CI/CD Push Token"
