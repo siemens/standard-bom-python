@@ -19,3 +19,5 @@
 bin/
 toms_demo.py
 venv/
+/sbom/*
+/payloads/*
