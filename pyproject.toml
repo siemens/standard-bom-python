@@ -27,7 +27,7 @@ urls = { homepage = "https://sbom.siemens.io/", repository = "https://github.com
 requires-python = ">=3.10,<4.0"
 dependencies = [
     "python-dateutil (>=2.9.0.post0,<3.0.0)",
-    "cyclonedx-python-lib(>=10.4.1,<11.0.0)",
+    "cyclonedx-python-lib(>=11.6.0,<12.0.0)",
 ]
 [build-system]
 requires = ["poetry-core"]
