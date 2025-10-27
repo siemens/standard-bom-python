@@ -84,7 +84,7 @@ jobs:
                 uses: actions/checkout@v5
 
             -   name: Download coverage artifact
-                uses: actions/download-artifact@v5
+                uses: actions/download-artifact@v6
                 with:
                     name: pytest-results-3.13
             -   name: Run coverage badge
