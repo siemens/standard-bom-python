@@ -5,6 +5,7 @@ import unittest
 from importlib.metadata import version
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
+from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import ComponentType, Component
 from cyclonedx.model.contact import OrganizationalContact
 from sortedcontainers import SortedSet
@@ -235,3 +236,68 @@ class StandardBomTestCase(unittest.TestCase):
         sbom.add_external_component(external)
         for comp in sbom.external_components:
             self.assertEqual(comp.reference, external)
+
+    def test_metadata_component_is_created_when_missing(self) -> None:
+        bom = Bom()
+        bom.metadata.component = None
+
+        sbom = StandardBom(bom)
+        sbom._insert_standard_bom_metadata_component_entry_if_missing()  # noqa: SLF001
+        self.assertIsNotNone(sbom.bom.metadata.component)
+        self.assertEqual('Unknown', sbom.bom.metadata.component.name)
+        self.assertEqual('0.0.0', sbom.bom.metadata.component.version)
+        self.assertEqual(ComponentType.APPLICATION, sbom.bom.metadata.component.type)
+
+    def test_metadata_component_is_not_overwritten_when_exists(self) -> None:
+        bom = Bom()
+        existing_component = Component(
+            name='MyApplication',
+            version='1.2.3',
+            type=ComponentType.APPLICATION
+        )
+        bom.metadata.component = existing_component
+        
+        sbom = StandardBom(bom)
+        sbom._insert_standard_bom_metadata_component_entry_if_missing()  # noqa: SLF001
+        self.assertIsNotNone(sbom.bom.metadata.component)
+        self.assertEqual('MyApplication', sbom.bom.metadata.component.name)
+        self.assertEqual('1.2.3', sbom.bom.metadata.component.version)
+        self.assertEqual(ComponentType.APPLICATION, sbom.bom.metadata.component.type)
+
+    def test_metadata_component_property_get_when_exists(self) -> None:
+        bom = Bom()
+        test_component = Component(
+            name='TestApp',
+            version='2.0.0',
+            type=ComponentType.LIBRARY
+        )
+        bom.metadata.component = test_component
+        
+        sbom = StandardBom(bom)
+        self.assertIsNotNone(sbom.component)
+        self.assertEqual('TestApp', sbom.component.name)
+        self.assertEqual('2.0.0', sbom.component.version)
+        self.assertEqual(ComponentType.LIBRARY, sbom.component.type)
+
+    def test_metadata_component_property_get_when_missing(self) -> None:
+        bom = Bom()
+        bom.metadata.component = None
+        
+        sbom = StandardBom(bom)
+        self.assertIsNotNone(sbom.component)
+        self.assertEqual('Unknown', sbom.component.name)
+        self.assertEqual('0.0.0', sbom.component.version)
+
+    def test_metadata_component_property_set(self) -> None:
+        sbom = StandardBom()
+        new_component = SbomComponent(Component(
+            name='SetApp',
+            version='3.0.0',
+            type=ComponentType.APPLICATION
+        ))
+
+        sbom.component = new_component
+        self.assertIsNotNone(sbom.component)
+        self.assertEqual('SetApp', sbom.component.name)
+        self.assertEqual('3.0.0', sbom.component.version)
+        self.assertEqual(ComponentType.APPLICATION, sbom.component.type)
