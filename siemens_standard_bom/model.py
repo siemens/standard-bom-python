@@ -555,6 +555,7 @@ class StandardBom:
             self.bom = bom
         self._insert_standard_bom_tools_entry_if_missing()
         self._insert_standard_bom_definitions_entry_if_missing()
+        self._insert_standard_bom_metadata_component_entry_if_missing()
         self._set_supplier_if_missing()
 
     def _insert_standard_bom_tools_entry_if_missing(self) -> None:
@@ -603,6 +604,19 @@ class StandardBom:
     def _set_supplier_if_missing(self) -> None:
         if not self.bom.metadata.supplier:
             self.bom.metadata.supplier = OrganizationalEntity(name='Siemens or its Affiliates')
+
+    def _insert_standard_bom_metadata_component_entry_if_missing(self) -> None:
+        """
+        Ensures that self.bom.metadata.component exists.
+        If it doesn't exist, creates a minimal Component object with required information.
+        Users should update the name and version with actual project values.
+        """
+        if self.bom.metadata.component is None:
+            self.bom.metadata.component = Component(
+                name='Unknown',
+                version='0.0.0',
+                type=ComponentType.APPLICATION
+            )
 
     def _set_metadata_property(self, property_name: str, value: Optional[str | None]) -> None:
         existing = next(filter(lambda p: p.name == property_name,
