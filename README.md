@@ -78,6 +78,7 @@ from siemens_standard_bom.model import StandardBom, Component, ComponentType
 from cyclonedx.model.contact import OrganizationalContact
 
 bom = StandardBom()
+bom.component=Component(name='Sample Application', version='1.0.0', type=ComponentType.APPLICATION)
 bom.add_author(OrganizationalContact(name='John Doe'))
 bom.add_tool(Component(name='Sample Tool', version='1.0.0', type=ComponentType.APPLICATION))
 bom.add_component(Component(name='Sample Component', version='1.2.3', type=ComponentType.LIBRARY))
@@ -91,6 +92,7 @@ from siemens_standard_bom.model import StandardBom, Component, ComponentType, Sb
 from cyclonedx.model.contact import OrganizationalContact
 
 bom = StandardBom()
+bom.component=SbomComponent(Component(name='Sample Application', version='1.0.0', type=ComponentType.APPLICATION))
 bom.add_author(OrganizationalContact(name='John Doe'))
 bom.add_tool(SbomComponent(Component(name='Sample Tool', version='1.0.0', type=ComponentType.APPLICATION)))
 bom.add_component(SbomComponent(Component(name='Sample Component', version='1.2.3', type=ComponentType.LIBRARY)))
