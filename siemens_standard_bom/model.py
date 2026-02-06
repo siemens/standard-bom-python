@@ -756,8 +756,10 @@ class StandardBom:
         return SbomComponent(self.bom.metadata.component) if self.bom.metadata.component is not None else None
 
     @component.setter
-    def component(self, component: SbomComponent) -> None:
-        self.bom.metadata.component = component.component
+    def component(self, component: Component | SbomComponent) -> None:
+        self.bom.metadata.component = component.component \
+            if isinstance(component, SbomComponent) \
+            else component
 
     @property
     def supplier(self) -> Optional[OrganizationalEntity]:
