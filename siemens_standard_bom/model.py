@@ -613,7 +613,7 @@ class StandardBom:
         """
         if self.bom.metadata.component is None:
             self.bom.metadata.component = Component(
-                name='Unknown',
+                name='Unknown Name',
                 version='0.0.0',
                 type=ComponentType.APPLICATION
             )

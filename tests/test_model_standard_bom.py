@@ -244,7 +244,7 @@ class StandardBomTestCase(unittest.TestCase):
         sbom = StandardBom(bom)
         sbom._insert_standard_bom_metadata_component_entry_if_missing()  # noqa: SLF001
         self.assertIsNotNone(sbom.bom.metadata.component)
-        self.assertEqual('Unknown', sbom.bom.metadata.component.name)
+        self.assertEqual('Unknown Name', sbom.bom.metadata.component.name)
         self.assertEqual('0.0.0', sbom.bom.metadata.component.version)
         self.assertEqual(ComponentType.APPLICATION, sbom.bom.metadata.component.type)
 
@@ -285,7 +285,7 @@ class StandardBomTestCase(unittest.TestCase):
         
         sbom = StandardBom(bom)
         self.assertIsNotNone(sbom.component)
-        self.assertEqual('Unknown', sbom.component.name)
+        self.assertEqual('Unknown Name', sbom.component.name)
         self.assertEqual('0.0.0', sbom.component.version)
 
     def test_metadata_component_property_set(self) -> None:
