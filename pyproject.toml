@@ -21,6 +21,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 urls = { homepage = "https://sbom.siemens.io/", repository = "https://github.com/siemens/standard-bom-python", "Bug Tracker" = "https://github.com/siemens/standard-bom-python/issues", documentation = "https://github.com/siemens/standard-bom-python/blob/main/README.md" }
 
