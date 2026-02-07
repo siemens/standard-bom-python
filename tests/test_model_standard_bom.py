@@ -235,3 +235,27 @@ class StandardBomTestCase(unittest.TestCase):
         sbom.add_external_component(external)
         for comp in sbom.external_components:
             self.assertEqual(comp.reference, external)
+
+    def test_bom_metadata_component(self) -> None:
+        sbom = StandardBom()
+        component = Component(name="test", version="1.0.0")
+        sbom.component = component
+
+        sbom_component = sbom.component
+        assert sbom_component is not None
+        self.assertIsNotNone(sbom_component.name)
+        self.assertEqual("test", sbom_component.name)
+        self.assertIsNotNone(sbom_component.version)
+        self.assertEqual("1.0.0", sbom_component.version)
+
+    def test_bom_metadata_component_from_sbom_component(self) -> None:
+        sbom = StandardBom()
+        component = SbomComponent(Component(name="test", version="1.0.0"))
+        sbom.component = component
+
+        sbom_component = sbom.component
+        assert sbom_component is not None
+        self.assertIsNotNone(sbom_component.name)
+        self.assertEqual("test", sbom_component.name)
+        self.assertIsNotNone(sbom_component.version)
+        self.assertEqual("1.0.0", sbom_component.version)
