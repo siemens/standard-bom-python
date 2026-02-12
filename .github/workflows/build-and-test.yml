@@ -9,7 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                python-version: [ "3.10", "3.11", "3.12", "3.13" ]
+                python-version: [ "3.10", "3.11", "3.12", "3.13", "3.14" ]
         steps:
             -   name: Checkout
                 uses: actions/checkout@v6
@@ -45,7 +45,7 @@ jobs:
             contents: write
         strategy:
             matrix:
-                python-version: [ "3.10", "3.11", "3.12", "3.13" ]
+                python-version: [ "3.10", "3.11", "3.12", "3.13", "3.14" ]
         steps:
             -   name: Checkout
                 uses: actions/checkout@v6
@@ -86,7 +86,7 @@ jobs:
             -   name: Download coverage artifact
                 uses: actions/download-artifact@v7
                 with:
-                    name: pytest-results-3.13
+                    name: pytest-results-3.14
             -   name: Run coverage badge
                 run: |
                     sudo apt-get install xq
@@ -112,12 +112,12 @@ jobs:
             -   name: Set up Python
                 uses: actions/setup-python@v6
                 with:
-                    python-version: '3.12'
+                    python-version: '3.14'
                     cache: poetry
                     cache-dependency-path: poetry.lock
             -   name: Set Poetry environment
                 run: |
-                    poetry env use 3.12
+                    poetry env use 3.14
             -   name: Install dependencies
                 run: |
                     poetry install --no-root
