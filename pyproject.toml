@@ -43,7 +43,7 @@ packages = [
 
 [tool.poetry.group.dev.dependencies]
 coverage = "7.13.5"
-pytest = "9.0.2"
+pytest = "9.0.3"
 flake8 = "7.3.0"
 deepdiff = "9.0.0"
 mypy = "1.20.0"
