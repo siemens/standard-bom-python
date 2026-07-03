@@ -21,3 +21,4 @@ toms_demo.py
 venv/
 /sbom/*
 /payloads/*
+.DS_Store
