@@ -4,7 +4,6 @@ env_list = ["lint", "type", "3.10", "3.11", "3.12", "3.13", "3.14"]
 [env_run_base]
 description = "Run unit tests"
 deps = [
-    "pytest>=8",
     "coverage>=7",
     "deepdiff>=8",
 ]
