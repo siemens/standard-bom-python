@@ -69,9 +69,9 @@ This will save the Standard BOM to the file without the `.dependencies` field, w
 
 ## Create a Standard BOM document programmatically
 
-The `StandardBom` class is a subclass of the `cyclonedx.bom.Bom` class from the upstream library
-[cyclonedx-python-lib](https://github.com/CycloneDX/cyclonedx-python-lib) since this library is a wrapper of the
-model objects from the upstream library.
+The `StandardBom` class wraps the `cyclonedx.model.bom.Bom` class from the upstream library
+[cyclonedx-python-lib](https://github.com/CycloneDX/cyclonedx-python-lib). This library provides convenience wrappers
+around model objects from the upstream library.
 
 ```python
 from siemens_standard_bom.model import StandardBom, Component, ComponentType
