@@ -34,15 +34,11 @@ class StandardBomParser:
         output_file.parent.mkdir(exist_ok=True, parents=True)
 
         writer = JsonV1Dot6(bom=sbom.bom)
-        writer.output_to_file(filename=output_filename, allow_overwrite=True, indent=indent)
+        output = writer.output_as_string(indent=indent)
 
         if not with_dependencies:
-            StandardBomParser._patch_to_remove_dependencies(output_filename, indent)
-
-    @staticmethod
-    def _patch_to_remove_dependencies(output_filename: str, indent: int = 4) -> None:
-        with open(output_filename, 'r') as file:
-            data = json.load(file)
+            data = json.loads(output)
             data.pop('dependencies', None)
-        with open(output_filename, 'w') as file:
-            json.dump(data, file, indent=indent)
+            output = json.dumps(data, indent=indent)
+
+        output_file.write_text(output, encoding='utf-8')
