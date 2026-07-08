@@ -526,10 +526,6 @@ class SbomNature(str, Enum):
         return str(self.value)
 
 
-def is_valid_serial_number(serial_number: str | None) -> bool:
-    return not (serial_number is None or "urn:uuid:None" == serial_number)
-
-
 def is_standardbom_component_entry(component: Component) -> bool:
     return component.supplier is not None \
         and component.supplier.name == 'Siemens AG' \
