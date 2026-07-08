@@ -13,21 +13,10 @@ jobs:
         steps:
             -   name: Checkout
                 uses: actions/checkout@v7
-            -   name: Install Poetry
-                run: |
-                    pipx install poetry
-            -   name: Set up Python ${{ matrix.python-version }}
-                uses: actions/setup-python@v6
+            -   name: Set up Poetry project
+                uses: ./.github/actions/setup-poetry-project
                 with:
                     python-version: ${{ matrix.python-version }}
-                    cache: poetry
-                    cache-dependency-path: poetry.lock
-            -   name: Set Poetry environment
-                run: |
-                    poetry env use ${{ matrix.python-version }}
-            -   name: Install dependencies
-                run: |
-                    poetry install --no-root
             -   name: Build package
                 run: |
                     poetry build
@@ -49,21 +38,10 @@ jobs:
         steps:
             -   name: Checkout
                 uses: actions/checkout@v7
-            -   name: Install Poetry
-                run: |
-                    pipx install poetry
-            -   name: Set up Python ${{ matrix.python-version }}
-                uses: actions/setup-python@v6
+            -   name: Set up Poetry project
+                uses: ./.github/actions/setup-poetry-project
                 with:
                     python-version: ${{ matrix.python-version }}
-                    cache: poetry
-                    cache-dependency-path: poetry.lock
-            -   name: Set Poetry environment
-                run: |
-                    poetry env use ${{ matrix.python-version }}
-            -   name: Install dependencies
-                run: |
-                    poetry install --no-root
             -   name: Run the automated tests
                 run: |
                     poetry run tox run -e ${{ matrix.python-version }}
@@ -106,21 +84,10 @@ jobs:
         steps:
             -   name: Checkout
                 uses: actions/checkout@v7
-            -   name: Install Poetry
-                run: |
-                    pipx install poetry
-            -   name: Set up Python
-                uses: actions/setup-python@v6
+            -   name: Set up Poetry project
+                uses: ./.github/actions/setup-poetry-project
                 with:
                     python-version: '3.14'
-                    cache: poetry
-                    cache-dependency-path: poetry.lock
-            -   name: Set Poetry environment
-                run: |
-                    poetry env use 3.14
-            -   name: Install dependencies
-                run: |
-                    poetry install --no-root
             -   name: Run the linting
                 run: |
                     poetry run tox run -e lint,type

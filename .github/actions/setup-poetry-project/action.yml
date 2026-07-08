@@ -1,0 +1,33 @@
+name: Setup Poetry project
+description: Install Poetry, configure Python, and install project dependencies.
+
+inputs:
+    python-version:
+        description: Python version to configure for Poetry.
+        required: true
+    install-args:
+        description: Arguments passed to poetry install.
+        required: false
+        default: --no-root
+
+runs:
+    using: composite
+    steps:
+        -   name: Install Poetry
+            shell: bash
+            run: |
+                pipx install poetry
+        -   name: Set up Python
+            uses: actions/setup-python@v6
+            with:
+                python-version: ${{ inputs.python-version }}
+                cache: poetry
+                cache-dependency-path: poetry.lock
+        -   name: Set Poetry environment
+            shell: bash
+            run: |
+                poetry env use ${{ inputs.python-version }}
+        -   name: Install dependencies
+            shell: bash
+            run: |
+                poetry install ${{ inputs.install-args }}
