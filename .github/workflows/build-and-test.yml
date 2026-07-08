@@ -28,7 +28,7 @@ jobs:
             -   name: Install dependencies
                 run: |
                     poetry install --no-root
-            -   name: Run the automated tests
+            -   name: Build package
                 run: |
                     poetry build
             -   name: Upload build artifacts
