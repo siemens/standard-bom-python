@@ -2,7 +2,6 @@
 # Copyright (c) Siemens AG 2019-2025 ALL RIGHTS RESERVED
 # SPDX-License-Identifier: MIT
 #
-import enum
 from datetime import datetime
 from enum import Enum
 from importlib.metadata import version as library_version
@@ -513,7 +512,7 @@ class SbomNature(str, Enum):
     BINARY = "binary"
 
     def __new__(cls, value: object, *args: Any, **kwargs: Any) -> 'SbomNature':
-        if not isinstance(value, (str, enum.auto)):
+        if not isinstance(value, str):
             raise TypeError(
                 f"Values of StrEnums must be strings: {value!r} is a {type(value)}"
             )
