@@ -4,6 +4,8 @@
 #
 import json
 from os import path
+from pathlib import Path
+from unittest.mock import patch
 
 from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.license import LicenseExpression
@@ -117,6 +119,36 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         with open(output_filename, 'r') as file:
             data = json.load(file)
             self.assertNotIn("dependencies", data)
+
+    def test_save_writes_output_file_once(self) -> None:
+        output_filename = "output/v3/single-write.cdx.json"
+
+        sbom = StandardBom()
+        sbom.add_component(Component(name="Dummy", version="0.0.1"))
+
+        original_write_text = Path.write_text
+        writes: list[Path] = []
+
+        def counting_write_text(
+            self_path: Path,
+            data: str,
+            encoding: str | None = None,
+            errors: str | None = None,
+            newline: str | None = None,
+        ) -> int:
+            writes.append(self_path)
+            return original_write_text(self_path, data, encoding=encoding, errors=errors, newline=newline)
+
+        with patch.object(Path, "write_text", counting_write_text):
+            StandardBomParser.save(sbom, output_filename, with_dependencies=False)
+
+        self.assertEqual(len(writes), 1)
+        self.assertEqual(writes[0], Path(output_filename))
+
+        with open(output_filename, 'r') as file:
+            data = json.load(file)
+            self.assertNotIn("dependencies", data)
+            self.assertEqual(data["components"][0]["name"], "Dummy")
 
     def test_write_with_added_license(self) -> None:
         output_filename = "output/v3/with_added_license.json"
