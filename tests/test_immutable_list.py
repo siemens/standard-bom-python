@@ -1,7 +1,6 @@
 # Copyright (c) Siemens AG 2019-2025 ALL RIGHTS RESERVED
 # SPDX-License-Identifier: MIT
 import unittest
-from dataclasses import FrozenInstanceError
 
 from sortedcontainers import SortedSet
 
@@ -78,18 +77,16 @@ class ImmutableListTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             il[0] = 10  # type: ignore[index]
 
-    def test_immutable_items_attribute(self) -> None:
+    def test_no_instance_attributes(self) -> None:
         il = ImmutableList(1, 2, 3, 4, 5)
-        with self.assertRaises(FrozenInstanceError):
-            il.__setattr__('_items', 10)
+        with self.assertRaises(AttributeError):
+            setattr(il, '_items', 10)
 
     def test_immutable_length(self) -> None:
-        items = [1, 2, 3, 4, 5]
-        il = ImmutableList[int](items)
-
-        items.append(6)
-
+        il = ImmutableList(1, 2, 3, 4, 5)
         self.assertEqual(len(il), 5)
+        with self.assertRaises(AttributeError):
+            il.append(6)  # type: ignore[attr-defined]
 
     def test_map_values_from_a_tuple(self) -> None:
         values = (1, 2, 3, 4, 5)
