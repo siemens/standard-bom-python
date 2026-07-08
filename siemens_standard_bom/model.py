@@ -153,10 +153,7 @@ class SbomComponent:
 
     @property
     def authors(self) -> ImmutableList[OrganizationalContact]:
-        if self.component.authors is None:
-            authors = ImmutableList[OrganizationalContact]()
-        else:
-            authors = ImmutableList[OrganizationalContact](self.component.authors)
+        authors = ImmutableList[OrganizationalContact](self.component.authors or [])
 
         # Backward compatibility with v2
         if self.component.author is not None:
@@ -270,7 +267,7 @@ class SbomComponent:
 
     @staticmethod
     def get_custom_property(component: Optional[Component], custom_property_key: str) -> Optional[str]:
-        if component is not None and component.properties is not None and custom_property_key is not None:
+        if component is not None and component.properties is not None:
             found = next(filter(lambda prop: prop.name == custom_property_key, component.properties), None)
             if found:
                 return found.value
@@ -278,7 +275,7 @@ class SbomComponent:
 
     @staticmethod
     def set_custom_property(component: Optional[Component], custom_property_key: str, value: str) -> None:
-        if component is not None and component.properties is not None and custom_property_key is not None:
+        if component is not None and component.properties is not None:
             found = next(filter(lambda prop: prop.name == custom_property_key, component.properties), None)
             if found:
                 found.value = value
