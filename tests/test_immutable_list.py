@@ -84,9 +84,12 @@ class ImmutableListTestCase(unittest.TestCase):
             il.__setattr__('_items', 10)
 
     def test_immutable_length(self) -> None:
-        il = ImmutableList(1, 2, 3, 4, 5)
-        with self.assertRaises(FrozenInstanceError):
-            il.__setattr__('_length', 10)
+        items = [1, 2, 3, 4, 5]
+        il = ImmutableList[int](items)
+
+        items.append(6)
+
+        self.assertEqual(len(il), 5)
 
     def test_map_values_from_a_tuple(self) -> None:
         values = (1, 2, 3, 4, 5)
