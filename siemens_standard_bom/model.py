@@ -66,6 +66,10 @@ def _set_hash_value(hashes: SortedSet[HashType], algorithm: HashAlgorithm, value
         hashes.add(HashType(alg=algorithm, content=value))
 
 
+def _is_true_value(value: Optional[str]) -> bool:
+    return value in ("True", "true")
+
+
 class ExternalComponent:
     reference: ExternalReference
 
@@ -239,7 +243,7 @@ class SbomComponent:
 
     @property
     def direct_dependency(self) -> bool:
-        return self.get_custom_property(self.component, PROPERTY_DIRECT_DEPENDENCY) in ["True", "true"]
+        return _is_true_value(self.get_custom_property(self.component, PROPERTY_DIRECT_DEPENDENCY))
 
     @direct_dependency.setter
     def direct_dependency(self, value: str) -> None:
@@ -247,7 +251,7 @@ class SbomComponent:
 
     @property
     def internal(self) -> bool:
-        return self.get_custom_property(self.component, PROPERTY_INTERNAL) in ["True", "true"]
+        return _is_true_value(self.get_custom_property(self.component, PROPERTY_INTERNAL))
 
     @internal.setter
     def internal(self, value: bool) -> None:
@@ -674,7 +678,7 @@ class StandardBom:
 
     @property
     def vcs_clean(self) -> bool:
-        return SbomComponent.get_custom_property(self.bom.metadata.component, PROPERTY_VCS_CLEAN) in ["True", "true"]
+        return _is_true_value(SbomComponent.get_custom_property(self.bom.metadata.component, PROPERTY_VCS_CLEAN))
 
     @vcs_clean.setter
     def vcs_clean(self, value: bool) -> None:
@@ -699,7 +703,7 @@ class StandardBom:
 
     @property
     def internal(self) -> bool:
-        return SbomComponent.get_custom_property(self.bom.metadata.component, PROPERTY_INTERNAL) in ["True", "true"]
+        return _is_true_value(SbomComponent.get_custom_property(self.bom.metadata.component, PROPERTY_INTERNAL))
 
     @internal.setter
     def internal(self, value: bool) -> None:
