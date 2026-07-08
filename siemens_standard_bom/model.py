@@ -53,6 +53,19 @@ def is_source_artifact(ex_ref: ExternalReference) -> bool:
             or is_local_source_archive(ex_ref))
 
 
+def _get_hash_value(hashes: Iterable[HashType], algorithm: HashAlgorithm) -> Optional[str]:
+    h = next(filter(lambda hash_type: hash_type.alg == algorithm, hashes), None)
+    return h.content if h else None
+
+
+def _set_hash_value(hashes: SortedSet[HashType], algorithm: HashAlgorithm, value: str) -> None:
+    h = next(filter(lambda hash_type: hash_type.alg == algorithm, hashes), None)
+    if h:
+        h.content = value
+    else:
+        hashes.add(HashType(alg=algorithm, content=value))
+
+
 class ExternalComponent:
     reference: ExternalReference
 
@@ -407,15 +420,10 @@ class SbomComponent:
         self._set_hash(HashAlgorithm.SHA_512, value)
 
     def _get_hash(self, algorithm: HashAlgorithm) -> Optional[str]:
-        h = next(filter(lambda hash_type: hash_type.alg == algorithm, self.component.hashes), None)
-        return h.content if h else None
+        return _get_hash_value(self.component.hashes, algorithm)
 
     def _set_hash(self, algorithm: HashAlgorithm, value: str) -> None:
-        h = next(filter(lambda hash_type: hash_type.alg == algorithm, self.component.hashes), None)
-        if h:
-            h.content = value
-        else:
-            self.component.hashes.add(HashType(alg=algorithm, content=value))
+        _set_hash_value(self.component.hashes, algorithm, value)
 
 
 class SourceArtifact:
@@ -496,15 +504,10 @@ class SourceArtifact:
         self._set_hash(HashAlgorithm.SHA_512, value)
 
     def _get_hash(self, algorithm: HashAlgorithm) -> Optional[str]:
-        h = next(filter(lambda hash_type: hash_type.alg == algorithm, self.external_ref.hashes), None)
-        return h.content if h else None
+        return _get_hash_value(self.external_ref.hashes, algorithm)
 
     def _set_hash(self, algorithm: HashAlgorithm, value: str) -> None:
-        h = next(filter(lambda hash_type: hash_type.alg == algorithm, self.external_ref.hashes), None)
-        if h:
-            h.content = value
-        else:
-            self.external_ref.hashes.add(HashType(alg=algorithm, content=value))
+        _set_hash_value(self.external_ref.hashes, algorithm, value)
 
 
 class SbomNature(str, Enum):
