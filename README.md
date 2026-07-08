@@ -74,8 +74,9 @@ The `StandardBom` class wraps the `cyclonedx.model.bom.Bom` class from the upstr
 around model objects from the upstream library.
 
 ```python
-from siemens_standard_bom.model import StandardBom, Component, ComponentType
+from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.contact import OrganizationalContact
+from siemens_standard_bom.model import StandardBom
 
 bom = StandardBom()
 bom.add_author(OrganizationalContact(name='John Doe'))
@@ -87,8 +88,9 @@ You can also use the Standard BOM wrapper classes to create and edit the Standar
 For example, you can do the following similar to the example abode:
 
 ```python
-from siemens_standard_bom.model import StandardBom, Component, ComponentType, SbomComponent
+from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.contact import OrganizationalContact
+from siemens_standard_bom.model import StandardBom, SbomComponent
 
 bom = StandardBom()
 bom.add_author(OrganizationalContact(name='John Doe'))
