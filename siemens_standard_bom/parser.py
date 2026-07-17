@@ -33,6 +33,12 @@ class StandardBomParser:
         output_file = Path(output_filename)
         output_file.parent.mkdir(exist_ok=True, parents=True)
 
+        output = StandardBomParser.serialize(sbom, indent=indent, with_dependencies=with_dependencies)
+
+        output_file.write_text(output, encoding='utf-8')
+
+    @staticmethod
+    def serialize(sbom: StandardBom, indent: int = 4, with_dependencies: bool = True) -> str:
         writer = JsonV1Dot6(bom=sbom.bom)
         output = writer.output_as_string(indent=indent)
 
@@ -41,4 +47,4 @@ class StandardBomParser:
             data.pop('dependencies', None)
             output = json.dumps(data, indent=indent)
 
-        output_file.write_text(output, encoding='utf-8')
+        return output

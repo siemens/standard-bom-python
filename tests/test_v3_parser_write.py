@@ -150,6 +150,58 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
             self.assertNotIn("dependencies", data)
             self.assertEqual(data["components"][0]["name"], "Dummy")
 
+    def test_serialize_returns_valid_json_string(self) -> None:
+        sbom = StandardBomParser.parse("tests/v3/single-dependency.cdx.json")
+
+        output = StandardBomParser.serialize(sbom)
+        data = json.loads(output)
+
+        self.assertIsInstance(output, str)
+        self.assertIn("$schema", data)
+        self.assertEqual("CycloneDX", data["bomFormat"])
+        self.assertEqual("1.6", data["specVersion"])
+        self.assertEqual(".NET Runtime", data["components"][0]["name"])
+        self.assertIn("dependencies", data)
+        self.assertEqual(1, len(data["dependencies"]))
+
+    def test_serialize_without_dependencies_removes_key_without_mutating_sbom(self) -> None:
+        sbom = StandardBomParser.parse("tests/v3/single-dependency.cdx.json")
+
+        output = StandardBomParser.serialize(sbom, with_dependencies=False)
+        data = json.loads(output)
+
+        self.assertNotIn("dependencies", data)
+        self.assertIn("definitions", data)
+        self.assertEqual("CycloneDX", data["bomFormat"])
+        self.assertEqual("1.6", data["specVersion"])
+        self.assertEqual(".NET Runtime", data["components"][0]["name"])
+
+        data_after_stripping = json.loads(StandardBomParser.serialize(sbom))
+        self.assertIn("dependencies", data_after_stripping)
+        self.assertEqual(1, len(data_after_stripping["dependencies"]))
+
+    def test_serialize_without_dependencies_on_empty_sbom_is_safe(self) -> None:
+        sbom = StandardBom()
+
+        output = StandardBomParser.serialize(sbom, with_dependencies=False)
+        data = json.loads(output)
+
+        self.assertNotIn("dependencies", data)
+        self.assertIn("$schema", data)
+        self.assertEqual("CycloneDX", data["bomFormat"])
+        self.assertEqual("1.6", data["specVersion"])
+
+    def test_serialize_indent_controls_formatting(self) -> None:
+        sbom = StandardBomParser.parse("tests/v3/single-dependency.cdx.json")
+
+        two_spaces = StandardBomParser.serialize(sbom, indent=2, with_dependencies=False)
+        four_spaces = StandardBomParser.serialize(sbom, indent=4, with_dependencies=False)
+
+        self.assertNotEqual(two_spaces, four_spaces)
+        self.assertEqual(json.loads(two_spaces), json.loads(four_spaces))
+        self.assertIn('\n  "$schema"', two_spaces)
+        self.assertIn('\n    "$schema"', four_spaces)
+
     def test_write_with_added_license(self) -> None:
         output_filename = "output/v3/with_added_license.json"
 
