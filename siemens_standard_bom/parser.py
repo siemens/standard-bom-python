@@ -22,7 +22,7 @@ class StandardBomParser:
             raise FileNotFoundError(
                 errno.ENOENT, os.strerror(errno.ENOENT), filename)
 
-        with open(filename, 'r', encoding='utf-8') as json_file:
+        with Path(filename).open('r', encoding='utf-8') as json_file:
             json_content = json.loads(json_file.read())
 
             bom: Bom = Bom.from_json(data=json_content)  # type: ignore[attr-defined]

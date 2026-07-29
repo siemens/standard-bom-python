@@ -2,17 +2,25 @@
 # Copyright (c) Siemens AG 2019-2025 ALL RIGHTS RESERVED
 # SPDX-License-Identifier: MIT
 #
+from collections.abc import Iterable
 from datetime import datetime
 from enum import Enum
 from importlib.metadata import version as library_version
-from typing import Iterable, List, Optional, Any
+from typing import Any
 from uuid import UUID
 
-from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
+from cyclonedx.model import (
+    ExternalReference,
+    ExternalReferenceType,
+    HashAlgorithm,
+    HashType,
+    Property,
+    XsUri,
+)
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.bom_ref import BomRef
-from cyclonedx.model.component import Component, ComponentType, ComponentScope
-from cyclonedx.model.contact import OrganizationalEntity, OrganizationalContact
+from cyclonedx.model.component import Component, ComponentScope, ComponentType
+from cyclonedx.model.contact import OrganizationalContact, OrganizationalEntity
 from cyclonedx.model.definition import Definitions, Standard
 from cyclonedx.model.license import License, LicenseRepository
 from cyclonedx.model.tool import Tool
@@ -53,7 +61,7 @@ def is_source_artifact(ex_ref: ExternalReference) -> bool:
             or is_local_source_archive(ex_ref))
 
 
-def _get_hash_value(hashes: Iterable[HashType], algorithm: HashAlgorithm) -> Optional[str]:
+def _get_hash_value(hashes: Iterable[HashType], algorithm: HashAlgorithm) -> str | None:
     h = next(filter(lambda hash_type: hash_type.alg == algorithm, hashes), None)
     return h.content if h else None
 
@@ -66,14 +74,14 @@ def _set_hash_value(hashes: SortedSet[HashType], algorithm: HashAlgorithm, value
         hashes.add(HashType(alg=algorithm, content=value))
 
 
-def _is_true_value(value: Optional[str]) -> bool:
+def _is_true_value(value: str | None) -> bool:
     return value in ("True", "true")
 
 
 class ExternalComponent:
     reference: ExternalReference
 
-    def __init__(self, external_ref: Optional[ExternalReference] = None) -> None:
+    def __init__(self, external_ref: ExternalReference | None = None) -> None:
         if external_ref is None:
             self.reference = ExternalReference(
                 type=ExternalReferenceType.OTHER,
@@ -136,7 +144,7 @@ class SbomComponent:
         self.component._bom_ref = value
 
     @property
-    def group(self) -> Optional[str]:
+    def group(self) -> str | None:
         return self.component.group
 
     @group.setter
@@ -144,7 +152,7 @@ class SbomComponent:
         self.component.group = value
 
     @property
-    def version(self) -> Optional[str]:
+    def version(self) -> str | None:
         return self.component.version
 
     @version.setter
@@ -152,7 +160,7 @@ class SbomComponent:
         self.component.version = value
 
     @property
-    def purl(self) -> Optional[PackageURL]:
+    def purl(self) -> PackageURL | None:
         return self.component.purl
 
     @purl.setter
@@ -160,7 +168,7 @@ class SbomComponent:
         self.component.purl = value
 
     @property
-    def scope(self) -> Optional[ComponentScope]:
+    def scope(self) -> ComponentScope | None:
         return self.component.scope
 
     @scope.setter
@@ -189,7 +197,7 @@ class SbomComponent:
         self.component.authors.add(author)
 
     @property
-    def supplier(self) -> Optional[OrganizationalEntity]:
+    def supplier(self) -> OrganizationalEntity | None:
         return self.component.supplier
 
     @supplier.setter
@@ -197,7 +205,7 @@ class SbomComponent:
         self.component.supplier = value
 
     @property
-    def description(self) -> Optional[str]:
+    def description(self) -> str | None:
         return self.component.description
 
     @description.setter
@@ -205,7 +213,7 @@ class SbomComponent:
         self.component.description = value
 
     @property
-    def copyright(self) -> Optional[str]:
+    def copyright(self) -> str | None:
         return self.component.copyright
 
     @copyright.setter
@@ -213,7 +221,7 @@ class SbomComponent:
         self.component.copyright = value
 
     @property
-    def cpe(self) -> Optional[str]:
+    def cpe(self) -> str | None:
         return self.component.cpe
 
     @cpe.setter
@@ -234,7 +242,7 @@ class SbomComponent:
         self.licenses.add(lic)
 
     @property
-    def third_party_notices(self) -> Optional[str]:
+    def third_party_notices(self) -> str | None:
         return self.get_custom_property(self.component, PROPERTY_THIRD_PARTY_NOTICES)
 
     @third_party_notices.setter
@@ -258,7 +266,7 @@ class SbomComponent:
         self.set_custom_property(self.component, PROPERTY_INTERNAL, f"{value}")
 
     @property
-    def primary_language(self) -> Optional[str]:
+    def primary_language(self) -> str | None:
         return self.get_custom_property(self.component, PROPERTY_PRIMARY_LANGUAGE)
 
     @primary_language.setter
@@ -266,7 +274,7 @@ class SbomComponent:
         self.set_custom_property(self.component, PROPERTY_PRIMARY_LANGUAGE, value)
 
     @property
-    def legal_remark(self) -> Optional[str]:
+    def legal_remark(self) -> str | None:
         return self.get_custom_property(self.component, PROPERTY_LEGAL_REMARK)
 
     @legal_remark.setter
@@ -274,7 +282,7 @@ class SbomComponent:
         self.set_custom_property(self.component, PROPERTY_LEGAL_REMARK, value)
 
     @property
-    def filename(self) -> Optional[str]:
+    def filename(self) -> str | None:
         return self.get_custom_property(self.component, PROPERTY_FILENAME)
 
     @filename.setter
@@ -282,7 +290,7 @@ class SbomComponent:
         self.set_custom_property(self.component, PROPERTY_FILENAME, value)
 
     @staticmethod
-    def get_custom_property(component: Optional[Component], custom_property_key: str) -> Optional[str]:
+    def get_custom_property(component: Component | None, custom_property_key: str) -> str | None:
         if component is not None and component.properties is not None:
             found = next(filter(lambda prop: prop.name == custom_property_key, component.properties), None)
             if found:
@@ -290,7 +298,7 @@ class SbomComponent:
         return None
 
     @staticmethod
-    def set_custom_property(component: Optional[Component], custom_property_key: str, value: str) -> None:
+    def set_custom_property(component: Component | None, custom_property_key: str, value: str) -> None:
         if component is not None and component.properties is not None:
             found = next(filter(lambda prop: prop.name == custom_property_key, component.properties), None)
             if found:
@@ -299,7 +307,7 @@ class SbomComponent:
                 component.properties.add(Property(name=custom_property_key, value=value))
 
     @property
-    def website(self) -> Optional[str]:
+    def website(self) -> str | None:
         reference = self._get_external_reference(ExternalReferenceType.WEBSITE)
         return str(reference.url) if reference else None
 
@@ -308,7 +316,7 @@ class SbomComponent:
         self._set_external_reference(ExternalReferenceType.WEBSITE, value)
 
     @property
-    def repo_url(self) -> Optional[str]:
+    def repo_url(self) -> str | None:
         reference = self._get_external_reference(ExternalReferenceType.VCS)
         return str(reference.url) if reference else None
 
@@ -317,7 +325,7 @@ class SbomComponent:
         self._set_external_reference(ExternalReferenceType.VCS, value)
 
     @property
-    def relative_path(self) -> Optional[str]:
+    def relative_path(self) -> str | None:
         ref = next(filter(lambda er: er.type == ExternalReferenceType.DISTRIBUTION and er.comment == RELATIVE_PATH,
                           self.component.external_references), None)
         if ref:
@@ -343,33 +351,33 @@ class SbomComponent:
             reference.url = XsUri(value)
 
     @property
-    def sources(self) -> List['SourceArtifact']:
+    def sources(self) -> list['SourceArtifact']:
         return list(map(lambda er: SourceArtifact(er),
                         filter(is_source_artifact,
                                self.component.external_references)))
 
     @property
-    def local_sources(self) -> List['SourceArtifact']:
+    def local_sources(self) -> list['SourceArtifact']:
         return list(map(lambda er: SourceArtifact(er),
                         filter(is_local_source_archive,
                                self.component.external_references)))
 
-    def add_local_source(self, url: str, hashes: Optional[Iterable[HashType]] = None) -> None:
+    def add_local_source(self, url: str, hashes: Iterable[HashType] | None = None) -> None:
         ex_ref = ExternalReference(type=ExternalReferenceType.DISTRIBUTION, comment=SOURCE_ARCHIVE_LOCAL,
                                    url=XsUri(url), hashes=hashes)
         self.component.external_references.add(ex_ref)
 
     @property
-    def remote_sources(self) -> List['SourceArtifact']:
+    def remote_sources(self) -> list['SourceArtifact']:
         return list(map(lambda er: SourceArtifact(er),
                         filter(is_remote_source_archive,
                                self.component.external_references)))
 
-    def add_remote_source(self, url: str, hashes: Optional[Iterable[HashType]] = None) -> None:
+    def add_remote_source(self, url: str, hashes: Iterable[HashType] | None = None) -> None:
         ex_ref = ExternalReference(type=ExternalReferenceType.SOURCE_DISTRIBUTION, url=XsUri(url), hashes=hashes)
         self.component.external_references.add(ex_ref)
 
-    def _get_external_reference(self, ex_ref_type: ExternalReferenceType) -> Optional[ExternalReference]:
+    def _get_external_reference(self, ex_ref_type: ExternalReferenceType) -> ExternalReference | None:
         external_reference = next(filter(lambda ex_ref: ex_ref is not None and ex_ref.type == ex_ref_type,
                                          self.component.external_references), None)
         return external_reference
@@ -392,7 +400,7 @@ class SbomComponent:
                                                else external.reference)
 
     @property
-    def md5(self) -> Optional[str]:
+    def md5(self) -> str | None:
         return self._get_hash(HashAlgorithm.MD5)
 
     @md5.setter
@@ -400,7 +408,7 @@ class SbomComponent:
         self._set_hash(HashAlgorithm.MD5, value)
 
     @property
-    def sha1(self) -> Optional[str]:
+    def sha1(self) -> str | None:
         return self._get_hash(HashAlgorithm.SHA_1)
 
     @sha1.setter
@@ -408,7 +416,7 @@ class SbomComponent:
         self._set_hash(HashAlgorithm.SHA_1, value)
 
     @property
-    def sha256(self) -> Optional[str]:
+    def sha256(self) -> str | None:
         return self._get_hash(HashAlgorithm.SHA_256)
 
     @sha256.setter
@@ -416,14 +424,14 @@ class SbomComponent:
         self._set_hash(HashAlgorithm.SHA_256, value)
 
     @property
-    def sha512(self) -> Optional[str]:
+    def sha512(self) -> str | None:
         return self._get_hash(HashAlgorithm.SHA_512)
 
     @sha512.setter
     def sha512(self, value: str) -> None:
         self._set_hash(HashAlgorithm.SHA_512, value)
 
-    def _get_hash(self, algorithm: HashAlgorithm) -> Optional[str]:
+    def _get_hash(self, algorithm: HashAlgorithm) -> str | None:
         return _get_hash_value(self.component.hashes, algorithm)
 
     def _set_hash(self, algorithm: HashAlgorithm, value: str) -> None:
@@ -433,9 +441,9 @@ class SbomComponent:
 class SourceArtifact:
     external_ref: ExternalReference
 
-    def __init__(self, external_ref: Optional[ExternalReference] = None,
-                 download_url: Optional[str] = None, local_file: Optional[str] = None,
-                 hashes: Optional[Iterable[HashType]] = None) -> None:
+    def __init__(self, external_ref: ExternalReference | None = None,
+                 download_url: str | None = None, local_file: str | None = None,
+                 hashes: Iterable[HashType] | None = None) -> None:
         if external_ref:
             if download_url or local_file or hashes:
                 raise ValueError('external_ref must be the only argument')
@@ -468,7 +476,7 @@ class SourceArtifact:
         self.external_ref.type = value
 
     @property
-    def url(self) -> Optional[str]:
+    def url(self) -> str | None:
         return str(self.external_ref.url) if self.external_ref.url else None
 
     @url.setter
@@ -476,7 +484,7 @@ class SourceArtifact:
         self.external_ref.url = XsUri(value)
 
     @property
-    def md5(self) -> Optional[str]:
+    def md5(self) -> str | None:
         return self._get_hash(HashAlgorithm.MD5)
 
     @md5.setter
@@ -484,7 +492,7 @@ class SourceArtifact:
         self._set_hash(HashAlgorithm.MD5, value)
 
     @property
-    def sha1(self) -> Optional[str]:
+    def sha1(self) -> str | None:
         return self._get_hash(HashAlgorithm.SHA_1)
 
     @sha1.setter
@@ -492,7 +500,7 @@ class SourceArtifact:
         self._set_hash(HashAlgorithm.SHA_1, value)
 
     @property
-    def sha256(self) -> Optional[str]:
+    def sha256(self) -> str | None:
         return self._get_hash(HashAlgorithm.SHA_256)
 
     @sha256.setter
@@ -500,14 +508,14 @@ class SourceArtifact:
         self._set_hash(HashAlgorithm.SHA_256, value)
 
     @property
-    def sha512(self) -> Optional[str]:
+    def sha512(self) -> str | None:
         return self._get_hash(HashAlgorithm.SHA_512)
 
     @sha512.setter
     def sha512(self, value: str) -> None:
         self._set_hash(HashAlgorithm.SHA_512, value)
 
-    def _get_hash(self, algorithm: HashAlgorithm) -> Optional[str]:
+    def _get_hash(self, algorithm: HashAlgorithm) -> str | None:
         return _get_hash_value(self.external_ref.hashes, algorithm)
 
     def _set_hash(self, algorithm: HashAlgorithm, value: str) -> None:
@@ -547,7 +555,7 @@ class StandardBom:
 
     bom: Bom
 
-    def __init__(self, bom: Optional[Bom] = None) -> None:
+    def __init__(self, bom: Bom | None = None) -> None:
         if bom is None:
             self.bom = Bom()
         else:
@@ -603,7 +611,7 @@ class StandardBom:
         if not self.bom.metadata.supplier:
             self.bom.metadata.supplier = OrganizationalEntity(name='Siemens or its Affiliates')
 
-    def _set_metadata_property(self, property_name: str, value: Optional[str | None]) -> None:
+    def _set_metadata_property(self, property_name: str, value: str | None) -> None:
         existing = next(filter(lambda p: p.name == property_name,
                                self.bom.metadata.properties), None)
         if existing:
@@ -622,7 +630,7 @@ class StandardBom:
                 # nothing to do
                 pass
 
-    def _get_metadata_property(self, property_name: str) -> Optional[str]:
+    def _get_metadata_property(self, property_name: str) -> str | None:
         prop = next(filter(lambda p: p.name == property_name,
                            self.bom.metadata.properties), None)
         return prop.value if prop else None
@@ -669,11 +677,11 @@ class StandardBom:
                                          else external.reference)
 
     @property
-    def profile(self) -> Optional[str]:
+    def profile(self) -> str | None:
         return self._get_metadata_property(PROPERTY_PROFILE)
 
     @profile.setter
-    def profile(self, value: Optional[str | None]) -> None:
+    def profile(self, value: str | None) -> None:
         self._set_metadata_property(PROPERTY_PROFILE, value)
 
     @property
@@ -685,7 +693,7 @@ class StandardBom:
         SbomComponent.set_custom_property(self.bom.metadata.component, PROPERTY_VCS_CLEAN, f"{value}")
 
     @property
-    def vcs_revision(self) -> Optional[str]:
+    def vcs_revision(self) -> str | None:
         return SbomComponent.get_custom_property(self.bom.metadata.component, PROPERTY_VCS_REVISION)
 
     @vcs_revision.setter
@@ -693,7 +701,7 @@ class StandardBom:
         SbomComponent.set_custom_property(self.bom.metadata.component, PROPERTY_VCS_REVISION, value)
 
     @property
-    def sbom_nature(self) -> Optional[SbomNature]:
+    def sbom_nature(self) -> SbomNature | None:
         value = self._get_metadata_property(PROPERTY_SBOM_NATURE)
         return SbomNature(value) if value else None
 
@@ -751,7 +759,7 @@ class StandardBom:
                                                else tool.component)
 
     @property
-    def component(self) -> Optional[SbomComponent]:
+    def component(self) -> SbomComponent | None:
         return SbomComponent(self.bom.metadata.component) if self.bom.metadata.component is not None else None
 
     @component.setter
@@ -761,11 +769,11 @@ class StandardBom:
             else component
 
     @property
-    def supplier(self) -> Optional[OrganizationalEntity]:
+    def supplier(self) -> OrganizationalEntity | None:
         return self.bom.metadata.supplier
 
     @property
-    def definitions(self) -> Optional[Definitions]:
+    def definitions(self) -> Definitions | None:
         return self.bom.definitions
 
     @definitions.setter

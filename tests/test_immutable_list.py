@@ -2,9 +2,8 @@
 # SPDX-License-Identifier: MIT
 import unittest
 
-from sortedcontainers import SortedSet
-
 from siemens_standard_bom.immutable import ImmutableList
+from sortedcontainers import SortedSet
 
 
 class ImmutableListTestCase(unittest.TestCase):

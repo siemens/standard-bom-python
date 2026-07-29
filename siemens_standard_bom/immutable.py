@@ -14,4 +14,4 @@ class ImmutableList(tuple[T, ...]):
     def __new__(cls, *args: T | Iterable[T]) -> 'ImmutableList[T]':
         if len(args) == 1 and isinstance(args[0], Iterable):
             return super().__new__(cls, args[0])
-        return super().__new__(cls, cast(tuple[T, ...], args))
+        return super().__new__(cls, cast('tuple[T, ...]', args))

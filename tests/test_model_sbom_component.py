@@ -4,11 +4,10 @@
 import unittest
 
 from cyclonedx.model import AttachedText, ExternalReference, ExternalReferenceType, XsUri
-from cyclonedx.model.component import ComponentType, Component, ComponentScope
+from cyclonedx.model.component import Component, ComponentScope, ComponentType
 from cyclonedx.model.contact import OrganizationalContact
 from cyclonedx.model.license import DisjunctiveLicense
 from packageurl import PackageURL
-
 from siemens_standard_bom.model import ExternalComponent, SbomComponent
 
 

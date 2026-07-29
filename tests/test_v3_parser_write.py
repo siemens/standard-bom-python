@@ -3,15 +3,14 @@
 # SPDX-License-Identifier: MIT
 #
 import json
-from os import path
 from pathlib import Path
 from unittest.mock import patch
 
 from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.license import LicenseExpression
-
-from siemens_standard_bom.model import StandardBom, SbomComponent
+from siemens_standard_bom.model import SbomComponent, StandardBom
 from siemens_standard_bom.parser import StandardBomParser
+
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
 
@@ -42,9 +41,9 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         component = Component(name="test", version="1.0.0")
         sbom.add_component(component)
         StandardBomParser.save(sbom, output_filename)
-        self.assertTrue(path.exists(output_filename))
+        self.assertTrue(Path(output_filename).exists())
 
-        with open(output_filename, 'r') as file:
+        with Path(output_filename).open() as file:
             data = json.load(file)
             self.assertIsNotNone(data["components"][0]["bom-ref"])
 
@@ -55,9 +54,9 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         component = Component(name="test", version="1.0.0")
         sbom.add_component(component)
         StandardBomParser.save(sbom, output_filename)
-        self.assertTrue(path.exists(output_filename))
+        self.assertTrue(Path(output_filename).exists())
 
-        with open(output_filename, 'r') as file:
+        with Path(output_filename).open() as file:
             data = json.load(file)
             self.assertEqual(data["components"][0]["name"], "test")
             self.assertEqual(data["components"][0]["version"], "1.0.0")
@@ -69,9 +68,9 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         component = Component(name="test", version="1.0.0")
         sbom.add_component(component)
         StandardBomParser.save(sbom, output_filename)
-        self.assertTrue(path.exists(output_filename))
+        self.assertTrue(Path(output_filename).exists())
 
-        with open(output_filename, 'r') as file:
+        with Path(output_filename).open() as file:
             data = json.load(file)
             self.assertEqual(data["components"][0]["name"], "test")
             self.assertEqual(data["components"][0]["version"], "1.0.0")
@@ -81,9 +80,9 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
 
         sbom = StandardBom()
         StandardBomParser.save(sbom, output_filename)
-        self.assertTrue(path.exists(output_filename))
+        self.assertTrue(Path(output_filename).exists())
 
-        with open(output_filename, 'r') as file:
+        with Path(output_filename).open() as file:
             data = json.load(file)
             self.assertNotIn("dependencies", data)
 
@@ -97,9 +96,9 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         )
         sbom.add_component(comp)
         StandardBomParser.save(sbom, output_filename)
-        self.assertTrue(path.exists(output_filename))
+        self.assertTrue(Path(output_filename).exists())
 
-        with open(output_filename, 'r') as file:
+        with Path(output_filename).open() as file:
             data = json.load(file)
             self.assertIn("dependencies", data)
             self.assertTrue(len(data["dependencies"]) == 1)
@@ -114,9 +113,9 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         )
         sbom.add_component(comp)
         StandardBomParser.save(sbom, output_filename, with_dependencies=False)
-        self.assertTrue(path.exists(output_filename))
+        self.assertTrue(Path(output_filename).exists())
 
-        with open(output_filename, 'r') as file:
+        with Path(output_filename).open() as file:
             data = json.load(file)
             self.assertNotIn("dependencies", data)
 
@@ -145,7 +144,7 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         self.assertEqual(len(writes), 1)
         self.assertEqual(writes[0], Path(output_filename))
 
-        with open(output_filename, 'r') as file:
+        with Path(output_filename).open() as file:
             data = json.load(file)
             self.assertNotIn("dependencies", data)
             self.assertEqual(data["components"][0]["name"], "Dummy")
@@ -217,8 +216,8 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         sbom.add_component(comp)
         StandardBomParser.save(sbom, output_filename, with_dependencies=False)
 
-        self.assertTrue(path.exists(output_filename))
-        with open(output_filename, 'r') as file:
+        self.assertTrue(Path(output_filename).exists())
+        with Path(output_filename).open() as file:
             data = json.load(file)
             self.assertEqual(data["components"][0]["name"], "Dummy")
             self.assertEqual(data["components"][0]["version"], "0.0.1")
@@ -241,8 +240,8 @@ class SbomV3ParserWriteTestCase(AbstractSbomComparingTestCase):
         sbom.add_component(comp)
         StandardBomParser.save(sbom, output_filename, with_dependencies=False)
 
-        self.assertTrue(path.exists(output_filename))
-        with open(output_filename, 'r') as file:
+        self.assertTrue(Path(output_filename).exists())
+        with Path(output_filename).open() as file:
             data = json.load(file)
             self.assertEqual(data["components"][0]["name"], "Dummy")
             self.assertEqual(data["components"][0]["version"], "0.0.1")

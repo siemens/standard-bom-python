@@ -5,11 +5,15 @@ import unittest
 from importlib.metadata import version
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
-from cyclonedx.model.component import ComponentType, Component
+from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.contact import OrganizationalContact
+from siemens_standard_bom.model import (
+    ExternalComponent,
+    SbomComponent,
+    StandardBom,
+    is_standardbom_component_entry,
+)
 from sortedcontainers import SortedSet
-
-from siemens_standard_bom.model import StandardBom, SbomComponent, ExternalComponent, is_standardbom_component_entry
 
 
 class StandardBomTestCase(unittest.TestCase):
@@ -161,12 +165,12 @@ class StandardBomTestCase(unittest.TestCase):
     def test_timestamp_provided(self) -> None:
         sbom = StandardBom()
         self.assertIsNotNone(sbom.timestamp)
-        self.assertGreaterEqual(datetime.datetime.now(tz=datetime.timezone.utc), sbom.timestamp)
+        self.assertGreaterEqual(datetime.datetime.now(tz=datetime.UTC), sbom.timestamp)
 
     def test_timestamp_set(self) -> None:
         sbom = StandardBom()
-        sbom.timestamp = datetime.datetime(2025, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc)
-        self.assertEqual(datetime.datetime(2025, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc), sbom.timestamp)
+        sbom.timestamp = datetime.datetime(2025, 1, 1, 0, 0, 0, tzinfo=datetime.UTC)
+        self.assertEqual(datetime.datetime(2025, 1, 1, 0, 0, 0, tzinfo=datetime.UTC), sbom.timestamp)
 
     def test_serial_number_provided(self) -> None:
         sbom = StandardBom()

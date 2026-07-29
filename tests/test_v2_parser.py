@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: MIT
 #
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 
 from packageurl import PackageURL
-
 from siemens_standard_bom.model import SbomNature
 from siemens_standard_bom.parser import StandardBomParser
+
 from tests.abstract_sbom_compare import AbstractSbomComparingTestCase, read_timestamp
 
 
@@ -92,8 +92,8 @@ class SbomV2ParserTestCase(AbstractSbomComparingTestCase):
         self.assertEqual(actual_bom.serial_number, expected_bom.serial_number)
 
     def test_timestamps(self) -> None:
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 0, 0, timezone.utc), read_timestamp("2009-08-07T06:05Z"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone.utc), read_timestamp("2009-08-07T06:05:04Z"))
+        self.assertEqual(datetime(2009, 8, 7, 6, 5, 0, 0, UTC), read_timestamp("2009-08-07T06:05Z"))
+        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, UTC), read_timestamp("2009-08-07T06:05:04Z"))
         self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=1))),
                          read_timestamp("2009-08-07T06:05:04+01:00"))
         self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=0))),
