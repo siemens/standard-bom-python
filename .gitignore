@@ -4,8 +4,10 @@
 #
 
 .poetry-cache/
+.venv/
 .vscode/
 *.pyc
+poetry.toml
 
 /.coverage
 /.idea/
