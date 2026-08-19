@@ -19,7 +19,7 @@ deps = [
     "flake8>=7",
 ]
 commands = [
-    ["flake8", "siemens_standard_bom", "tests"], { replace = "posargs", extend = true} ,
+    ["flake8", "siemens_standard_bom", "tests", { replace = "posargs", extend = true} ],
 ]
 
 [env.type]
