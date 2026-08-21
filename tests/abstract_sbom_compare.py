@@ -5,12 +5,10 @@
 
 import unittest
 from abc import ABC
-from datetime import datetime
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Tuple
 
 from cyclonedx.model.bom_ref import BomRef
-from dateutil import parser as dateparser
 from deepdiff import DeepDiff
 
 from siemens_standard_bom.model import StandardBom
@@ -49,13 +47,3 @@ class AbstractSbomComparingTestCase(ABC, unittest.TestCase):
         self.assertEqual({}, DeepDiff(expected_bom.bom, actual_bom.bom, exclude_regex_paths=exclude_regex_paths))
         self.assertEqual({}, DeepDiff(expected_bom, actual_bom, exclude_regex_paths=exclude_regex_paths))
         return actual_bom, expected_bom
-
-
-def read_timestamp(param: str | None) -> Optional[datetime]:
-    if param is None:
-        return None
-    try:
-        timestamp = dateparser.isoparse(param)
-        return timestamp
-    except ValueError:
-        return None

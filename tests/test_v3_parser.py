@@ -3,14 +3,14 @@
 # SPDX-License-Identifier: MIT
 #
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 
 from cyclonedx.model.contact import OrganizationalContact
 from packageurl import PackageURL
 
 from siemens_standard_bom.model import SbomNature
 from siemens_standard_bom.parser import StandardBomParser
-from tests.abstract_sbom_compare import AbstractSbomComparingTestCase, read_timestamp
+from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
 
 class SbomV3ParserTestCase(AbstractSbomComparingTestCase):
@@ -76,28 +76,17 @@ class SbomV3ParserTestCase(AbstractSbomComparingTestCase):
         self.assertEqual("binaries/49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d/commons-codec-1.15.jar",
                          commons_codec.relative_path)
 
+    def test_read_timestamp_with_offset(self) -> None:
+        bom = StandardBomParser.parse("tests/v3/timestamp-offset.cdx.json")
+
+        self.assertEqual(datetime.fromisoformat("2022-07-08T15:00:00+04:30"), bom.timestamp)
+
     def test_serial_number(self) -> None:
         input_filename = "tests/v3/serial-number.cdx.json"
         output_filename = "output/v3/serial-number.cdx.json"
 
         actual_bom, expected_bom = self.write_read_compare(input_filename, output_filename)
         self.assertEqual(actual_bom.serial_number, expected_bom.serial_number)
-
-    def test_timestamps(self) -> None:
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 0, 0, timezone.utc), read_timestamp("2009-08-07T06:05Z"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone.utc), read_timestamp("2009-08-07T06:05:04Z"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=1))),
-                         read_timestamp("2009-08-07T06:05:04+01:00"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=0))),
-                         read_timestamp("2009-08-07T06:05:04+00:00"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=0))),
-                         read_timestamp("2009-08-07T06:05:04+00"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=1))),
-                         read_timestamp("2009-08-07T06:05:04+01"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=4, minutes=30))),
-                         read_timestamp("2009-08-07T06:05:04+04:30"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 0, 0, timezone(timedelta(hours=4))),
-                         read_timestamp("2009-08-07T06:05+04:00"))
 
     def test_multiple_dependencies(self) -> None:
         input_filename = "tests/v3/multiple-dependencies.cdx.json"

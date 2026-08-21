@@ -6,7 +6,7 @@ read/write Siemens [Standard BOM](https://sbom.siemens.io/latest/format.html)
 
 ## Commands (run from repo root)
 
-- Full check (lint + type + tests, Python 3.10-3.14): `poetry run tox run`
+- Full check (lint + type + tests, Python 3.11-3.14): `poetry run tox run`
 - Lint + types only: `poetry run tox run -e lint,type`
 - Tests on one interpreter: `poetry run tox run -e 3.12`
 - Single test: `poetry run python -m unittest tests.test_v3_parser.SbomV3ParserTestCase.test_read_sunny_day`
@@ -46,7 +46,7 @@ Config:
 
 - [mypy](https://mypy.readthedocs.io/en/stable/) `strict = True`, `implicit_reexport = False`; 
 - [flake8](https://flake8.pycqa.org/) max line length 140, max complexity 8, doctests checked.
-- Requires Python >=3.10,<4.0 and [Poetry](https://python-poetry.org/) >= 2.0.
+- Requires Python >=3.11,<4.0 and [Poetry](https://python-poetry.org/) >= 2.0.
 - Release: bump `version` in [`pyproject.toml`](pyproject.toml); pushing a `vX.Y.Z` tag publishes 
     to [PyPI](https://pypi.org/p/siemens-standard-bom) (see [`release.yml`](.github/workflows/release.yml)). 
 - The self tool-entry version reads from installed package metadata, so `poetry install` 
