@@ -1,11 +1,10 @@
 requires = ["tox>=4"]
-env_list = ["lint", "type", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
+env_list = ["lint", "type", "3.11", "3.12", "3.13", "3.14", "3.15"]
 
 [env_run_base]
 description = "Run unit tests"
 deps = [
-    "coverage==7.17.3; python_version >= '3.11'",
-    "coverage==7.16.2; python_version < '3.11'",
+    "coverage==7.17.3",
     "deepdiff==9.0.0",
 ]
 commands = [
@@ -17,8 +16,7 @@ commands = [
 [env.lint]
 description = "Run linters for static code analysis"
 deps = [
-    "flake8==7.5.0; python_version >= '3.11'",
-    "flake8==7.4.1; python_version < '3.11'",
+    "flake8==7.5.0",
 ]
 commands = [
     ["flake8", "siemens_standard_bom", "tests", { replace = "posargs", extend = true} ],
