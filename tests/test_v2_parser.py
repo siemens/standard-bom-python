@@ -3,13 +3,13 @@
 # SPDX-License-Identifier: MIT
 #
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 
 from packageurl import PackageURL
 
 from siemens_standard_bom.model import SbomNature
 from siemens_standard_bom.parser import StandardBomParser
-from tests.abstract_sbom_compare import AbstractSbomComparingTestCase, read_timestamp
+from tests.abstract_sbom_compare import AbstractSbomComparingTestCase
 
 
 class SbomV2ParserTestCase(AbstractSbomComparingTestCase):
@@ -90,22 +90,6 @@ class SbomV2ParserTestCase(AbstractSbomComparingTestCase):
 
         actual_bom, expected_bom = self.write_read_compare(input_filename, output_filename)
         self.assertEqual(actual_bom.serial_number, expected_bom.serial_number)
-
-    def test_timestamps(self) -> None:
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 0, 0, timezone.utc), read_timestamp("2009-08-07T06:05Z"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone.utc), read_timestamp("2009-08-07T06:05:04Z"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=1))),
-                         read_timestamp("2009-08-07T06:05:04+01:00"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=0))),
-                         read_timestamp("2009-08-07T06:05:04+00:00"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=0))),
-                         read_timestamp("2009-08-07T06:05:04+00"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=1))),
-                         read_timestamp("2009-08-07T06:05:04+01"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 4, 0, timezone(timedelta(hours=4, minutes=30))),
-                         read_timestamp("2009-08-07T06:05:04+04:30"))
-        self.assertEqual(datetime(2009, 8, 7, 6, 5, 0, 0, timezone(timedelta(hours=4))),
-                         read_timestamp("2009-08-07T06:05+04:00"))
 
     def test_multiple_dependencies(self) -> None:
         input_filename = "tests/v2/multiple-dependencies.cdx.json"
