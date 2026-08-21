@@ -17,7 +17,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Topic :: Software Development",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -25,7 +24,7 @@ classifiers = [
 ]
 urls = { homepage = "https://sbom.siemens.io/", repository = "https://github.com/siemens/standard-bom-python", "Bug Tracker" = "https://github.com/siemens/standard-bom-python/issues", documentation = "https://github.com/siemens/standard-bom-python/blob/main/README.md" }
 
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.11,<4.0"
 dependencies = [
     "cyclonedx-python-lib(>=11.12.0,<12.0.0)",
 ]

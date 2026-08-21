@@ -130,7 +130,7 @@ component.licenses = licenses
 
 In order to build this library on your local PC, and/or contribute to this library, mind the following prerequisites:
 
-- [Python](https://www.python.org/doc/versions/) >=3.10, <4.0
+- [Python](https://www.python.org/doc/versions/) >=3.11, <4.0
 - [Poetry](https://python-poetry.org/) >= v2.0
 
 ---
