@@ -17,7 +17,8 @@ commands = [
 [env.lint]
 description = "Run linters for static code analysis"
 deps = [
-    "flake8>=7",
+    "flake8==7.5.0; python_version >= '3.11'",
+    "flake8==7.4.1; python_version < '3.11'",
 ]
 commands = [
     ["flake8", "siemens_standard_bom", "tests", { replace = "posargs", extend = true} ],

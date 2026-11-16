@@ -47,7 +47,10 @@ coverage = [
     { version = "7.17.3", python = ">=3.11" },
     { version = "7.16.2", python = "<3.11" },
 ]
-flake8 = "7.4.1"
+flake8 = [
+    { version = "7.5.0", python = ">=3.11" },
+    { version = "7.4.1", python = "<3.11" },
+]
 deepdiff = "9.0.0"
 mypy = "2.4.1"
 types-python-dateutil = "2.9.0.20261116"
