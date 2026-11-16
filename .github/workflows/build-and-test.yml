@@ -68,7 +68,7 @@ jobs:
             -   name: Run coverage badge
                 run: |
                     sudo apt-get install xq
-                    pip install anybadge
+                    pip install anybadge==1.18.0
                     mkdir -p badges/
                     cov_value=$(xq --xpath "//coverage/@line-rate" coverage.xml)
                     cov_rounded=$(printf "%.1f\n" $(bc <<< "100*${cov_value}"))
