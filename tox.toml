@@ -5,7 +5,7 @@ env_list = ["lint", "type", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 description = "Run unit tests"
 deps = [
     "coverage>=7",
-    "deepdiff>=8",
+    "deepdiff==9.0.0",
 ]
 commands = [
     ["coverage", "run", "--branch", "-m", "unittest", "discover", "-v", { replace = "posargs", extend = true} ],
@@ -25,10 +25,10 @@ commands = [
 [env.type]
 description = "Run type checker"
 deps = [
-    "mypy>=1.8",
-    "types-python-dateutil>=2.8",
+    "mypy>=2.4",
+    "types-python-dateutil>=2.9",
     "sortedcontainers-stubs>=2.4",
-    "deepdiff>=8",
+    "deepdiff==9.0.0",
 ]
 commands = [
     ["mypy", "-p", "siemens_standard_bom", "-p", "tests", { replace = "posargs", extend = true} ],
