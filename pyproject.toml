@@ -43,7 +43,10 @@ packages = [
 ]
 
 [tool.poetry.group.dev.dependencies]
-coverage = "7.16.2"
+coverage = [
+    { version = "7.17.3", python = ">=3.11" },
+    { version = "7.16.2", python = "<3.11" },
+]
 flake8 = "7.4.1"
 deepdiff = "9.0.0"
 mypy = "2.4.1"
