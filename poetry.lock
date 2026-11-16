@@ -941,19 +941,36 @@ files = [
 
 [[package]]
 name = "pyproject-api"
-version = "1.11.0"
+version = "1.11.4"
 description = "API to interact with the python pyproject.toml based projects"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
+markers = "python_version == \"3.10\""
 files = [
-    {file = "pyproject_api-1.11.0-py3-none-any.whl", hash = "sha256:860060c8832dce983b5eec6f41c4c43eb3ec06ff7332387a63acdf5ca27b68d8"},
-    {file = "pyproject_api-1.11.0.tar.gz", hash = "sha256:b8807d85a293e6c9f133e6575946fed45f1d42b22d58c780b33aa2421a799549"},
+    {file = "pyproject_api-1.11.4-py3-none-any.whl", hash = "sha256:30921dec1f85946dd47664536a003b2aea3a8be18e334c93ed12f6a8b1e60c76"},
+    {file = "pyproject_api-1.11.4.tar.gz", hash = "sha256:42332ebb8e5e510a3a9ea498cedb5723134ddd46ddfe2d07693917b2ebea22a7"},
 ]
 
 [package.dependencies]
-packaging = ">=25"
-tomli = {version = ">=2.3", markers = "python_version < \"3.11\""}
+packaging = ">=26.3"
+tomli = {version = ">=2.4.1", markers = "python_version < \"3.11\""}
+
+[[package]]
+name = "pyproject-api"
+version = "1.12.5"
+description = "API to interact with the python pyproject.toml based projects"
+optional = false
+python-versions = ">=3.11"
+groups = ["dev"]
+markers = "python_version >= \"3.11\""
+files = [
+    {file = "pyproject_api-1.12.5-py3-none-any.whl", hash = "sha256:d9cc8c913912035ecd95451a97216083c738b5ff31c45fd168c1f3a28baf01d7"},
+    {file = "pyproject_api-1.12.5.tar.gz", hash = "sha256:0795693708f631af4c665ab02a315edc0fb97471f1d52e4a6179ed60504e96bb"},
+]
+
+[package.dependencies]
+packaging = ">=26.3"
 
 [[package]]
 name = "python-dateutil"
